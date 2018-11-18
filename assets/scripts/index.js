@@ -12,8 +12,7 @@ exports.currentFilename = document.getElementById("currentFilename");
 //Language Mode UI
 var infoBarLanguageMode = document.getElementById("languageModeSpan");
 var languageModeDialog = document.getElementById("languageModeDialog");
-var languagesList = document.getElementById("langaugesList");
-var languageListElements = languagesList.getElementsByTagName("li");
+var languageListElements = document.querySelectorAll("li");
 
 //HTML Stylesheet
 currentStyleSheet = document.getElementById("codeMirrorThemeCss");
@@ -31,7 +30,7 @@ setTerminal = function (){
 function setEditor(){
     var config = {
         lineNumbers: true,
-        mode: "javascript"
+       
         
     };
     exports.editableCodeMirror = CodeMirror.fromTextArea(codeWindow, config);
@@ -48,6 +47,8 @@ function setEditor(){
 window.onload = function(){
     setEditor();
     mainMenu.createMenu();
+
+    //Doesn't work need a work around for the li's
     setMode();
 }
 
@@ -66,20 +67,23 @@ function setMode(){
         }else{
             languageModeDialog.style.display = "none";
         }
-    });
-        //Loop through language list 
+
         for(var i = 0; i < languageListElements.length; i++){
-            var selectedNode = languageListElements[i];
-            selectedNode.addEventListener("click",function(){
+            languageListElements[i].addEventListener("click",function(){
                 //Set CodeMirror Mode
-                exports.editableCodeMirror.setOption("mode","'"+selectedNode.textContent.toLowerCase()+"'");
-                languageModeDialog.style.display = "none";
-                infoBarLanguageMode.innerHTML = selectedNode.textContent;
+                var newMode = this.textContent.toLowerCase();
+                exports.editableCodeMirror.setOption("mode","'"+newMode+"'");
+                languageModeDialog.style.display ="none";
+                infoBarLanguageMode.innerHTML = newMode.toLocaleUpperCase();
                 
-            })
-        }
+        });
+    }
+    });
+
+       
+}
         
    
-}
+
 
 

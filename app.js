@@ -1,7 +1,11 @@
 //import modules
 const {app,BrowserWindow,ipcMain} = require("electron");
 const path = require("path");
-//init window
+
+//Electron Reload
+require("electron-reload")(__dirname);
+
+//Init Window
 let win,prefsWindow;
 function initApp(){
     win = new BrowserWindow({width: 800,height:600,x:0,y:0});
@@ -16,7 +20,7 @@ function initApp(){
     prefsWindow.loadFile("views/prefs.html");
     prefsWindow.openDevTools();
     
-    //display preferences window
+    //Check if preference window is showing
     ipcMain.on("show-prefs",function(){
         if(!prefsWindow.isVisible()){
             prefsWindow.show();
@@ -45,7 +49,7 @@ function initApp(){
     })
 }
 
-//init app
+//Init Application
 app.on("ready",initApp);
 app.on("window-all-closed",function(){
     if(process.platform !== "darwin"){

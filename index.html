@@ -7,22 +7,37 @@
     <!--xterm links-->
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/index.css">
-    <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
     
-    <!--Code mirror theme-->
+    
+    <!--Code mirror-->
+    <script src="node_modules/codemirror/lib/codemirror.js"></script>
     <link rel="stylesheet" id="codeMirrorThemeCss" href="node_modules/codemirror/theme/seti.css">
+    <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
+    <script src="node_modules/codemirror/mode/javascript/javascript.js"></script>
     <!--//-->
 
-    <script src="node_modules/codemirror/lib/codemirror.js"></script>
+
   
     </head>
     <body>
         <textarea id="codeWindow"></textarea>
         <div id="bottom-info-bar">
-           Untitled
+           <span id="currentFilename">Untitled</span>
+           <span id="languageModeSpan">None</span>
         </div>
         <div id="terminal"></div>
-     
+
+        <!--Language mode selection--->
+        <div id="languageModeDialog">
+            <input type="text" id="languageModeInput" placeholder="Select language mode: "/>
+            <ul id="langaugesList">
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>Scribble</li>
+                <li>Java</li>
+                <li>Javascript</li>
+            </ul>
+        </div>
 
         <script>require("./assets/scripts/index.js")</script>
     </body>

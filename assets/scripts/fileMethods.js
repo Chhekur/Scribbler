@@ -1,7 +1,7 @@
 //Vars
-var fs = require("fs");
-var path = require("path");
-var {remote,dialog} = require("electron").remote;
+const fs = require("fs");
+const path = require("path");
+const {remote,dialog} = require("electron").remote;
 var isAlreadySaved = false;
 
 //Import base
@@ -17,11 +17,9 @@ exports.openFile = function(){
                 if(err){
                     console.log(err);
                 }else{
-                    //set the data to the code window 
                     base.editableCodeMirror.setValue(data);
-                    //get the filename 
                     exports.currentFileName = filename;
-                    base.infoBar.innerHTML = path.basename(filename.toString());
+                    base.currentFilename.innerHTML = path.basename(filename.toString());
                 }
             })
         }
@@ -56,3 +54,7 @@ exports.newFile = function(){
     console.log("New File");
 }
 
+//Run java
+exports.runJava = function(){
+
+}

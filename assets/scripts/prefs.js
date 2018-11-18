@@ -16,3 +16,8 @@ function setTheme(){
   var selectedTheme = prefOptions.options[prefOptions.selectedIndex].textContent;
   ipcRenderer.send('selected-theme',selectedTheme);
 }
+
+//Change font-size
+//Change info-bar color
+//Change View
+

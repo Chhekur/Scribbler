@@ -1,15 +1,21 @@
-//imports
+//Imports
 const mainMenu = require("./components/menu");
 var ipcRenderer = require('electron').ipcRenderer;
 const CodeMirror = require("codemirror");
 
 //Main UI
-var editableCodeMirror,feedbackWindow,infoBar,codeWindow,currentStyleSheet,setTerminal;
-codeWindow = document.getElementById("codeWindow");
-infoBar = document.getElementById("bottom-info-bar");
-feedbackWindow = document.getElementById("feedback-window");
+exports.codeWindow = document.getElementById("codeWindow");
+exports.infoBar = document.getElementById("bottom-info-bar");
+exports.feedbackWindow = document.getElementById("feedback-window");
+exports.currentFilename = document.getElementById("currentFilename");
 
-//Stylesheet
+//Language Mode UI
+var infoBarLanguageMode = document.getElementById("languageModeSpan");
+var languageModeDialog = document.getElementById("languageModeDialog");
+var languagesList = document.getElementById("langaugesList");
+var languageListElements = languagesList.getElementsByTagName("li");
+
+//HTML Stylesheet
 currentStyleSheet = document.getElementById("codeMirrorThemeCss");
 
 //Init Terminal
@@ -21,17 +27,19 @@ setTerminal = function (){
     });
 }
 
-//Init editor 
+//Init Editor 
 function setEditor(){
     var config = {
-        lineNumbers: true
+        lineNumbers: true,
+        mode: "javascript"
+        
     };
-    editableCodeMirror = CodeMirror.fromTextArea(codeWindow, config);
+    exports.editableCodeMirror = CodeMirror.fromTextArea(codeWindow, config);
     
     //Setting preferences
     ipcRenderer.on("selected-theme",function(event,payload){
         setStylesheet(payload);
-        editableCodeMirror.setOption("theme",payload);
+        exports.editableCodeMirror.setOption("theme",payload);
       });
     
 }   
@@ -40,14 +48,38 @@ function setEditor(){
 window.onload = function(){
     setEditor();
     mainMenu.createMenu();
+    setMode();
 }
 
 //Setting Stylesheet
 function setStylesheet(theme){
     currentStyleSheet.href="node_modules/codemirror/theme/"+theme+".css";
 }
-//Exports
-module.exports = {
-    setTerminal,editableCodeMirror,feedbackWindow,infoBar,codeWindow,currentStyleSheet
+
+//Set Language-Mode
+function setMode(){
+    infoBarLanguageMode.addEventListener("click",function(){
+        
+        //Check for visibility of dialog
+        if(languageModeDialog.style.display == "none"){
+            languageModeDialog.style.display = "flex";
+        }else{
+            languageModeDialog.style.display = "none";
+        }
+    });
+        //Loop through language list 
+        for(var i = 0; i < languageListElements.length; i++){
+            var selectedNode = languageListElements[i];
+            selectedNode.addEventListener("click",function(){
+                //Set CodeMirror Mode
+                exports.editableCodeMirror.setOption("mode","'"+selectedNode.textContent.toLowerCase()+"'");
+                languageModeDialog.style.display = "none";
+                infoBarLanguageMode.innerHTML = selectedNode.textContent;
+                
+            })
+        }
+        
+   
 }
+
 

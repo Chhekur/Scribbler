@@ -1,0 +1,35 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Lato",sans-serif;
+}
+
+#bottom-info-bar{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom:0;
+    padding: 5px;
+    color: white;
+    background: #008ad3;
+    font-size: 12px;
+}
+
+
+/*
+    PREFERENCES STYLES
+*/
+.prefContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.prefContainer h1{
+    text-align: center;
+}
+
+/*BUTTON STYLES*/

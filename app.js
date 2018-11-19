@@ -14,7 +14,7 @@ function initApp(){
     win.webContents.openDevTools();
 
     //Preferences Window
-    prefsWindow = new BrowserWindow({width:800,height:600,x:0,y:0,show:false});
+    prefsWindow = new BrowserWindow({width:700,height:400,x:0,y:0,show:false,resizable:true});
     prefsWindow.setTitle("Preferences");
     prefsWindow.setMenuBarVisibility(false);
     prefsWindow.loadFile("views/prefs.html");

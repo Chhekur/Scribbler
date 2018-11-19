@@ -35,14 +35,28 @@ PREFERENCES
 .prefContainer{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    padding: 20px;
+    
 }
 
 .prefContainer h1{
-    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 300;
 }
 
+.prefContainer{
+    width: 80%;
+    height: 100%;
+}
+.prefContainer input,select{
+    padding: 15px;
+    width: 100%;
+    
+}
+
+.prefContainer input:focus {
+    outline: none;
+}
 /*
 LANGUAGE MODE DIALOG
 */

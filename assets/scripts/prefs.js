@@ -20,4 +20,7 @@ function setTheme(){
 //Change font-size
 //Change info-bar color
 //Change View
-
+//Change font-family
+function setFontFamily(){
+  
+}

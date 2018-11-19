@@ -5,10 +5,9 @@
 <body>
      <div class="prefContainer">
             <h1>PREFERENCES</h1>
-        <!---Change Theme-->
-        <p>Change Theme:</p>
-            <select onchange="setTheme()" name="theme" id="select">
-                    <option selected="">default</option>
+            <p class="notification">Here you're able to personalise the interface by picking the colors you'd like to see. The changes will be saved and updated automatically</p>
+            <p> <select onchange="setTheme()" aria-placeholder="Theme" name="theme" id="select">
+                    <option>default</option>
                     <option>3024-day</option>
                     <option>3024-night</option>
                     <option>abcdef</option>
@@ -63,8 +62,22 @@
                     <option>xq-light</option>
                     <option>yeti</option>
                     <option>zenburn</option>
-                </select>
+                </select></p>
+                <p> <label for="background"></label> <span>
+                    <input type="text" placeholder="Background-Color"></span> 
+                </p>
+                <p> <label for="border-color"></label> <span>
+                    <input type="text" placeholder="Font-Size"></span> 
+                </p>
+                <p> <label for="text-color"></label> <span>
+                    <input type="text" placeholder="Font-Family"></span> 
+                </p>
+                <p> <label for="sidebar-color"></label> <span>
+                    <input type="text" placeholder="Sidebar-Background"></span> 
+                </p>
+                
 
+        <!---Change Theme-->
         </div>
         <script src="../assets/scripts/prefs.js"></script>
     </body>

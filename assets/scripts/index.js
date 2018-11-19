@@ -2,6 +2,7 @@
 const mainMenu = require("./components/menu");
 var ipcRenderer = require('electron').ipcRenderer;
 
+
 //Main UI
 exports.codeWindow = document.getElementById("codeWindow");
 exports.infoBar = document.getElementById("bottom-info-bar");

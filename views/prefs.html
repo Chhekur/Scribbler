@@ -1,12 +1,16 @@
 <head>
-    <link rel="stylesheet" href="../assets/css/index.css"/>
-
+<!-- UIkit CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.23/css/uikit.min.css" />
+<!-- UIkit JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.23/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.23/js/uikit-icons.min.js"></script>
 </head>
 <body>
-     <div class="prefContainer">
+     <div class="uk-container">
             <h1>PREFERENCES</h1>
-            <p class="notification">Here you're able to personalise the interface by picking the colors you'd like to see. The changes will be saved and updated automatically</p>
-            <p> <select onchange="setTheme()" aria-placeholder="Theme" name="theme" id="select">
+            <div uk-alert>Here you're able to personalise the interface by picking the colors you'd like to see. The changes will be saved and updated automatically</div>
+            
+            <p> <select onchange="setTheme()" class="uk-select" aria-placeholder="Theme" name="theme" id="select">
                     <option>default</option>
                     <option>3024-day</option>
                     <option>3024-night</option>
@@ -64,16 +68,16 @@
                     <option>zenburn</option>
                 </select></p>
                 <p> <label for="background"></label> <span>
-                    <input type="text" placeholder="Background-Color"></span> 
+                    <input class="uk-input" type="text" placeholder="Background-Color"></span> 
                 </p>
                 <p> <label for="border-color"></label> <span>
-                    <input type="text" placeholder="Font-Size"></span> 
+                    <input class="uk-input" type="text" placeholder="Font-Size"></span> 
                 </p>
                 <p> <label for="text-color"></label> <span>
-                    <input type="text" placeholder="Font-Family"></span> 
+                    <input class="uk-input" type="text" placeholder="Font-Family"></span> 
                 </p>
                 <p> <label for="sidebar-color"></label> <span>
-                    <input type="text" placeholder="Sidebar-Background"></span> 
+                    <input class="uk-input" type="text" placeholder="Sidebar-Background"></span> 
                 </p>
                 
 

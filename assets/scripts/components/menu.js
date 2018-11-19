@@ -16,9 +16,15 @@ exports.createMenu = function () {
     var fileMenuItem = new MenuItem({
         label: "File",
         submenu:[
-            {label:"New",click:fileMethods.newFile, accelerator: "Ctrl+N"},
-            {label: "Open",click: fileMethods.openFile, accelerator: "Ctrl+O"},
-            {label: "Save",click: fileMethods.saveFile,accelerator:"Ctrl+Shift+S"},
+            {label:"New File",click:fileMethods.newFile, accelerator: "Ctrl+N"},
+            {label:"New Window",click:fileMethods.createNewWindow, accelerator: "Ctrl+Shift+N"},
+            {type:"separator"},
+            {label: "Open File",click: fileMethods.openFile, accelerator: "Ctrl+O"},
+            {label: "Open Folder",click: fileMethods.openFolder, accelerator: "Ctrl+Shift+O"},
+            {type:"separator"},
+            {label: "Save",click: fileMethods.save,accelerator:"Ctrl+S"},
+            {label: "Save As",click: fileMethods.saveAs,accelerator:"Ctrl+Shift+S"},
+            {label: "Save All...",click: fileMethods.saveFile,accelerator:"Ctrl+K+S"},
         ]
     });
     //Preferences menu 

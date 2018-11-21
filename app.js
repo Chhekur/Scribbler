@@ -33,7 +33,12 @@ function initApp(){
     //IPC Main Data
     ipcMain.on("selected-theme",function(event,payload){
         win.webContents.send("selected-theme",payload);
-    })
+        
+    });
+
+    ipcMain.on("selected-font-size",function(event,payload){
+        win.webContents.send("selected-font-size",payload);
+    });
    
     //Event Listeners
     prefsWindow.on("close",function(event){

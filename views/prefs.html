@@ -1,16 +1,16 @@
 <head>
-<!-- UIkit CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.23/css/uikit.min.css" />
-<!-- UIkit JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.23/js/uikit.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.23/js/uikit-icons.min.js"></script>
+  <!-- UIkit CSS -->
+  <link rel="stylesheet" href="../node_modules/uikit/dist/css/uikit.css" />
+  <!-- UIkit JS -->
+  <script src="../node_modules/uikit/dist/js/uikit.min.js"></script>
+  <script src="../node_modules/uikit/dist/js/uikit-icons.min.js"></script>
 </head>
 <body>
      <div class="uk-container">
             <h1>PREFERENCES</h1>
             <div uk-alert>Here you're able to personalise the interface by picking the colors you'd like to see. The changes will be saved and updated automatically</div>
             
-            <p> <select onchange="setTheme()" class="uk-select" aria-placeholder="Theme" name="theme" id="select">
+            <p> <select onchange="setTheme()" class="uk-select" aria-placeholder="Theme" name="theme" id="selectTheme">
                     <option>default</option>
                     <option>3024-day</option>
                     <option>3024-night</option>
@@ -70,8 +70,15 @@
                 <p> <label for="background"></label> <span>
                     <input class="uk-input" type="text" placeholder="Background-Color"></span> 
                 </p>
-                <p> <label for="border-color"></label> <span>
-                    <input class="uk-input" type="text" placeholder="Font-Size"></span> 
+                <p>
+                    <select onchange="setFontSize()" placeholder="Font Size" id="selectFontSize" class="uk-select" >
+                        <option>10</option>
+                        <option>12</option>
+                        <option>13</option>
+                        <option>14</option>
+                        <option>15</option>
+                        <option>16</option>
+                    </select>
                 </p>
                 <p> <label for="text-color"></label> <span>
                     <input class="uk-input" type="text" placeholder="Font-Family"></span> 

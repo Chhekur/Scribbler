@@ -2,13 +2,12 @@
 const mainMenu = require("./components/menu");
 var ipcRenderer = require('electron').ipcRenderer;
 
-
 //Main UI
 exports.codeWindow = document.getElementById("codeWindow");
 exports.infoBar = document.getElementById("bottom-info-bar");
 exports.feedbackWindow = document.getElementById("feedback-window");
 exports.currentFilename = document.getElementById("currentFilename");
-
+var codeMirroElem = document.getElementsByTagName("html")[0];
 //Language Mode UI
 var infoBarLanguageMode = document.getElementById("languageModeSpan");
 var languageModeDialog = document.getElementById("languageModeDialog");
@@ -27,6 +26,11 @@ function setEditor(){
         setStylesheet(payload);
         exports.editableCodeMirror.setOption("theme",payload);
       });
+
+      ipcRenderer.on("selected-font-size",function(event,payload){
+          var newFontSize = payload;
+          codeMirroElem.style.fontSize = payload;
+      })
 }
     
 //On-load
@@ -37,6 +41,7 @@ window.onload = function(){
     
 }
 
+//Setting fontSize
 //Setting Stylesheet
 function setStylesheet(theme){
     currentStyleSheet.href="node_modules/codemirror/theme/"+theme+".css";

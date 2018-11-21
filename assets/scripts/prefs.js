@@ -4,14 +4,9 @@ const ipcRenderer = require("electron").ipcRenderer;
 var prefTheme = document.getElementById("selectTheme");
 var prefFontSize = document.getElementById("selectFontSize");
 var applyPrefs = document.getElementById("applyPreferences");
+
 //Preferences 
-let prefs  = {};
-
-//Save preferences
-function savePrefs(){
-  
-}
-
+var prefs = {};
 //Change Theme
 function setTheme(){
   var selectedTheme = prefTheme.options[prefTheme.selectedIndex].textContent;
@@ -29,3 +24,4 @@ function setFontSize(){
 function setFontFamily(){
   
 }
+

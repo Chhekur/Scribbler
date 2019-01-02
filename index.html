@@ -2,21 +2,27 @@
     <head>
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="node_modules/uikit/dist/css/uikit.css" />
+    
     <!-- UIkit JS -->
     <script src="node_modules/uikit/dist/js/uikit.min.js"></script>
     <script src="node_modules/uikit/dist/js/uikit-icons.min.js"></script>
+
     <!--xterm links-->
     <link rel="stylesheet" href="node_modules/xterm/dist/xterm.css" />
     <script src="node_modules/xterm/dist/xterm.js"></script>
+
     <!--xterm links-->
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="node_modules/electron-tabs/electron-tabs.css" type="text/css" />
+
     <!--Code mirror-->
     <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
     <script src="node_modules/codemirror/lib/codemirror.js"></script>
     <link rel="stylesheet" id="codeMirrorThemeCss" href="node_modules/codemirror/theme/seti.css">
     <script src="node_modules/codemirror/mode/javascript/javascript.js" ></script>
     <script src="node_modules/codemirror/mode/css/css.js" ></script>
+    <script src="node_modules/codemirror/mode/scribble/scribble.js"></script>
     <!--//-->
 
 
@@ -28,7 +34,15 @@
            <span id="currentFilename">Untitled</span>
            <span id="languageModeSpan"></span>
         </div>
+
+        <div class="etabs-tabgroup">
+            <div class="etabs-tabs"></div>
+            <div class="etabs-buttons"></div>
+        </div>
+
+        <div class="etab-views"></div>
         <div id="terminal"></div>
+
 
         <!--Language mode selection--->
         <div id="languageModeDialog">

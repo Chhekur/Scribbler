@@ -13,13 +13,38 @@ var infoBarLanguageMode = document.getElementById("languageModeSpan");
 var languageModeDialog = document.getElementById("languageModeDialog");
 var languageListElements = document.querySelectorAll("li");
 
+
+
+//Setting Scribble Mode 
+var keywords = ["timer", "counter", "version"];
+CodeMirror.defineMode("scribble", function() {
+  return {
+    token: function(stream, state) {
+      stream.eatWhile(/\w/);
+
+      if (arrayContains(stream.current(), keywords)) {
+        return "style1";
+      }
+      stream.next();
+    }
+  };
+
+});
+function arrayContains(needle, arrhaystack) {
+  var lower = needle.toLowerCase();
+  return (arrhaystack.indexOf(lower) > -1);
+}
+
 //HTML Stylesheet
 var currentStyleSheet = document.getElementById("codeMirrorThemeCss");
+
 //Init Editor 
 function setEditor(){
     exports.editableCodeMirror = CodeMirror.fromTextArea(codeWindow, {
         lineNumbers: true,
         matchBrackets:true,
+        mode: "scribble"
+        
     });
     //Setting preferences
     ipcRenderer.on("selected-theme",function(event,payload){
@@ -50,6 +75,7 @@ function setStylesheet(theme){
 //Set Language-Mode
 function setMode(){
     exports.editableCodeMirror.getOption("mode");
+
     //Check CodeMirror Mode
     if(infoBarLanguageMode.innerHTML == "" ){
         infoBarLanguageMode.innerHTML = "None"
@@ -74,7 +100,9 @@ function setMode(){
                 infoBarLanguageMode.innerHTML = newMode.toLocaleUpperCase();
         });
     }
-    });      
+    });   
+    
+  
 }
 
 

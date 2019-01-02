@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const {remote,dialog} = require("electron").remote;
 var isAlreadySaved = false;
-
+const TabGroup = require("electron-tabs");
 //Current file 
 var currentFileName;
 //Import base
@@ -103,4 +103,14 @@ exports.runJava = function(){
 exports.createNewWindow = function(){
     //Create new instance of the window 
     console.log("Creating new window");
+}
+
+//Setting Tabs 
+function setTabs(){
+    let newTabGroup = new TabGroup();
+    let newTab = newTabGroup.addTab({
+        title: currentFileName,
+        visible: true,
+        src:"http://google.co.uk"
+    });
 }

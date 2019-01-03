@@ -3,11 +3,13 @@ const fs = require("fs");
 const path = require("path");
 const {remote,dialog} = require("electron").remote;
 var isAlreadySaved = false;
-const TabGroup = require("electron-tabs");
+var newTabName;
+//Tabs 
+var tabList = document.getElementById("tab-group");
 //Current file 
 var currentFileName;
 //Import base
-var base = require("./index");
+var base = require("./EditorManager");
 
 //Open File
 exports.openFile = function(){
@@ -19,8 +21,12 @@ exports.openFile = function(){
                 if(err){
                     console.log(err);
                 }else{
-                    base.editableCodeMirror.setValue(data);
                     exports.currentFileName = filename;
+                    //Creating a new tab 
+                    exports.createNewFileWithTab(filename);
+                    //Writing the data to the window
+                    base.editableCodeMirror.setValue(data);
+                    //Setting the bar at the bottom
                     base.currentFilename.innerHTML = path.basename(filename.toString());
                 }
             })
@@ -44,6 +50,7 @@ exports.save = function(){
         });
     }
 }
+
 //Save File As
 exports.saveAs = function(){
     dialog.showSaveDialog(function(filename){
@@ -60,7 +67,7 @@ exports.saveAs = function(){
                     isAlreadySaved = true;
                     filename = currentFileName;
                     base.infoBar.innerHTML = path.basename(currentFileName.textContent);
-                    alert(currentFileName);
+                
 
                 }
             });
@@ -70,7 +77,7 @@ exports.saveAs = function(){
 
 
 //Open Folder
-exports.openFolder = function() {
+exports.openFolder = function () {
     dialog.showOpenDialog({properties:["openDirectory"],title:"Select Folder"},function(folderPath){
         if(folderPath == undefined){
             return;
@@ -89,13 +96,15 @@ exports.openFolder = function() {
     }
 });
 }
-//Create New File
-exports.newFile = function(){
-    console.log("New File");
-}
+
 
 //Run java
 exports.runJava = function(){
+
+}
+
+//Running Scribble
+exports.runScribble = function() {
 
 }
 
@@ -105,12 +114,55 @@ exports.createNewWindow = function(){
     console.log("Creating new window");
 }
 
-//Setting Tabs 
-function setTabs(){
-    let newTabGroup = new TabGroup();
-    let newTab = newTabGroup.addTab({
-        title: currentFileName,
-        visible: true,
-        src:"http://google.co.uk"
-    });
+//Create new file and tab
+exports.createNewFileWithTab = function (filename) {
+    
+    console.log("Creating a new file");
+    if(filename == undefined || filename == null){
+        newTabName = "Untitled";
+    }else{
+        newTabName = path.basename(filename.toString());
+    }
+
+    var newTab = document.createElement("li");
+  
+    newTab.setAttribute("title",filename);
+
+    //Remove the class from others 
+    var tabContent = document.createElement("a");
+    tabContent.setAttribute("href","#");
+    tabContent.appendChild(document.createTextNode(newTabName));
+
+    var completeTab = newTab.appendChild(tabContent);
+    tabList.appendChild(newTab);
+
+    //Tab Management
+    exports.TabManagement(filename);
+}
+
+
+
+ exports.TabManagement = function (filename){
+    var count = 0;
+    //When clicking on the tab re-read the content into the window 
+    
+    for(var i = 0; i < tabList.childNodes.length; i++){
+        if(tabList.childNodes[i].nodeName == "LI"){
+       tabList.childNodes[i].addEventListener("click", function(){
+            //var filenameToRead = tabList.childNodes[i].getAttribute("title");
+            fs.readFile(filename[0],"utf-8",function(err,data){
+                if(err){
+                    console.log(err);
+                }else{
+                    base.editableCodeMirror.setValue(data);
+                    console.log("Switching to "+path.basename(filename.toString()));
+                    //Setting the bar at the bottom
+                    base.currentFilename.innerHTML = path.basename(filename.toString());
+                }
+            })
+          
+       });
+    }
+}
+   
 }

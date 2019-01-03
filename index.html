@@ -14,7 +14,6 @@
     <!--xterm links-->
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/index.css">
-    <link rel="stylesheet" href="node_modules/electron-tabs/electron-tabs.css" type="text/css" />
 
     <!--Code mirror-->
     <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
@@ -29,18 +28,17 @@
   
     </head>
     <body>
+        <!--Append child when creating a new file-->
+            <ul id="tab-group" uk-tab>
+           
+            </ul>
         <textarea id="codeWindow"></textarea>
         <div id="bottom-info-bar">
            <span id="currentFilename">Untitled</span>
            <span id="languageModeSpan"></span>
         </div>
 
-        <div class="etabs-tabgroup">
-            <div class="etabs-tabs"></div>
-            <div class="etabs-buttons"></div>
-        </div>
-
-        <div class="etab-views"></div>
+        
         <div id="terminal"></div>
 
 
@@ -56,6 +54,7 @@
             </ul>
         </div>
 
-        <script>require("./assets/scripts/index.js")</script>
+        <script>require("./assets/scripts/EditorManager.js")</script>
+        <script>require("./assets/scripts/components/MainMenu.js")</script>
     </body>
 </html>

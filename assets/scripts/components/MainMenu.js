@@ -1,7 +1,7 @@
 const {remote,Menu,MenuItem,BrowserWindow} = require("electron").remote;
 const ipcRenderer = require("electron").ipcRenderer;
-const fileMethods = require("../fileMethods");
-const base = require("../index");
+const FileManager = require("../FileManager");
+const base = require("../EditorManager");
 const path = require("path");
 
 //Preferences
@@ -9,24 +9,24 @@ let prefOptions;
 
 //Create main menu
 exports.createMenu = function () {
-    //Declare main menu
     const mainMenu = new Menu();
 
     //File menu
     var fileMenuItem = new MenuItem({
         label: "File",
         submenu:[
-            {label:"New File",click:fileMethods.newFile, accelerator: "Ctrl+N"},
-            {label:"New Window",click:fileMethods.createNewWindow, accelerator: "Ctrl+Shift+N"},
+            {label:"New File", accelerator: "Ctrl+N"},
+            {label:"New Window",click:FileManager.createNewWindow, accelerator: "Ctrl+Shift+N"},
             {type:"separator"},
-            {label: "Open File",click: fileMethods.openFile, accelerator: "Ctrl+O"},
-            {label: "Open Folder",click: fileMethods.openFolder, accelerator: "Ctrl+Shift+O"},
+            {label: "Open File",click: FileManager.openFile, accelerator: "Ctrl+O"},
+            {label: "Open Folder",click: FileManager.openFolder, accelerator: "Ctrl+Shift+O"},
             {type:"separator"},
-            {label: "Save",click: fileMethods.save,accelerator:"Ctrl+S"},
-            {label: "Save As",click: fileMethods.saveAs,accelerator:"Ctrl+Shift+S"},
-            {label: "Save All...",click: fileMethods.saveFile,accelerator:"Ctrl+K+S"},
+            {label: "Save",click: FileManager.save,accelerator:"Ctrl+S"},
+            {label: "Save As",click: FileManager.saveAs,accelerator:"Ctrl+Shift+S"},
+            {label: "Save All...",click: FileManager.saveFile,accelerator:"Ctrl+K+S"},
         ]
     });
+
     //Preferences menu 
     var preferencesMenuItem = new MenuItem({
         label: "Preferences",
@@ -53,5 +53,6 @@ exports.createMenu = function () {
     mainMenu.append(fileMenuItem);
     mainMenu.append(preferencesMenuItem);
     mainMenu.append(terminalMenuItem);
+    
     Menu.setApplicationMenu(mainMenu);
 }

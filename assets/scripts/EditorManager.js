@@ -1,5 +1,6 @@
 //Imports
-const mainMenu = require("./components/menu");
+const MainMenu = require("./components/MainMenu");
+const FileManager = require("./FileManager");
 var ipcRenderer = require('electron').ipcRenderer;
 
 //Main UI
@@ -62,7 +63,10 @@ function setEditor(){
 window.onload = function(){
     setEditor();
     setMode();
-    mainMenu.createMenu();
+    MainMenu.createMenu();
+
+    
+    
     
 }
 
@@ -71,6 +75,7 @@ window.onload = function(){
 function setStylesheet(theme){
     currentStyleSheet.href="node_modules/codemirror/theme/"+theme+".css";
 }
+
 
 //Set Language-Mode
 function setMode(){

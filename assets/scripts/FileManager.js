@@ -27,7 +27,7 @@ function openFile(){
                     //Writing the data to the window
                     base.editableCodeMirror.setValue(data);
                     //Setting the bar at the bottom
-                    base.currentFilename.innerHTML = path.basename(currentFileName.toString());
+                  
                     
                 }
             })

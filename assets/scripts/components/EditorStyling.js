@@ -14,6 +14,9 @@ function SetBottomBarColor(){
     
 }
 
+function SetSideBarStyle(){
+    
+}
 
 //Exporting
 module.exports= {

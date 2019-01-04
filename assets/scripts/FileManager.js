@@ -70,7 +70,7 @@ function SaveAs(){
                     isAlreadySaved = true;
                     filename = currentFileName;
                     //Display notification
-                    displayNotification("success","")
+                    NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"material-icons",false,"light",12);
                     //Set time out on closing notification 
                                 
 

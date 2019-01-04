@@ -13,7 +13,7 @@ INFORMATION BAR
     display: flex;
     justify-content: space-around;
     flex-direction: row;
-    position: absolute;
+    position: fixed;
     left: 0;
     right: 0;
     bottom:0;

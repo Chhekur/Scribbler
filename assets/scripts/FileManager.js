@@ -12,7 +12,7 @@ var currentFileName;
 var base = require("./EditorManager");
 
 //Open File
-exports.openFile = function(){
+function openFile(){
     dialog.showOpenDialog(function(filename){
         if(filename == undefined){
             return;
@@ -23,11 +23,12 @@ exports.openFile = function(){
                 }else{
                     exports.currentFileName = filename;
                     //Creating a new tab 
-                    exports.createNewFileWithTab(filename);
+                    TabManagement(exports.currentFileName);
                     //Writing the data to the window
                     base.editableCodeMirror.setValue(data);
                     //Setting the bar at the bottom
-                    base.currentFilename.innerHTML = path.basename(filename.toString());
+                    base.currentFilename.innerHTML = path.basename(exports.currentFileName.toString());
+                    return currentFilename;
                 }
             })
         }
@@ -37,7 +38,7 @@ exports.openFile = function(){
     
 }
 //Save File
-exports.save = function(){
+function save(){
     if(currentFileName == null || currentFileName == " "){
         exports.saveAs();
     }else{
@@ -51,8 +52,30 @@ exports.save = function(){
     }
 }
 
+function displayNotification(icon,message,pos,state){
+    //Different notifcations
+    //Errors
+    //Success
+    //Warnings 
+    setTimeout(function(){
+        switch(state){
+            case "err":
+            UIkit.notification({message: '<span uk-icon=\'icon: check\'></span>'+message+' ',pos: pos ,status: "danger"});     
+            break;
+            
+            case "success":
+            UIkit.notification({message: '<span uk-icon=\'icon: check\'></span>'+message+' ',pos: pos ,status: "success"});     
+            break;
+            case "warning":
+            UIkit.notification({message: '<span uk-icon=\'icon: check\'></span>'+message+' ',pos: pos ,status: "warning"});     
+            break;
+        }
+    },1000);
+    
+    
+}
 //Save File As
-exports.saveAs = function(){
+function saveAs(){
     dialog.showSaveDialog(function(filename){
         if(filename == undefined){
             console.log("Error the file is undefined, please try again");
@@ -66,8 +89,12 @@ exports.saveAs = function(){
                     //Set Filename
                     isAlreadySaved = true;
                     filename = currentFileName;
-                    base.infoBar.innerHTML = path.basename(currentFileName.textContent);
-                
+                    //Display notification
+                    UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Save successful',pos: 'bottom-center',status:'success'});     
+                    //Set time out on closing notification 
+                    setTimeout(function(){
+                        UIkit.notification.closeAll();
+                    },1000)               
 
                 }
             });
@@ -77,7 +104,7 @@ exports.saveAs = function(){
 
 
 //Open Folder
-exports.openFolder = function () {
+function openFolder() {
     dialog.showOpenDialog({properties:["openDirectory"],title:"Select Folder"},function(folderPath){
         if(folderPath == undefined){
             return;
@@ -99,23 +126,23 @@ exports.openFolder = function () {
 
 
 //Run java
-exports.runJava = function(){
+function runJava(){
 
 }
 
 //Running Scribble
-exports.runScribble = function() {
+function runScribble() {
 
 }
 
 //Create new window
-exports.createNewWindow = function(){
+function createNewWindow(){
     //Create new instance of the window 
     console.log("Creating new window");
 }
 
 //Create new file and tab
-exports.createNewFileWithTab = function (filename) {
+function TabManagement (filename) {
     
     console.log("Creating a new file");
     if(filename == undefined || filename == null){
@@ -125,44 +152,52 @@ exports.createNewFileWithTab = function (filename) {
     }
 
     var newTab = document.createElement("li");
-  
     newTab.setAttribute("title",filename);
 
-    //Remove the class from others 
+    //Create tab 
     var tabContent = document.createElement("a");
     tabContent.setAttribute("href","#");
+   
     tabContent.appendChild(document.createTextNode(newTabName));
-
     var completeTab = newTab.appendChild(tabContent);
+
+    //Append tab
     tabList.appendChild(newTab);
-
-    //Tab Management
-    exports.TabManagement(filename);
-}
-
-
-
- exports.TabManagement = function (filename){
-    var count = 0;
-    //When clicking on the tab re-read the content into the window 
+    //Read the file path of each tab and re-read the content into the windiow
     
     for(var i = 0; i < tabList.childNodes.length; i++){
-        if(tabList.childNodes[i].nodeName == "LI"){
+        
        tabList.childNodes[i].addEventListener("click", function(){
-            //var filenameToRead = tabList.childNodes[i].getAttribute("title");
+             //filename = tabList.childNodes[i].getAttribute("title").toString();
+            
             fs.readFile(filename[0],"utf-8",function(err,data){
                 if(err){
                     console.log(err);
                 }else{
                     base.editableCodeMirror.setValue(data);
                     console.log("Switching to "+path.basename(filename.toString()));
-                    //Setting the bar at the bottom
                     base.currentFilename.innerHTML = path.basename(filename.toString());
                 }
             })
           
        });
-    }
+     
+    
 }
-   
+}
+
+
+
+
+
+//Exports
+module.exports = {
+    TabManagement,
+    createNewWindow,
+    openFolder,
+    openFile,
+    runScribble,
+    runJava,
+    saveAs,
+    save
 }

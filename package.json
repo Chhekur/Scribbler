@@ -11,6 +11,7 @@
   "devDependencies": {
     "codemirror": "^5.41.0",
     "electron": "^3.0.9",
+    "nodegit": "^0.23.0",
     "xterm": "^3.8.0"
   },
   "dependencies": {

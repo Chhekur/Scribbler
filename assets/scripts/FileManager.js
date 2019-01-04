@@ -8,29 +8,25 @@ var newTabName;
 //Tabs 
 var tabList = document.getElementById("tab-group");
 //Current file 
-var currentFileName;
+var CurrentFile;
 //Import base
-var base = require("./EditorManager");
+var EditorManager = require("./EditorManager");
 
 //Open File
 function OpenFile(){
-    dialog.showOpenDialog(function(filename){
-        if(filename == undefined){
+    dialog.showOpenDialog(function(InstanceFile){
+        if(InstanceFile == undefined){
             return;
         }else{
-            fs.readFile(filename[0],'utf-8',function(err,data){
+            fs.readFile(InstanceFile[0],'utf-8',function(err,data){
                 if(err){
                     console.log(err);
                 }else{
-                    currentFileName = filename;
+                    CurrentFile = InstanceFile;
                     //Tab management method
-                    TabManagement(currentFileName);
+                    TabManagement(CurrentFile);
                     //Writing the data to the window
-                    base.editableCodeMirror.setValue(data);
-
-
-                    NotificationManager.displayNotification("info",currentFileName,"bottomCenter",2000,"fa-check",false,"light",12);
-                    
+                    EditorManager.editableCodeMirror.setValue(data);                
                 }
             })
         }
@@ -40,16 +36,30 @@ function OpenFile(){
     
 }
 //Save File
+function AutoSave(){
+    //Set interval for saving every 7 seconds 
+        setInterval(function(){
+            fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
+                if(err){
+                   NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",1000,"fa fa-ban",true,"light",12);
+                }else{
+                    NotificationManager.displayNotification("success","Save successful","bottomCenter",800,"fa fa-check-circle",false,"light",12);
+                }
+            });
+        },1000);
+    
+    //Check if auto-save feature is enabled (future feature)
+}
 function Save(){
     //Check for a current file name
-    if(currentFileName == null || currentFileName == " "){
+    if(CurrentFile == null || CurrentFile == " "){
         SaveAs();
     }else{
-        fs.writeFile(currentFileName[0],base.editableCodeMirror.getValue(),function(err){
+        fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
             if(err){
-               NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa-danger",true,"light",12);
+               NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa fa-ban",true,"light",12);
             }else{
-                NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check",false,"light",12);
+                NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
             }
         });
     }
@@ -57,21 +67,21 @@ function Save(){
 
 //Save File As
 function SaveAs(){
-    dialog.showSaveDialog(function(filename){
-        if(filename == undefined){
+    dialog.showSaveDialog(function(InstanceFile){
+        if(InstanceFile == undefined){
             console.log("Error the file is undefined, please try again");
         }else{
-            fs.writeFile(filename,base.editableCodeMirror.getValue().toString(),function(err){
+            fs.writeFile(InstanceFile,EditorManager.editableCodeMirror.getValue().toString(),function(err){
                 if(err){
                     console.log(err);
                 }else{
                     console.log("New Save complete");
 
-                    //Set Filename
+                    //Set InstanceFile
                     isAlreadySaved = true;
-                    filename = currentFileName;
+                    InstanceFile = CurrentFile;
                     //Display notification
-                    NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"material-icons",false,"light",12);
+                    NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
                     //Set time out on closing notification 
                                 
 
@@ -83,7 +93,7 @@ function SaveAs(){
 
 
 //Open Folder
-function openFolder() {
+function OpenFolder() {
     dialog.showOpenDialog({properties:["openDirectory"],title:"Select Folder"},function(folderPath){
         if(folderPath == undefined){
             return;
@@ -121,17 +131,17 @@ function createNewWindow(){
 }
 
 //Create new file and tab
-function TabManagement (filename) {
+function TabManagement (InstanceFile) {
     
     console.log("Creating a new file");
-    if(filename == undefined || filename == null){
+    if(InstanceFile == undefined || InstanceFile == null){
         newTabName = "Untitled";
     }else{
-        newTabName = path.basename(filename.toString());
+        newTabName = path.basename(InstanceFile.toString());
     }
 
     var newTab = document.createElement("li");
-    newTab.setAttribute("title",filename);
+    newTab.setAttribute("title",InstanceFile);
 
     //Create tab 
     var tabContent = document.createElement("a");
@@ -147,15 +157,14 @@ function TabManagement (filename) {
     for(var i = 0; i < tabList.childNodes.length; i++){
         
        tabList.childNodes[i].addEventListener("click", function(){
-             //filename = tabList.childNodes[i].getAttribute("title").toString();
+             //InstanceFile = tabList.childNodes[i].getAttribute("title").toString();
             
-            fs.readFile(filename[0],"utf-8",function(err,data){
+            fs.readFile(InstanceFile[0],"utf-8",function(err,data){
                 if(err){
                     console.log(err);
                 }else{
-                    base.editableCodeMirror.setValue(data);
-                    console.log("Switching to "+path.basename(filename.toString()));
-                    base.currentFilename.innerHTML = path.basename(filename.toString());
+                    EditorManager.editableCodeMirror.setValue(data);
+                    console.log("Switching to "+path.basename(InstanceFile.toString()));
                 }
             })
           
@@ -173,11 +182,13 @@ function TabManagement (filename) {
 module.exports = {
     TabManagement,
     createNewWindow,
-    openFolder,
+    OpenFolder,
     OpenFile,
     runScribble,
     runJava,
     SaveAs,
-    Save
+    Save,
+    AutoSave,
+    CurrentFile
     
 }

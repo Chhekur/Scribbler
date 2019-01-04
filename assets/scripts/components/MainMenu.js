@@ -8,7 +8,7 @@ const path = require("path");
 let prefOptions;
 
 //Create main menu
-exports.createMenu = function () {
+function CreateMainMenu() {
     const mainMenu = new Menu();
 
     //File menu
@@ -19,7 +19,7 @@ exports.createMenu = function () {
             {label:"New Window",click:FileManager.createNewWindow, accelerator: "Ctrl+Shift+N"},
             {type:"separator"},
             {label: "Open File",click: FileManager.OpenFile, accelerator: "Ctrl+O"},
-            {label: "Open Folder",click: FileManager.openFolder, accelerator: "Ctrl+Shift+O"},
+            {label: "Open Folder",click: FileManager.OpenFolder, accelerator: "Ctrl+Shift+O"},
             {type:"separator"},
             {label: "Save",click: FileManager.Save,accelerator:"Ctrl+S"},
             {label: "Save As",click: FileManager.SaveAs,accelerator:"Ctrl+Shift+S"},
@@ -55,4 +55,8 @@ exports.createMenu = function () {
     mainMenu.append(terminalMenuItem);
     
     Menu.setApplicationMenu(mainMenu);
+}
+
+module.exports = {
+    CreateMainMenu
 }

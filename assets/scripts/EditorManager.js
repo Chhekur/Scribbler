@@ -48,8 +48,15 @@ function InitEditor(){
 window.onload = function(){
     InitEditor();
     //setMode();
-    MainMenu.createMenu();
+    MainMenu.CreateMainMenu();
     //EditorStyling.SetBottomBarColor();
+    //Auto Save check 
+    if(FileManager.CurrentFile != null || FileManager.CurrentFile == " " || FileManager.CurrentFile != undefined){
+        FileManager.AutoSave();
+    }
+
+    
+    
 
     
     

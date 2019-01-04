@@ -9,7 +9,7 @@ body{
 /*
 INFORMATION BAR
 */
-#bottom-info-bar{
+#info-bar{
     display: flex;
     justify-content: space-around;
     flex-direction: row;
@@ -19,7 +19,7 @@ INFORMATION BAR
     bottom:0;
     padding: 0px;
     color: white;
-    background: #008ad3;
+    
     font-size: 12px;
 }
 #bottom-info-bar span{

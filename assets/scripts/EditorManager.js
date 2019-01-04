@@ -5,42 +5,24 @@ var ipcRenderer = require('electron').ipcRenderer;
 
 //Main UI
 exports.codeWindow = document.getElementById("codeWindow");
-exports.infoBar = document.getElementById("bottom-info-bar");
 exports.feedbackWindow = document.getElementById("feedback-window");
 exports.currentFilename = document.getElementById("currentFilename");
 var codeMirroElem = document.getElementsByTagName("html")[0];
+
+/*
 //Language Mode UI
 var infoBarLanguageMode = document.getElementById("languageModeSpan");
 var languageModeDialog = document.getElementById("languageModeDialog");
 var languageListElements = document.querySelectorAll("li");
+*/
 
 
-
-//Setting Scribble Mode 
-var keywords = ["timer", "counter", "version"];
-CodeMirror.defineMode("scribble", function() {
-  return {
-    token: function(stream, state) {
-      stream.eatWhile(/\w/);
-
-      if (arrayContains(stream.current(), keywords)) {
-        return "style1";
-      }
-      stream.next();
-    }
-  };
-
-});
-function arrayContains(needle, arrhaystack) {
-  var lower = needle.toLowerCase();
-  return (arrhaystack.indexOf(lower) > -1);
-}
 
 //HTML Stylesheet
 var currentStyleSheet = document.getElementById("codeMirrorThemeCss");
 
 //Init Editor 
-function setEditor(){
+function InitEditor(){
     exports.editableCodeMirror = CodeMirror.fromTextArea(codeWindow, {
         lineNumbers: true,
         matchBrackets:true,
@@ -61,8 +43,8 @@ function setEditor(){
     
 //On-load
 window.onload = function(){
-    setEditor();
-    setMode();
+    InitEditor();
+    //setMode();
     MainMenu.createMenu();
 
     
@@ -76,7 +58,7 @@ function setStylesheet(theme){
     currentStyleSheet.href="node_modules/codemirror/theme/"+theme+".css";
 }
 
-
+/*
 //Set Language-Mode
 function setMode(){
     exports.editableCodeMirror.getOption("mode");
@@ -109,6 +91,7 @@ function setMode(){
     
   
 }
+*/
 
 
         

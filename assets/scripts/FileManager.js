@@ -21,14 +21,14 @@ function openFile(){
                 if(err){
                     console.log(err);
                 }else{
-                    exports.currentFileName = filename;
-                    //Creating a new tab 
-                    TabManagement(exports.currentFileName);
+                    currentFileName = filename;
+                    //Tab management method
+                    TabManagement(currentFileName);
                     //Writing the data to the window
                     base.editableCodeMirror.setValue(data);
                     //Setting the bar at the bottom
-                    base.currentFilename.innerHTML = path.basename(exports.currentFileName.toString());
-                    return currentFilename;
+                    base.currentFilename.innerHTML = path.basename(currentFileName.toString());
+                    
                 }
             })
         }
@@ -38,44 +38,42 @@ function openFile(){
     
 }
 //Save File
-function save(){
+function Save(){
     if(currentFileName == null || currentFileName == " "){
-        exports.saveAs();
+        SaveAs();
     }else{
         fs.writeFile(currentFileName,base.editableCodeMirror.getValue(),function(err){
             if(err){
                 console.log(err);
+                displayNotification("err","Save unsuccessful","bottom-center",1000);
             }else{
-                console.log(currentFileName);
+                displayNotification("success","Save successful!","bottom-center",1000);
             }
         });
     }
 }
 
-function displayNotification(icon,message,pos,state){
-    //Different notifcations
-    //Errors
-    //Success
-    //Warnings 
-    setTimeout(function(){
-        switch(state){
-            case "err":
-            UIkit.notification({message: '<span uk-icon=\'icon: check\'></span>'+message+' ',pos: pos ,status: "danger"});     
-            break;
-            
-            case "success":
-            UIkit.notification({message: '<span uk-icon=\'icon: check\'></span>'+message+' ',pos: pos ,status: "success"});     
-            break;
-            case "warning":
-            UIkit.notification({message: '<span uk-icon=\'icon: check\'></span>'+message+' ',pos: pos ,status: "warning"});     
-            break;
-        }
-    },1000);
+function displayNotification(state,message,pos,timeout){
+    //Displaying different notifications 
+    switch(state){
+        case "err":
+        UIkit.notification({message: '<span uk-icon=\'icon: ban\'></span>'+message+' ',pos: pos ,status: "danger",timeout:timeout});     
+    
+        break;
+        
+        case "success":
+        UIkit.notification({message: '<span uk-icon=\'icon: check\'></span>'+message+' ',pos: pos ,status: "success",timeout:timeout});     
+        break;
+        case "warning":
+        UIkit.notification({message: '<span uk-icon=\'icon: warning\'></span>'+message+' ',pos: pos ,status: "warning",timeout:timeout});     
+        break;
+    }
+    
     
     
 }
 //Save File As
-function saveAs(){
+function SaveAs(){
     dialog.showSaveDialog(function(filename){
         if(filename == undefined){
             console.log("Error the file is undefined, please try again");
@@ -90,11 +88,9 @@ function saveAs(){
                     isAlreadySaved = true;
                     filename = currentFileName;
                     //Display notification
-                    UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Save successful',pos: 'bottom-center',status:'success'});     
+                    displayNotification("success","Save successful!","bottom-center",1000);
                     //Set time out on closing notification 
-                    setTimeout(function(){
-                        UIkit.notification.closeAll();
-                    },1000)               
+                                
 
                 }
             });
@@ -198,6 +194,6 @@ module.exports = {
     openFile,
     runScribble,
     runJava,
-    saveAs,
-    save
+    SaveAs,
+    Save
 }

@@ -17,7 +17,7 @@ function initApp(){
     prefsWindow = new BrowserWindow({width:700,height:600,x:0,y:0,show:false,resizable:true});
     prefsWindow.setTitle("Preferences");
     prefsWindow.setMenuBarVisibility(false);
-    prefsWindow.loadFile("views/prefs.html");
+    prefsWindow.loadFile("views/Preferences.html");
     prefsWindow.openDevTools();
     
     //Check if preference window is showing

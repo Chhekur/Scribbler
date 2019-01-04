@@ -21,9 +21,9 @@ exports.createMenu = function () {
             {label: "Open File",click: FileManager.openFile, accelerator: "Ctrl+O"},
             {label: "Open Folder",click: FileManager.openFolder, accelerator: "Ctrl+Shift+O"},
             {type:"separator"},
-            {label: "Save",click: FileManager.save,accelerator:"Ctrl+S"},
-            {label: "Save As",click: FileManager.saveAs,accelerator:"Ctrl+Shift+S"},
-            {label: "Save All...",click: FileManager.saveFile,accelerator:"Ctrl+K+S"},
+            {label: "Save",click: FileManager.Save,accelerator:"Ctrl+S"},
+            {label: "Save As",click: FileManager.SaveAs,accelerator:"Ctrl+Shift+S"},
+
         ]
     });
 

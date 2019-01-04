@@ -1,6 +1,7 @@
 //Imports
 const MainMenu = require("./components/MainMenu");
 const FileManager = require("./FileManager");
+const EditorStyling = require("./components/EditorStyling");
 var ipcRenderer = require('electron').ipcRenderer;
 
 //Main UI
@@ -46,6 +47,7 @@ window.onload = function(){
     InitEditor();
     //setMode();
     MainMenu.createMenu();
+    EditorStyling.SetBottomBarColor();
 
     
     

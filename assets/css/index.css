@@ -18,10 +18,11 @@ INFORMATION BAR
     right: 0;
     bottom:0;
     padding: 10px;
-    color: black;
+    color: #666;
+
 
     
-    font-size: 12px;
+    
 }
 #bottom-info-bar span{
     padding: 5px;

@@ -49,7 +49,7 @@ window.onload = function(){
     InitEditor();
     //setMode();
     MainMenu.createMenu();
-    EditorStyling.SetBottomBarColor();
+    //EditorStyling.SetBottomBarColor();
 
     
     

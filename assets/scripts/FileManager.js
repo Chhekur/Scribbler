@@ -53,20 +53,57 @@ function Save(){
     }
 }
 
-function displayNotification(state,message,pos,timeout){
+function displayNotification(state,title,message,pos,timeout,icon,progressBar,theme,fontSize){
     //Displaying different notifications 
     switch(state){
         case "err":
-        UIkit.notification({message: '<span uk-icon=\'icon: ban\'></span>'+message+' ',pos: pos ,status: "danger",timeout:timeout});     
+        iziToast.error({
+            title: title,
+            message: message,
+            progressBar: progressBar,
+            theme: theme,
+            messageSize: fontSize,
+            timeout: timeout,
+            position: pos
+        });
     
         break;
         
         case "success":
-        UIkit.notification({message: '<span uk-icon=\'icon: check\'></span>'+message+' ',pos: pos ,status: "success",timeout:timeout});     
+        iziToast.success({
+            title: title,
+            message: message,
+            progressBar: progressBar,
+            theme: theme,
+            messageSize: fontSize,
+            timeout: timeout,
+            position: pos
+        });        
         break;
+
         case "warning":
-        UIkit.notification({message: '<span uk-icon=\'icon: warning\'></span>'+message+' ',pos: pos ,status: "warning",timeout:timeout});     
+        iziToast.warning({
+            title: title,
+            message: message,
+            progressBar: progressBar,
+            theme: theme,
+            messageSize: fontSize,
+            timeout: timeout,
+            position: pos
+        });        
         break;
+        case "info":
+        iziToast.info({
+            title: title,
+            message: message,
+            progressBar: progressBar,
+            theme: theme,
+            messageSize: fontSize,
+            timeout: timeout,
+            position: pos
+
+
+        });
     }
     
     

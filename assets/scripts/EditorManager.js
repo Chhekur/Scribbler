@@ -34,6 +34,8 @@ function InitEditor(){
     ipcRenderer.on("selected-theme",function(event,payload){
         setStylesheet(payload);
         exports.editableCodeMirror.setOption("theme",payload);
+        EditorStyling.SetBottomBarColor();
+
       });
 
       ipcRenderer.on("selected-font-size",function(event,payload){

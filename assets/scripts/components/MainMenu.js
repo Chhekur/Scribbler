@@ -1,6 +1,6 @@
 const {remote,Menu,MenuItem,BrowserWindow} = require("electron").remote;
 const ipcRenderer = require("electron").ipcRenderer;
-const FileManager = require("../FileManager");
+const FileManager = require("./FileManager");
 const base = require("../EditorManager");
 const path = require("path");
 

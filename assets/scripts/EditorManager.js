@@ -1,7 +1,8 @@
 //Imports
 const MainMenu = require("./components/MainMenu");
-const FileManager = require("./FileManager");
+const FileManager = require("./components/FileManager");
 const EditorStyling = require("./components/EditorStyling");
+const TerminalManager = require("./components/InterfaceManager");
 var ipcRenderer = require('electron').ipcRenderer;
 
 //Main UI
@@ -54,6 +55,7 @@ window.onload = function(){
     if(FileManager.CurrentFile != null || FileManager.CurrentFile == " " || FileManager.CurrentFile != undefined){
         FileManager.AutoSave();
     }
+    TerminalManager.InitTerminal();
 
     
     

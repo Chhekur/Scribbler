@@ -1,4 +1,6 @@
-
+/*
+Displaying notifications throughout the application
+*/
 function displayNotification(state,message,pos,timeout,icon,progressBar,theme,fontSize){
     //Displaying different notifications 
     switch(state){

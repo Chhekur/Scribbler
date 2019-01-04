@@ -1,6 +1,7 @@
 const {remote,Menu,MenuItem,BrowserWindow} = require("electron").remote;
 const ipcRenderer = require("electron").ipcRenderer;
 const FileManager = require("./FileManager");
+const CustomElectronTitlebar = require("custom-electron-titlebar");
 const base = require("../EditorManager");
 const path = require("path");
 
@@ -11,6 +12,14 @@ let prefOptions;
 function CreateMainMenu() {
     const mainMenu = new Menu();
 
+    //Creating the custom title bar 
+    const MainTitleBar = new CustomElectronTitlebar.Titlebar("#444",{
+        drag: true,
+        minimizable: true,
+        maximizable: true,
+        closeable: true,
+        menuItemHoverColor: "#ccc"
+    })
     //File menu
     var fileMenuItem = new MenuItem({
         label: "File",
@@ -54,7 +63,7 @@ function CreateMainMenu() {
     mainMenu.append(preferencesMenuItem);
     mainMenu.append(terminalMenuItem);
     
-    Menu.setApplicationMenu(mainMenu);
+    MainTitleBar.setMenu(mainMenu);
 }
 
 module.exports = {

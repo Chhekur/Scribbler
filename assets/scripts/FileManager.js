@@ -2,6 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 const {remote,dialog} = require("electron").remote;
+const NotificationManager = require("./components/NotificationManager");
 var isAlreadySaved = false;
 var newTabName;
 //Tabs 
@@ -53,62 +54,6 @@ function Save(){
     }
 }
 
-function displayNotification(state,title,message,pos,timeout,icon,progressBar,theme,fontSize){
-    //Displaying different notifications 
-    switch(state){
-        case "err":
-        iziToast.error({
-            title: title,
-            message: message,
-            progressBar: progressBar,
-            theme: theme,
-            messageSize: fontSize,
-            timeout: timeout,
-            position: pos
-        });
-    
-        break;
-        
-        case "success":
-        iziToast.success({
-            title: title,
-            message: message,
-            progressBar: progressBar,
-            theme: theme,
-            messageSize: fontSize,
-            timeout: timeout,
-            position: pos
-        });        
-        break;
-
-        case "warning":
-        iziToast.warning({
-            title: title,
-            message: message,
-            progressBar: progressBar,
-            theme: theme,
-            messageSize: fontSize,
-            timeout: timeout,
-            position: pos
-        });        
-        break;
-        case "info":
-        iziToast.info({
-            title: title,
-            message: message,
-            progressBar: progressBar,
-            theme: theme,
-            messageSize: fontSize,
-            timeout: timeout,
-            position: pos
-
-
-        });
-    }
-    
-    
-    
-}
 //Save File As
 function SaveAs(){
     dialog.showSaveDialog(function(filename){
@@ -125,7 +70,7 @@ function SaveAs(){
                     isAlreadySaved = true;
                     filename = currentFileName;
                     //Display notification
-                    displayNotification("success","Save successful!","bottom-center",1000);
+                    displayNotification("success","")
                     //Set time out on closing notification 
                                 
 
@@ -233,4 +178,5 @@ module.exports = {
     runJava,
     SaveAs,
     Save
+    
 }

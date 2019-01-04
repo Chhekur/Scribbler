@@ -13,7 +13,7 @@ var currentFileName;
 var base = require("./EditorManager");
 
 //Open File
-function openFile(){
+function OpenFile(){
     dialog.showOpenDialog(function(filename){
         if(filename == undefined){
             return;
@@ -27,8 +27,9 @@ function openFile(){
                     TabManagement(currentFileName);
                     //Writing the data to the window
                     base.editableCodeMirror.setValue(data);
-                    //Setting the bar at the bottom
-                  
+
+
+                    NotificationManager.displayNotification("info",currentFileName,"bottomCenter",2000,"fa-check",false,"light",12);
                     
                 }
             })
@@ -40,15 +41,15 @@ function openFile(){
 }
 //Save File
 function Save(){
+    //Check for a current file name
     if(currentFileName == null || currentFileName == " "){
         SaveAs();
     }else{
-        fs.writeFile(currentFileName,base.editableCodeMirror.getValue(),function(err){
+        fs.writeFile(currentFileName[0],base.editableCodeMirror.getValue(),function(err){
             if(err){
-                console.log(err);
-                displayNotification("err","Save unsuccessful","bottom-center",1000);
+               NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa-danger",true,"light",12);
             }else{
-                displayNotification("success","Save successful!","bottom-center",1000);
+                NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa-danger",false,"light",12);
             }
         });
     }
@@ -173,7 +174,7 @@ module.exports = {
     TabManagement,
     createNewWindow,
     openFolder,
-    openFile,
+    OpenFile,
     runScribble,
     runJava,
     SaveAs,

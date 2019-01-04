@@ -49,7 +49,7 @@ function Save(){
             if(err){
                NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa-danger",true,"light",12);
             }else{
-                NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa-danger",false,"light",12);
+                NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check",false,"light",12);
             }
         });
     }

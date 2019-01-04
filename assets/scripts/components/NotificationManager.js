@@ -8,6 +8,7 @@ function displayNotification(state,message,pos,timeout,icon,progressBar,theme,fo
             message: message,
             progressBar: progressBar,
             theme: theme,
+            icon: icon,
             messageSize: fontSize,
             timeout: timeout,
             position: pos
@@ -21,6 +22,7 @@ function displayNotification(state,message,pos,timeout,icon,progressBar,theme,fo
             message: message,
             progressBar: progressBar,
             theme: theme,
+            icon: icon,
             messageSize: fontSize,
             timeout: timeout,
             position: pos
@@ -33,6 +35,7 @@ function displayNotification(state,message,pos,timeout,icon,progressBar,theme,fo
             message: message,
             progressBar: progressBar,
             theme: theme,
+            icon: icon,
             messageSize: fontSize,
             timeout: timeout,
             position: pos
@@ -44,6 +47,7 @@ function displayNotification(state,message,pos,timeout,icon,progressBar,theme,fo
             message: message,
             progressBar: progressBar,
             theme: theme,
+            icon: icon,
             messageSize: fontSize,
             timeout: timeout,
             position: pos

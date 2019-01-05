@@ -3,6 +3,7 @@ const MainMenu = require("./components/MainMenu");
 const FileManager = require("./components/FileManager");
 const InterfaceManager = require("./components/InterfaceManager");
 var ipcRenderer = require('electron').ipcRenderer;
+const RoutingManager = require("./Components/RoutingManager");
 
 //Main UI
 exports.codeWindow = document.getElementById("codeWindow");
@@ -16,8 +17,6 @@ var infoBarLanguageMode = document.getElementById("languageModeSpan");
 var languageModeDialog = document.getElementById("languageModeDialog");
 var languageListElements = document.querySelectorAll("li");
 */
-
-
 
 //HTML Stylesheet
 var currentStyleSheet = document.getElementById("codeMirrorThemeCss");
@@ -47,14 +46,12 @@ function InitEditor(){
 //On-load
 window.onload = function(){
     InitEditor();
-    //setMode();
     MainMenu.CreateMainMenu();
-    //EditorStyling.SetBottomBarColor();
     //Auto Save check 
     if(FileManager.CurrentFile != null || FileManager.CurrentFile == " " || FileManager.CurrentFile != undefined){
         FileManager.AutoSave();
     }
-    
+    RoutingManager.Routes();
 
 }
 

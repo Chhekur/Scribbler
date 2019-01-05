@@ -8,7 +8,7 @@ require("electron-reload")(__dirname);
 //Init Window
 let win,prefsWindow;
 function initApp(){
-    win = new BrowserWindow({width: 800,height:600,x:0,y:0});
+    win = new BrowserWindow({width: 800,height:600,x:0,y:0,frame:true});
     win.setTitle("Scribbler");
     win.loadURL(`${__dirname}/index.html`);
     win.webContents.openDevTools();
@@ -17,29 +17,33 @@ function initApp(){
     prefsWindow = new BrowserWindow({width:700,height:600,x:0,y:0,show:false,resizable:true});
     prefsWindow.setTitle("Preferences");
     prefsWindow.setMenuBarVisibility(false);
-    prefsWindow.loadFile("views/Preferences.html");
+    prefsWindow.loadFile("Templates/Preferences.html");
     prefsWindow.openDevTools();
-    
+
+
     //Check if preference window is showing
     ipcMain.on("show-prefs",function(){
-        if(!prefsWindow.isVisible()){
+        if(!prefsWindow.isVisible()){ 
             prefsWindow.show();
         }else{
             prefsWindow.hide();
         }
-        
+
     });
 
+    ipcMain.on("show-editor",function(){
+        win.loadURL("Templates/index.html");
+    })
     //IPC Main Data
     ipcMain.on("selected-theme",function(event,payload){
         win.webContents.send("selected-theme",payload);
-        
+
     });
 
     ipcMain.on("selected-font-size",function(event,payload){
         win.webContents.send("selected-font-size",payload);
     });
-   
+
     //Event Listeners
     prefsWindow.on("close",function(event){
         prefsWindow.hide();

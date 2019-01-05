@@ -13,13 +13,7 @@ function CreateMainMenu() {
     const mainMenu = new Menu();
 
     //Creating the custom title bar 
-    const MainTitleBar = new CustomElectronTitlebar.Titlebar("#444",{
-        drag: true,
-        minimizable: true,
-        maximizable: true,
-        closeable: true,
-        menuItemHoverColor: "#ccc"
-    })
+  
     //File menu
     var fileMenuItem = new MenuItem({
         label: "File",
@@ -37,14 +31,7 @@ function CreateMainMenu() {
     });
 
     //Preferences menu 
-    var preferencesMenuItem = new MenuItem({
-        label: "Preferences",
-        accelerator: "Ctrl+,",
-        click: function(){
-            ipcRenderer.send("show-prefs");
-        }
-        
-    });
+   
 
     //Terminal menu  
     var terminalMenuItem = new MenuItem({
@@ -60,10 +47,10 @@ function CreateMainMenu() {
     })
     //Set menu
     mainMenu.append(fileMenuItem);
-    mainMenu.append(preferencesMenuItem);
+
     mainMenu.append(terminalMenuItem);
     
-    MainTitleBar.setMenu(mainMenu);
+    Menu.setApplicationMenu(mainMenu);
 }
 
 module.exports = {

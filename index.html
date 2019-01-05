@@ -6,13 +6,17 @@
     <!---Font awesome icons-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
+    <!--JQuery Link-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <!--Semantic UI -->
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="node_modules/semantic-ui-css/semantic.min.js"></script>
+    <link rel="stylesheet" href="node_modules/semantic-ui-css/semantic.min.css" type="text/css"/>
+
     <!--Notification service -->
     <link rel="stylesheet" href="node_modules/izitoast/dist/css/iziToast.min.css"/>
     <script src="node_modules\izitoast\dist\js\iziToast.min.js"></script>
-
-    <!-- UIkit JS -->
-    <script src="node_modules/uikit/dist/js/uikit.min.js"></script>
-    <script src="node_modules/uikit/dist/js/uikit-icons.min.js"></script>
 
     <!--xterm links-->
     <link rel="stylesheet" href="node_modules/xterm/dist/xterm.css" />
@@ -31,52 +35,21 @@
     <script src="node_modules/codemirror/mode/scribble/scribble.js"></script>
     <!--//-->
 
-
-  
     </head>
     <body>
-        <!---Top bar-->
-       
-        <!--Append child when creating a new file-->
-            <ul id="tab-group" uk-tab>
-           
-            </ul>
-        <textarea id="codeWindow"></textarea>
-       
-        
-
-
-        
-        <div id="terminal"></div>
-
-        <!--Side bar navigation-->
-        <div id="offcanvas-nav" uk-offcanvas="overlay: true">
-            <div class="uk-offcanvas-bar">
-        
-                <ul class="uk-nav uk-nav-default">
-                    <li class="uk-active"><a href="#">Active</a></li>
-                    <li class="uk-parent">
-                        <a href="#">Parent</a>
-                        <ul class="uk-nav-sub">
-                            <li><a href="#">Sub item</a></li>
-                            <li><a href="#">Sub item</a></li>
-                        </ul>
-                    </li>
-                    <li class="uk-nav-header">Header</li>
-                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: table"></span> Item</a></li>
-                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: thumbnails"></span> Item</a></li>
-                    <li class="uk-nav-divider"></li>
-                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: trash"></span> Item</a></li>
-                </ul>
-        
+            <div class="ui thin left fixed vertical menu sidebar visible  ">
+                <p class="SideBar-MenuTitle item">EXPLORER</p>
             </div>
-        </div>
-
-        <!--Language mode selection--->
-       <div id="info-bar"><span class="uk-margin-large-left" uk-toggle="target: #offcanvas-nav" uk-icon="more"></span></div>
+            <div class="pusher">
+            <textarea id="codeWindow"></textarea>
+            </div>
+            <div id="terminal"></div>
+    
+        
 
         <script>require("./assets/scripts/EditorManager.js")</script>
         <script>require("./assets/scripts/components/MainMenu.js")</script>
         <script>require("./assets/scripts/components/InterfaceManager.js")</script>
+        <script src="./assets/scripts/components/RoutingManager.js"></script>
     </body>
 </html>

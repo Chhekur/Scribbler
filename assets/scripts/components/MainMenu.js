@@ -4,16 +4,21 @@ const FileManager = require("./FileManager");
 const CustomElectronTitlebar = require("custom-electron-titlebar");
 const base = require("../EditorManager");
 const path = require("path");
+const InterfaceManager = require("./InterfaceManager");
 
 //Preferences
 let prefOptions;
 
 //Create main menu
 function CreateMainMenu() {
-    const mainMenu = new Menu();
-
-    //Creating the custom title bar 
-  
+    const MainMenu = new Menu();
+    //View menu
+    var viewMenuItem = new MenuItem({
+        label: "View",
+        submenu:[
+            {label:"Toggle Sidebar",click:InterfaceManager.SideBarToggle, accelerator: "Ctrl+Shift+'"}
+        ]
+    })
     //File menu
     var fileMenuItem = new MenuItem({
         label: "File",
@@ -46,11 +51,11 @@ function CreateMainMenu() {
     
     })
     //Set menu
-    mainMenu.append(fileMenuItem);
-
-    mainMenu.append(terminalMenuItem);
+    MainMenu.append(fileMenuItem);
+    MainMenu.append(viewMenuItem);
+    MainMenu.append(terminalMenuItem);
     
-    Menu.setApplicationMenu(mainMenu);
+    Menu.setApplicationMenu(MainMenu);
 }
 
 module.exports = {

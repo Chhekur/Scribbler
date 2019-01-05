@@ -7,9 +7,14 @@ body{
 }
 
 /*SIDE BAR STYLING*/
-#main-ui-sidebar{
-
+#ExplorerSideBar{
+    box-shadow: none;
+    border:none;
 }
+#explorerMenuItem{
+    border: none;
+}
+
 .SideBar-MenuTitle {
     font-size: 10px;
 }

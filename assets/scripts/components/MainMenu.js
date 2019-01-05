@@ -16,7 +16,7 @@ function CreateMainMenu() {
     var viewMenuItem = new MenuItem({
         label: "View",
         submenu:[
-            {label:"Toggle Sidebar",click:InterfaceManager.SideBarToggle, accelerator: "Ctrl+Shift+'"}
+            {label:"Toggle Sidebar",click:InterfaceManager.SideBarToggle, accelerator: "Ctrl+Shift+}"}
         ]
     })
     //File menu

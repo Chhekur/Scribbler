@@ -10,13 +10,14 @@ body{
 #ExplorerSideBar{
     box-shadow: none;
     border:none;
+    font-size: 10px;
 }
 #explorerMenuItem{
     border: none;
 }
 
 .SideBar-MenuTitle {
-    font-size: 10px;
+   
 }
 /*
 WELCOME SCREEN STYLES 

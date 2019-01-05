@@ -2,7 +2,9 @@
 const fs = require("fs");
 const path = require("path");
 const {remote,dialog} = require("electron").remote;
+const InterfaceManager = require("./InterfaceManager");
 const NotificationManager = require("./NotificationManager");
+var OpenFiles = [];
 var isAlreadySaved = false;
 var newTabName;
 //Tabs 
@@ -23,10 +25,13 @@ function OpenFile(){
                     console.log(err);
                 }else{
                     CurrentFile = InstanceFile;
-                    //Tab management method
-                    TabManagement(CurrentFile);
+                    
                     //Writing the data to the window
-                    EditorManager.editableCodeMirror.setValue(data);                
+                    EditorManager.editableCodeMirror.setValue(data);
+                    //Push the filename to the array
+                    OpenFiles.push(InstanceFile);
+                    //Add to sidebar
+                    InterfaceManager.ExplorerManagement(CurrentFile,OpenFiles);            
                 }
             })
         }
@@ -132,49 +137,7 @@ function createNewWindow(){
     console.log("Creating new window");
 }
 
-//Create new file and tab
-function TabManagement (InstanceFile) {
-    
-    console.log("Creating a new file");
-    if(InstanceFile == undefined || InstanceFile == null){
-        newTabName = "Untitled";
-    }else{
-        newTabName = path.basename(InstanceFile.toString());
-    }
 
-    var newTab = document.createElement("li");
-    newTab.setAttribute("title",InstanceFile);
-
-    //Create tab 
-    var tabContent = document.createElement("a");
-    tabContent.setAttribute("href","#");
-   
-    tabContent.appendChild(document.createTextNode(newTabName));
-    var completeTab = newTab.appendChild(tabContent);
-
-    //Append tab
-    tabList.appendChild(newTab);
-    //Read the file path of each tab and re-read the content into the windiow
-    
-    for(var i = 0; i < tabList.childNodes.length; i++){
-        
-       tabList.childNodes[i].addEventListener("click", function(){
-             //InstanceFile = tabList.childNodes[i].getAttribute("title").toString();
-            
-            fs.readFile(InstanceFile[0],"utf-8",function(err,data){
-                if(err){
-                    console.log(err);
-                }else{
-                    EditorManager.editableCodeMirror.setValue(data);
-                    console.log("Switching to "+path.basename(InstanceFile.toString()));
-                }
-            })
-          
-       });
-     
-    
-}
-}
 
 
 
@@ -182,7 +145,7 @@ function TabManagement (InstanceFile) {
 
 //Exports
 module.exports = {
-    TabManagement,
+    
     createNewWindow,
     OpenFolder,
     OpenFile,
@@ -191,6 +154,7 @@ module.exports = {
     SaveAs,
     Save,
     AutoSave,
+    OpenFiles,
     CurrentFile
     
 }

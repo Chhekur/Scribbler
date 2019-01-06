@@ -4,14 +4,10 @@ const path = require("path");
 const {remote,dialog} = require("electron").remote;
 const InterfaceManager = require("./InterfaceManager");
 const NotificationManager = require("./NotificationManager");
-var isAlreadySaved = false;
-var newTabName;
-//Tabs 
 var tabList = document.getElementById("tab-group");
-//Current file 
 var CurrentFile;
-//Import base
 var EditorManager = require("../EditorManager");
+
 
 //Open File
 function OpenFile(){

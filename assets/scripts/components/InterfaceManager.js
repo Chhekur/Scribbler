@@ -3,12 +3,18 @@ const EditorManager = require("./../EditorManager");
 const path = require("path");
 const fs = require("fs");
 const ipcRenderer = require("electron").ipcRenderer;
+const {Menu,MenuItem} = require("electron").remote;
 //Side-bar
 const SideBar = document.getElementById("ExplorerSideBar");
 var sideBarToggle = document.getElementById("sidebar-toggle");
 var preferencesToggle  = document.getElementById("preferences-toggle");
 //Toggling the sidebar view 
 
+//New Menu
+function CreatePopUpMenu(label,method){
+    var popUpMnenu = new Menu();
+    popUpMnenu.append(newMenuItem({label:label,click:method }));
+}
 function SideBarToggle(){
     sideBarToggle.addEventListener("click",function(){
         if(SideBar.classList.contains("visible") == true){
@@ -52,6 +58,9 @@ function CreateTab(CurrentFile){
     if(CurrentFile == null || CurrentFile == undefined){
         CurrentFile = "Untitled.txt";
     }
+
+    //Create the remove button 
+    
     var newSideBarIcon = document.createElement("i"); 
        newSideBarIcon.setAttribute("class","far fa-file-code");
        newSideBarIcon.style.marginRight = "5px";

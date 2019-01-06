@@ -24,6 +24,13 @@ body{
     margin-top: 10px;
     
 }
+
+#tool-belt{
+    background: #888;
+}
+#tool-belt a{
+    color: white;
+}
 /*
 WELCOME SCREEN STYLES 
 */

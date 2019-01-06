@@ -2,10 +2,11 @@ const NotificationManager =require("./NotificationManager");
 const EditorManager = require("./../EditorManager");
 const path = require("path");
 const fs = require("fs");
-
+const ipcRenderer = require("electron").ipcRenderer;
 //Side-bar
 const SideBar = document.getElementById("ExplorerSideBar");
-var sideBarToggle = document.getElementById("SideBarTool-sidebar-toggle");
+var sideBarToggle = document.getElementById("sidebar-toggle");
+var preferencesToggle  = document.getElementById("preferences-toggle");
 //Toggling the sidebar view 
 
 function SideBarToggle(){
@@ -18,24 +19,15 @@ function SideBarToggle(){
     });
     
 }
+function PreferencesToggle(){
+    preferencesToggle.addEventListener("click",function(){
+        ipcRenderer.send("show-prefs");
+    });
+}
 function ExplorerManagement(CurrentFile){
-    if(CurrentFile != null || CurrentFile != undefined || CurrentFile == " "){
-        
-       var newSideBarIcon = document.createElement("i"); 
-       newSideBarIcon.setAttribute("class","far fa-file-code");
-       newSideBarIcon.style.marginRight = "5px";
-  
 
-       var newSideBarItem = document.createElement("a");
-       newSideBarItem.setAttribute("class","item");
-       newSideBarItem.setAttribute("title",CurrentFile.toString()); 
-       var newSideBarText = document.createTextNode(path.basename(CurrentFile.toString()));
-       
-       //Placing them in order
-       newSideBarItem.appendChild(newSideBarIcon);
-       newSideBarItem.appendChild(newSideBarText);
-       SideBar.appendChild(newSideBarItem);
-        
+    if(CurrentFile != null || CurrentFile != undefined || CurrentFile == " "){
+       CreateTab(CurrentFile);
         //Selecting between the files
         for(var i=0; i<SideBar.childNodes.length;i++){
             if(SideBar.childNodes[i].nodeName == "A"){
@@ -56,8 +48,28 @@ function ExplorerManagement(CurrentFile){
     }
 }
 
+function CreateTab(CurrentFile){
+    if(CurrentFile == null || CurrentFile == undefined){
+        CurrentFile = "Untitled.txt";
+    }
+    var newSideBarIcon = document.createElement("i"); 
+       newSideBarIcon.setAttribute("class","far fa-file-code");
+       newSideBarIcon.style.marginRight = "5px";
+  
 
+       var newSideBarItem = document.createElement("a");
+       newSideBarItem.setAttribute("class","item");
+       newSideBarItem.setAttribute("title",CurrentFile.toString()); 
+       var newSideBarText = document.createTextNode(path.basename(CurrentFile.toString()));
+       
+       //Placing them in order
+       newSideBarItem.appendChild(newSideBarIcon);
+       newSideBarItem.appendChild(newSideBarText);
+       SideBar.appendChild(newSideBarItem);
+}
 module.exports = {
     SideBarToggle,
-    ExplorerManagement
+    ExplorerManagement,
+    CreateTab,
+    PreferencesToggle
 }

@@ -54,6 +54,8 @@ window.onload = function(){
     RoutingManager.Routes();
     //Interface manager
     InterfaceManager.SideBarToggle();
+    InterfaceManager.CreateTab();
+    InterfaceManager.PreferencesToggle();
 
 }
 

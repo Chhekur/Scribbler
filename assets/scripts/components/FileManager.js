@@ -4,7 +4,6 @@ const path = require("path");
 const {remote,dialog} = require("electron").remote;
 const InterfaceManager = require("./InterfaceManager");
 const NotificationManager = require("./NotificationManager");
-var OpenFiles = [];
 var isAlreadySaved = false;
 var newTabName;
 //Tabs 
@@ -28,10 +27,8 @@ function OpenFile(){
                     
                     //Writing the data to the window
                     EditorManager.editableCodeMirror.setValue(data);
-                    //Push the filename to the array
-                    OpenFiles.push(InstanceFile);
                     //Add to sidebar
-                    InterfaceManager.ExplorerManagement(CurrentFile,OpenFiles);            
+                    InterfaceManager.ExplorerManagement(CurrentFile);            
                 }
             })
         }
@@ -154,7 +151,6 @@ module.exports = {
     SaveAs,
     Save,
     AutoSave,
-    OpenFiles,
     CurrentFile
     
 }

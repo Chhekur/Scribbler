@@ -52,6 +52,8 @@ window.onload = function(){
         FileManager.AutoSave();
     }
     RoutingManager.Routes();
+    //Interface manager
+    InterfaceManager.SideBarToggle();
 
 }
 

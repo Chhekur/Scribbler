@@ -1,19 +1,21 @@
 <html>
     <head>
-    <!-- UIkit CSS -->
+
+        <!-- UIkit CSS -->
     <link rel="stylesheet" href="node_modules/uikit/dist/css/uikit.css" />
  
     <!---Font awesome icons-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <script src="node_modules\uikit\dist\js\uikit.min.js"></script>
+    <script src="node_modules\uikit\dist\js\uikit-icons.min.js"></script>
 
-    <!--JQuery Link-->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    
+   
 
     <!--Semantic UI -->
-    <script src="node_modules/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="node_modules/semantic-ui-css/semantic.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    
     <link rel="stylesheet" href="node_modules/semantic-ui-css/semantic.min.css" type="text/css"/>
-
+    
     <!--Notification service -->
     <link rel="stylesheet" href="node_modules/izitoast/dist/css/iziToast.min.css"/>
     <script src="node_modules\izitoast\dist\js\iziToast.min.js"></script>
@@ -37,17 +39,24 @@
 
     </head>
     <body>
-       
-         
+        <div  class="ui very thin left  fixed vertical menu sidebar visible  ">
+           <div class="toolWrapper flex columns  align-center">
+            <a href="#" class="uk-icon-link SideBarTool" id="SideBarTool-sidebar-toggle" uk-icon="icon: folder; ratio: 1.2""></a>
+            <a href="#" class="uk-icon-link SideBarTool" uk-icon="icon:github-alt; ratio:1.2"></a>
+            <a href="#" class="uk-icon-link SideBarTool" uk-icon="icon:settings; ratio:1.2"></a>
+            <h2 class=" SideBarTool"> <i class="fa  fa-cog"></i></h2>
+        </div>
+        </div>
+         <div class="pusher">
             <div id="ExplorerSideBar" class="ui thin left fixed vertical menu sidebar visible  ">
                 <p id="explorerMenuItem" class="SideBar-MenuTitle item">EXPLORER</p>
 
             </div>
             <div class="pusher">
             <textarea id="codeWindow"></textarea>
-            </div>
             <div id="terminal"></div>
-    
+        </div>
+        </div>
         
 
         <script>require("./assets/scripts/EditorManager.js")</script>

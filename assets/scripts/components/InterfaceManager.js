@@ -5,15 +5,20 @@ const fs = require("fs");
 
 //Side-bar
 const SideBar = document.getElementById("ExplorerSideBar");
+var sideBarToggle = document.getElementById("SideBarTool-sidebar-toggle");
 //Toggling the sidebar view 
+
 function SideBarToggle(){
-    if(SideBar.classList.contains("visible") == true){
-        SideBar.classList.remove("visible");
-    }else{
-        SideBar.classList.add("visible");
-    }
+    sideBarToggle.addEventListener("click",function(){
+        if(SideBar.classList.contains("visible") == true){
+            SideBar.classList.remove("visible");
+        }else{
+            SideBar.classList.add("visible");
+        }
+    });
+    
 }
-function ExplorerManagement(CurrentFile,CurrentlyOpenedFiles){
+function ExplorerManagement(CurrentFile){
     if(CurrentFile != null || CurrentFile != undefined || CurrentFile == " "){
         
        var newSideBarIcon = document.createElement("i"); 

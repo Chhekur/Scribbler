@@ -38,6 +38,9 @@ body{
 #tool-belt a:active{
     color:white;
 }
+.toolWrapper{
+    height: 100%;
+}
 /*
 WELCOME SCREEN STYLES 
 */

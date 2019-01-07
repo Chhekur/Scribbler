@@ -3,21 +3,21 @@ const EditorManager = require("./../EditorManager");
 const path = require("path");
 const fs = require("fs");
 const ipcRenderer = require("electron").ipcRenderer;
-const {Menu,MenuItem} = require("electron").remote;
+
+const {remote,shell} = require("electron");
 const exec = require('child_process').exec;
 const FileManager = require("./FileManager");
+
 //Side-bar
 const SideBar = document.getElementById("ExplorerSideBar");
 const sideBarToggle = document.getElementById("sidebar-toggle");
 const  preferencesToggle  = document.getElementById("preferences-toggle");
 const runCodeBtn = document.getElementById("run-code");
-//Toggling the sidebar view 
 
-//New Menu
-function CreatePopUpMenu(label,method){
-    var popUpMnenu = new Menu();
-    popUpMnenu.append(newMenuItem({label:label,click:method }));
-}
+//Menu
+const {Menu,MenuItem} = require("electron").remote;
+var TabMenu = new Menu();
+//Toggling the sidebar view 
 function SideBarToggle(){
     sideBarToggle.addEventListener("click",function(){
         if(SideBar.classList.contains("visible") == true){
@@ -34,24 +34,23 @@ function PreferencesToggle(){
     });
 }
 function ExplorerManagement(CurrentFile){
-
     if(CurrentFile != null || CurrentFile != undefined || CurrentFile == " "){
        CreateTab(CurrentFile);
-        //Selecting between the files
         for(var i=0; i<SideBar.childNodes.length;i++){
             if(SideBar.childNodes[i].nodeName == "A"){
                SideBar.childNodes[i].addEventListener("click",function(e){
-                fs.readFile(e.target.name,"utf-8",function(err,data){
+                CurrentFile = e.target.name;
+                fs.readFile(CurrentFile,"utf-8",function(err,data){
                     if(err){
                         console.log(err);
                     }else{
-                        console.log(e.target.name);
-                        EditorManager.editableCodeMirror.setValue(data);
+                    EditorManager.editableCodeMirror.setValue(data);
                     }
                 })
                });
                SideBar.childNodes[i].addEventListener("contextmenu",function(e){
-                alert(e.target.name);
+                   e.preventDefault();
+                   CreateTabMenu(e);
                });
             }
         }
@@ -59,18 +58,35 @@ function ExplorerManagement(CurrentFile){
         
     }
 }
+function CreateTabMenu(e){
+    var CloseTabMenuItem = new MenuItem({label: "Close Tab",click:CloseTab})
+    var RevealInExplorerMenuItem = new MenuItem({label: "Reveal In Explorer",click:RevealFileInExplorer(e)});
+    TabMenu.append(CloseTabMenuItem);
+    TabMenu.append(RevealInExplorerMenuItem);
+    TabMenu.popup(remote.getCurrentWindow());
+}
+
+function CloseTab(){
+
+}
+
+function RevealFileInExplorer(e){
+    var file = e.target.name;
+    shell.showItemInFolder(file);
+
+}
 function UpdateTab(CurrentFile){
     //Get the current tab name 
    console.log(CurrentFile); 
 }
+
 function CreateTab(CurrentFile){
     if(CurrentFile == null || CurrentFile == undefined || path.extname(CurrentFile.toString()) ==".tmp"){
         CurrentFile = "Untitled";
     }  
     //Create the remove button 
-    
     var newSideBarIcon = document.createElement("i"); 
-       newSideBarIcon.setAttribute("class","far fa-file-code");
+       newSideBarIcon.setAttribute("class","fa fa-file-code");
        newSideBarIcon.style.marginRight = "5px";
   
        var newSideBarText = document.createTextNode(path.basename(CurrentFile.toString()));
@@ -78,7 +94,7 @@ function CreateTab(CurrentFile){
        var newSideBarItem = document.createElement("a");
        newSideBarItem.setAttribute("class","item");
        newSideBarItem.setAttribute("name",CurrentFile.toString()); 
-       
+       newSideBarItem.setAttribute("title",CurrentFile.toString());
        //Placing them in order
        newSideBarItem.appendChild(newSideBarIcon);
        newSideBarItem.appendChild(newSideBarText);

@@ -55,6 +55,7 @@ window.onload = function(){
     //Interface manager
     InterfaceManager.SideBarToggle();
     InterfaceManager.PreferencesToggle();
+   
 
 }
 

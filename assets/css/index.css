@@ -22,7 +22,6 @@ body{
 }
 .SideBarTool{
     margin-top: 10px;
-    
 }
 
 #tool-belt{
@@ -30,7 +29,14 @@ body{
  border: none;   
 }
 #tool-belt a{
-    color: white;
+    color: #999;
+    transition: .56s ease all;
+}
+#tool-belt a:hover{
+    color:white;
+}
+#tool-belt a:active{
+    color:white;
 }
 /*
 WELCOME SCREEN STYLES 
@@ -46,6 +52,7 @@ WELCOME SCREEN STYLES
     font-size: 20px;
 
 }
+
 
 /* Side bar */
 .sideBar{

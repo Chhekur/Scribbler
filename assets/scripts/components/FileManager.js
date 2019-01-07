@@ -23,7 +23,8 @@ function OpenFile(){
                     //Writing the data to the window
                     EditorManager.editableCodeMirror.setValue(data);
                     //Add to sidebar
-                    InterfaceManager.ExplorerManagement(CurrentFile);            
+                    InterfaceManager.ExplorerManagement(CurrentFile); 
+                    InterfaceManager.RunJava(CurrentFile);           
                 
                 }
             })
@@ -52,8 +53,13 @@ function AutoSave(){
 //Normal save 
 function Save(){
     //Check for a current file name
+    if(CurrentFile == undefined || CurrentFile == null){
+        CreateNewFile();
+        NotificationManager.displayNotification("warning","No file detected, new file created","bottomCenter",2000,"fa fa-exclamation-triangle",false,"light",12);
+    }
     if(isTempFile == true){
         SaveAs();
+        isTempFile = false;
     }else{
         fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
             if(err){
@@ -80,6 +86,7 @@ function SaveAs(){
                     //Set InstanceFile
                     isAlreadySaved = true;
                     InstanceFile = CurrentFile;
+                    InterfaceManager.UpdateTab(CurrentFile);
                     //Display notification
                     NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
                     //Set time out on closing notification 

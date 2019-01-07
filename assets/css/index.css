@@ -8,25 +8,29 @@ body{
 
 /*SIDE BAR STYLING*/
 
-#ExplorerSideBar{
+#explorer-side-bar{
   
     border:none;
     font-size: 10px;
+    text-transform: capitalize;
 }
-#explorerMenuItem{
+#explorer-side-bar a{
+    font-size: 12px;
+    text-transform: capitalize;
+}
+#explorer-menu-item{
     border: none;
 }
 
-.SideBar-MenuTitle {
-   
-}
-.SideBarTool{
+.sidebar-tool{
     margin-top: 10px;
 }
 
 #tool-belt{
  background: #333;
  border: none;   
+ padding-top: 10px;
+ padding-bottom: 10px;
 }
 #tool-belt a{
     color: #999;
@@ -38,7 +42,7 @@ body{
 #tool-belt a:active{
     color:white;
 }
-.toolWrapper{
+.tool-wrapper{
     height: 100%;
 }
 /*

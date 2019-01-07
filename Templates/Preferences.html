@@ -1,16 +1,20 @@
 <head>
   <!-- UIkit CSS -->
   <link rel="stylesheet" href="../node_modules/uikit/dist/css/uikit.css" />
+   <!--Semantic UI -->
+   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+   <link rel="stylesheet" href="./../node_modules/semantic-ui-css/semantic.min.css" type="text/css"/>
   <!-- UIkit JS -->
   <script src="../node_modules/uikit/dist/js/uikit.min.js"></script>
   <script src="../node_modules/uikit/dist/js/uikit-icons.min.js"></script>
 </head>
 <body>
-     <div class="uk-container">
-        
-            <div uk-alert>Here you're able to personalise the interface by picking the colors you'd like to see. The changes will be saved and updated automatically</div>
-            
-            <p> <select onchange="setTheme()" class="uk-select" aria-placeholder="Theme" name="theme" id="selectTheme">
+     <div id="preferences-container" class="uk-container">
+        <div class="ui black message">
+            <div class="header">Settings </div>
+            <p>Here you can personalise your settings and see them live in the editor.</p>
+          </div>
+            <p> <select  class="uk-select" aria-placeholder="Theme" name="theme" id="selectTheme">
                     <option>default</option>
                     <option>3024-day</option>
                     <option>3024-night</option>
@@ -90,5 +94,6 @@
 
         <!---Change Theme-->
         </div>
-        <script src="../assets/scripts/Preferences/Preferences.js"></script>
+    </div>   
+        <script>require("./../Assets/Scripts/Preferences/Preferences.js")</script>
     </body>

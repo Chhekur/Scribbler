@@ -9,7 +9,7 @@ const exec = require('child_process').exec;
 const FileManager = require("./FileManager");
 
 //Side-bar
-const SideBar = document.getElementById("ExplorerSideBar");
+const SideBar = document.getElementById("explorer-side-bar");
 const sideBarToggle = document.getElementById("sidebar-toggle");
 const  preferencesToggle  = document.getElementById("preferences-toggle");
 const runCodeBtn = document.getElementById("run-code");
@@ -17,6 +17,7 @@ const runCodeBtn = document.getElementById("run-code");
 //Menu
 const {Menu,MenuItem} = require("electron").remote;
 var TabMenu = new Menu();
+
 //Toggling the sidebar view 
 function SideBarToggle(){
     sideBarToggle.addEventListener("click",function(){
@@ -90,7 +91,6 @@ function CreateTab(CurrentFile){
        newSideBarIcon.style.marginRight = "5px";
   
        var newSideBarText = document.createTextNode(path.basename(CurrentFile.toString()));
-
        var newSideBarItem = document.createElement("a");
        newSideBarItem.setAttribute("class","item");
        newSideBarItem.setAttribute("name",CurrentFile.toString()); 
@@ -121,11 +121,6 @@ function RunJava(CurrentFile){
     }else{
         NotificationManager.displayNotification("danger","Error when running java on "+path.basename(CurrentFile.toString()),"bottomCenter",1000,"fa fa-check-circle","false","light",12);
     }
-    //Compile it 
-    //Return the output 
-    //Create a second screen for it 
-    //Display the second screen 
-
 }
 
 

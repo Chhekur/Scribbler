@@ -1,33 +1,23 @@
 <html>
     <head>
-
-        <!-- UIkit CSS -->
-    <link rel="stylesheet" href="node_modules/uikit/dist/css/uikit.css" />
- 
     <!---Font awesome icons-->
     <link rel="stylesheet" href="node_modules\font-awesome\css\font-awesome.min.css"/>
+    <!---UIKit  icons-->
+    <link rel="stylesheet" href="node_modules/uikit/dist/css/uikit.css" />
     <script src="node_modules\uikit\dist\js\uikit.min.js"></script>
     <script src="node_modules\uikit\dist\js\uikit-icons.min.js"></script>
-
-    
-
     <!--Semantic UI -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    
     <link rel="stylesheet" href="node_modules/semantic-ui-css/semantic.min.css" type="text/css"/>
-    
     <!--Notification service -->
     <link rel="stylesheet" href="node_modules/izitoast/dist/css/iziToast.min.css"/>
     <script src="node_modules\izitoast\dist\js\iziToast.min.js"></script>
-
     <!--xterm links-->
     <link rel="stylesheet" href="node_modules/xterm/dist/xterm.css" />
     <script src="node_modules/xterm/dist/xterm.js"></script>
-
-    
+    <!--Google font-->
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/index.css">
-
     <!--Code mirror-->
     <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
     <script src="node_modules/codemirror/lib/codemirror.js"></script>
@@ -35,24 +25,23 @@
     <script src="node_modules/codemirror/mode/clike/clike.js" ></script>
     <script src="node_modules/codemirror/mode/css/css.js" ></script>
     <script src="node_modules/codemirror/mode/scribble/scribble.js"></script>
-    <!--//-->
-
     </head>
+
     <body>
-
+        <!--Tool belt-->
         <div  id="tool-belt" class="ui very thin left  fixed  vertical menu sidebar visible  ">
-           <div class="toolWrapper flex columns  --space-between align-center">
-            <a href="#" class="uk-icon-link SideBarTool" id="sidebar-toggle" uk-icon="icon: folder; ratio: 1.2""></a>
-            <a href="#" class="uk-icon-link SideBarTool" uk-icon="icon:github-alt; ratio:1.2"></a>
-            <a href="#" class="uk-icon-link SideBarTool" id="preferences-toggle" uk-icon="icon:settings; ratio:1.2"></a>
-            <a href="#" class="uk-icon-link SideBarTool" id="run-code" uk-icon="icon:play; ratio:1.2"></a>
-
-            <h2 class=" SideBarTool"> <i class="fa  fa-cog"></i></h2>
+           <div class="tool-wrapper flex columns  --space-between align-center">
+            <a href="#" class="uk-icon-link sidebar-tool" title="Toggle sidebar" id="sidebar-toggle" uk-icon="icon: folder; ratio: 1.2""></a>
+            <a href="#" class="uk-icon-link sidebar-tool" title="Git management" uk-icon="icon:github-alt; ratio:1.2"></a>
+            <a href="#" class="uk-icon-link sidebar-tool" title="View preferences"id="preferences-toggle" uk-icon="icon:settings; ratio:1.2"></a>
+            <a href="#" class="uk-icon-link sidebar-tool" title="Run java"  id="run-code" uk-icon="icon:play; ratio:1.2"></a>
+            <!--Create space in the tool-belt -->
+            <div></div>
         </div>
         </div>
          <div class="pusher">
-            <div id="ExplorerSideBar" class="ui thin left fixed vertical menu sidebar visible  ">
-                <p id="explorerMenuItem" class="SideBar-MenuTitle item">EXPLORER</p>
+            <div id="explorer-side-bar" class="ui thin left fixed vertical menu sidebar visible  ">
+                <p id="explorer-menu-item" class="SideBar-MenuTitle item">EXPLORER</p>
 
             </div>
             <div class="pusher">
@@ -61,7 +50,7 @@
         </div>
         </div>
         
-
+        <!--Scripts-->
         <script>require("./assets/scripts/EditorManager.js")</script>
         <script>require("./assets/scripts/components/MainMenu.js")</script>
         <script>require("./assets/scripts/components/InterfaceManager.js")</script>

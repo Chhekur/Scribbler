@@ -1,6 +1,14 @@
-/*
-Displaying notifications throughout the application
-*/
+var isProgressShowing = false;
+var prefsContainer = document.getElementsByClassName("uk-container")[0];
+
+//Declaration
+var progressWrapper = document.createElement("div");
+var progressContent = document.createElement("div");
+var progressIcon = document.createElement("i");
+var progressHeader = document.createElement("div");
+var progressContentText; 
+var progressContentHeaderText;
+
 function displayNotification(state,message,pos,timeout,icon,progressBar,theme,fontSize){
     //Displaying different notifications 
     switch(state){
@@ -62,6 +70,39 @@ function displayNotification(state,message,pos,timeout,icon,progressBar,theme,fo
     
 }
 
+function displayProgressNotification(title,message,icon){ 
+
+    progressContentText = document.createTextNode(message);
+    progressContentHeaderText = document.createTextNode(title);
+    progressWrapper.setAttribute("class","ui icon message");
+    progressWrapper.setAttribute("id","preferences-progress");
+    progressContent.setAttribute("class","content");
+    progressHeader.setAttribute("class","header");
+    progressIcon.setAttribute("class",icon);
+
+    //Append to wrapper
+    progressWrapper.appendChild(progressIcon);
+    progressWrapper.appendChild(progressContent);
+    progressContent.appendChild(progressHeader);
+    progressContent.appendChild(progressContentText);
+    progressHeader.appendChild(progressContentHeaderText);
+    progressWrapper.style.visibility ="hidden";
+    
+    //Append
+    prefsContainer.append(progressWrapper);
+    
+    if(progressWrapper.style.visibility == "hidden"){
+       progressWrapper.style.visibility ="visible";
+    }else{
+       progressWrapper.style.visibility = "hidden";
+    }
+    
+    
+}
+
 module.exports = {
-    displayNotification
+    displayNotification,
+    displayProgressNotification,
+    prefsContainer,
+    progressWrapper
 }

@@ -23,8 +23,8 @@ function CreateMainMenu() {
     var fileMenuItem = new MenuItem({
         label: "File",
         submenu:[
-            {label:"New File", accelerator: "Ctrl+N"},
-            {label:"New Window",click:FileManager.createNewWindow, accelerator: "Ctrl+Shift+N"},
+            {label:"New File", click:FileManager.CreateNewFile,accelerator: "Ctrl+N"},
+            {label:"New Window",click:FileManager.CreateNewWindow, accelerator: "Ctrl+Shift+N"},
             {type:"separator"},
             {label: "Open File",click: FileManager.OpenFile, accelerator: "Ctrl+O"},
             {label: "Open Folder",click: FileManager.OpenFolder, accelerator: "Ctrl+Shift+O"},

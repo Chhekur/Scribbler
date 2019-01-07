@@ -26,7 +26,8 @@ body{
 }
 
 #tool-belt{
-    background: #888;
+ background: #333;
+ border: none;   
 }
 #tool-belt a{
     color: white;

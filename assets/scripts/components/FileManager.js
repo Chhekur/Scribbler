@@ -7,8 +7,8 @@ const NotificationManager = require("./NotificationManager");
 var tabList = document.getElementById("tab-group");
 var CurrentFile;
 var EditorManager = require("../EditorManager");
-
-
+const tmp = require("tmp");
+var isTempFile = false;
 //Open File
 function OpenFile(){
     dialog.showOpenDialog(function(InstanceFile){
@@ -20,11 +20,11 @@ function OpenFile(){
                     console.log(err);
                 }else{
                     CurrentFile = InstanceFile;
-                    
                     //Writing the data to the window
                     EditorManager.editableCodeMirror.setValue(data);
                     //Add to sidebar
                     InterfaceManager.ExplorerManagement(CurrentFile);            
+                
                 }
             })
         }
@@ -33,7 +33,7 @@ function OpenFile(){
 
     
 }
-//Save File
+//Auto-Save File
 function AutoSave(){
     //Set interval for saving every 7 seconds 
         setInterval(function(){
@@ -52,7 +52,7 @@ function AutoSave(){
 //Normal save 
 function Save(){
     //Check for a current file name
-    if(CurrentFile == null || CurrentFile == " "){
+    if(isTempFile == true){
         SaveAs();
     }else{
         fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
@@ -113,40 +113,50 @@ function OpenFolder() {
 });
 }
 
-
-//Run java
-function runJava(){
-
-}
-
-//Running Scribble
-function runScribble() {
-
-}
-
 //Create new window
-function createNewWindow(){
+function CreateNewWindow(){
     //Create new instance of the window 
     console.log("Creating new window");
 }
 
+function CreateNewFile(){
+    //Clear current window 
+    if(EditorManager.editableCodeMirror.getValue() != null || EditorManager.editableCodeMirror.getValue() != " "){
+        EditorManager.editableCodeMirror.setValue("");
+    }
+    //Create a temp file 
+    tmp.file(function CreateTempFile(err,temppath,fd,callback){
+        if(err){
+            console.log(err);
+        }
+        
+        CurrentFile = temppath;
+      
 
+        //Removes the file after
+        callback();
+        //Create new tab 
+        InterfaceManager.CreateTab(CurrentFile);
+        isTempFile = true;
+        console.log(CurrentFile.toString());
+        
+    })
+  
 
-
+}
 
 
 
 //Exports
 module.exports = {
     
-    createNewWindow,
+    CreateNewWindow,
     OpenFolder,
     OpenFile,
-    runScribble,
-    runJava,
     SaveAs,
     Save,
     AutoSave,
-    CurrentFile
+    CurrentFile,
+    CreateNewFile
     
 }

@@ -26,7 +26,7 @@ function InitEditor(){
     exports.editableCodeMirror = CodeMirror.fromTextArea(codeWindow, {
         lineNumbers: true,
         matchBrackets:true,
-        mode: "scribble"
+        mode: "text/x-java"
         
     });
     //Setting preferences
@@ -54,7 +54,6 @@ window.onload = function(){
     RoutingManager.Routes();
     //Interface manager
     InterfaceManager.SideBarToggle();
-    InterfaceManager.CreateTab();
     InterfaceManager.PreferencesToggle();
 
 }

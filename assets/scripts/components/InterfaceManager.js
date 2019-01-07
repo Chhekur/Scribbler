@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const ipcRenderer = require("electron").ipcRenderer;
 const {Menu,MenuItem} = require("electron").remote;
+const { exec } = require('child_process');
 //Side-bar
 const SideBar = document.getElementById("ExplorerSideBar");
 var sideBarToggle = document.getElementById("sidebar-toggle");
@@ -55,8 +56,8 @@ function ExplorerManagement(CurrentFile){
 }
 
 function CreateTab(CurrentFile){
-    if(CurrentFile == null || CurrentFile == undefined){
-        CurrentFile = "Untitled.txt";
+    if(CurrentFile == null || CurrentFile == undefined || path.extname(CurrentFile.toString()) ==".tmp"){
+        CurrentFile = "Untitled";
     }
 
     //Create the remove button 
@@ -75,6 +76,15 @@ function CreateTab(CurrentFile){
        newSideBarItem.appendChild(newSideBarIcon);
        newSideBarItem.appendChild(newSideBarText);
        SideBar.appendChild(newSideBarItem);
+}
+
+function RunJava(){
+    //Grab the current file 
+    //Compile it 
+    //Return the output 
+    //Create a second screen for it 
+    //Display the second screen 
+
 }
 module.exports = {
     SideBarToggle,

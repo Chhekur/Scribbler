@@ -9,7 +9,7 @@ require("electron-reload")(__dirname);
 let win,prefsWindow;
 function initApp(){
     //Displaying the loading window before hand 
-    win = new BrowserWindow({width: 1200,height:600,x:0,y:0,frame:true});
+    win = new BrowserWindow({width: 700,height:600,x:0,y:0,frame:true});
     win.setTitle("Scribbler");
     win.loadURL(`${__dirname}/index.html`);
     win.webContents.openDevTools();

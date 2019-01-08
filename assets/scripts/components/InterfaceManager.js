@@ -22,23 +22,27 @@ newSideBarIcon.style.visibility = "hidden";
 
 //Menu
 const {Menu,MenuItem} = require("electron").remote;
-var TabMenu = new Menu();
-var CloseTabMenuItem = new MenuItem({label: "Close Tab",click:CloseTab})
-var RevealInExplorerMenuItem = new MenuItem({label: "Reveal In Explorer",click:RevealFileInExplorer});
-var CopyRelativePath = new MenuItem({label: "Copy Relative Path",click:GetRelativeTabPath});
-var CopyAbsolutePath = new MenuItem({label: "Copy Absolute Path",click:GetAbsoluteTabPath});
-var CloseTabsToTheRight = new MenuItem({label: "Close To The Right",click:RevealFileInExplorer});
-var CloseTabsToTheLeft = new MenuItem({label: "Close To The Left",click:RevealFileInExplorer});
-var CloseOtherTabs = new MenuItem({label: "Close All Others",click:RevealFileInExplorer});
-var TabMenuSeparator = new MenuItem({type:"separator"});
-TabMenu.append(CloseTabMenuItem);
-TabMenu.append(CloseTabsToTheLeft);
-TabMenu.append(CloseTabsToTheRight);
-TabMenu.append(TabMenuSeparator);
-TabMenu.append(CopyRelativePath);
-TabMenu.append(CopyAbsolutePath);
-TabMenu.append(RevealInExplorerMenuItem);
+CreateExplorerMenu();
 
+function CreateExplorerMenu(){
+    var TabMenu = new Menu();
+    var CloseTabMenuItem = new MenuItem({label: "Close Tab",click:CloseTab})
+    var RevealInExplorerMenuItem = new MenuItem({label: "Reveal In Explorer",click:RevealFileInExplorer});
+    var CopyRelativePath = new MenuItem({label: "Copy Relative Path",click:GetRelativeTabPath});
+    var CopyAbsolutePath = new MenuItem({label: "Copy Absolute Path",click:GetAbsoluteTabPath});
+    var CloseTabsToTheRight = new MenuItem({label: "Close To The Right",click:RevealFileInExplorer});
+    var CloseTabsToTheLeft = new MenuItem({label: "Close To The Left",click:RevealFileInExplorer});
+    var CloseOtherTabs = new MenuItem({label: "Close All Others",click:RevealFileInExplorer});
+    var TabMenuSeparator = new MenuItem({type:"separator"});
+    TabMenu.append(CloseTabMenuItem);
+    TabMenu.append(CloseTabsToTheLeft);
+    TabMenu.append(CloseTabsToTheRight);
+    TabMenu.append(TabMenuSeparator);
+    TabMenu.append(CopyRelativePath);
+    TabMenu.append(CopyAbsolutePath);
+    TabMenu.append(RevealInExplorerMenuItem);
+
+}
 
 //Toggling the sidebar view 
 function SideBarToggle(){

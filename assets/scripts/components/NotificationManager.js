@@ -9,6 +9,17 @@ var progressHeader = document.createElement("div");
 var progressContentText; 
 var progressContentHeaderText;
 
+/**
+ * 
+ * @param {*} state 
+ * @param {*} message 
+ * @param {*} pos 
+ * @param {*} timeout 
+ * @param {*} icon 
+ * @param {*} progressBar 
+ * @param {*} theme 
+ * @param {*} fontSize 
+ */
 function displayNotification(state,message,pos,timeout,icon,progressBar,theme,fontSize){
     //Displaying different notifications 
     switch(state){
@@ -69,7 +80,12 @@ function displayNotification(state,message,pos,timeout,icon,progressBar,theme,fo
     
     
 }
-
+/**
+ * 
+ * @param {*} title 
+ * @param {*} message 
+ * @param {*} icon 
+ */
 function displayProgressNotification(title,message,icon){ 
 
     progressContentText = document.createTextNode(message);

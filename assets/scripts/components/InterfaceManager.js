@@ -101,17 +101,6 @@ function OpenTabInEditor(CurrentFile,e){
     });
 }
 
-
-/**
- * 
- * @param {*} e 
- */
-function CreateTabMenu(e){
-  
-    
-}
-
-
 function CloseTab(){
     console.log("Closing tabs...");
 }
@@ -158,8 +147,6 @@ function CreateTab(CurrentFile){
     if(CurrentFile == null || CurrentFile == undefined || path.extname(CurrentFile.toString()) ==".tmp"){
         CurrentFile = "Untitled";
     }  
-  
-  
        var newSideBarText = document.createTextNode(path.basename(CurrentFile.toString()));
        var newSideBarItem = document.createElement("a");
        newSideBarItem.setAttribute("class","item");

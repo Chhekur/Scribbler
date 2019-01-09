@@ -3,29 +3,27 @@ const EditorManager = require("./../EditorManager");
 const path = require("path");
 const fs = require("fs");
 const ipcRenderer = require("electron").ipcRenderer;
-
+const {Menu,MenuItem} = require("electron").remote;
 const {remote,shell,clipboard} = require("electron");
 const exec = require('child_process').exec;
 const FileManager = require("./FileManager");
-
+const $ = require("jquery");
 //Side-bar
-const SideBar = document.getElementById("explorer-side-bar");
+const tabContainer = document.getElementById("tab-container");
 const sideBarToggle = document.getElementById("sidebar-toggle");
 const  preferencesToggle  = document.getElementById("preferences-toggle");
 const runCodeBtn = document.getElementById("run-code");
 
-//Tab Icon
-var newSideBarIcon = document.createElement("i"); 
-newSideBarIcon.setAttribute("class","fa fa-caret-right");
-newSideBarIcon.style.marginRight = "5px";
-newSideBarIcon.style.visibility = "hidden";
 
 //Menu
-const {Menu,MenuItem} = require("electron").remote;
-CreateExplorerMenu();
+var TabMenu;
+CreateTabMenu();
 
-function CreateExplorerMenu(){
-    var TabMenu = new Menu();
+//Titlebar filename 
+var TitleBarFileName =  document.getElementById("title-bar-filename");
+
+function CreateTabMenu(){
+    TabMenu = new Menu();
     var CloseTabMenuItem = new MenuItem({label: "Close Tab",click:CloseTab})
     var RevealInExplorerMenuItem = new MenuItem({label: "Reveal In Explorer",click:RevealFileInExplorer});
     var CopyRelativePath = new MenuItem({label: "Copy Relative Path",click:GetRelativeTabPath});
@@ -64,18 +62,20 @@ function PreferencesToggle(){
  * 
  * @param {*} CurrentFile 
  */
+var count = 0;
 function ExplorerManagement(CurrentFile){
     if(CurrentFile != null || CurrentFile != undefined || CurrentFile == " "){
        CreateTab(CurrentFile);
-        for(var i=0; i<SideBar.childNodes.length;i++){
-            if(SideBar.childNodes[i].nodeName == "A"){
-               SideBar.childNodes[i].addEventListener("click",function(e){
+        for(var i=0; i<tabContainer.childNodes.length;i++){
+            if(tabContainer.childNodes[i].nodeName == "LI"){
+                tabContainer.childNodes[i].addEventListener("click",function(e){
                 //Open the tab in the editor
                 OpenTabInEditor(CurrentFile,e); 
                });
-               SideBar.childNodes[i].addEventListener("contextmenu",function(e){
+               tabContainer.childNodes[i].addEventListener("contextmenu",function(e){
                    e.preventDefault();
                    TabMenu.popup(remote.getCurrentWindow());
+                   
                });
             }
         }
@@ -84,11 +84,9 @@ function ExplorerManagement(CurrentFile){
     }
 }
 
-/**
- * 
- * @param {*} CurrentFile 
- * @param {*} e 
- */
+
+
+
 function OpenTabInEditor(CurrentFile,e){
     //Read the name of the tab and filename and adding it into the code mirror editor 
     CurrentFile = e.target.name;
@@ -120,13 +118,10 @@ function GetRelativeTabPath(){
        
         }
     }
-
 }
 function CloseOtherTabs(){
 
 }
-
-
 
 function RevealFileInExplorer(){
     //Loop again 
@@ -146,16 +141,30 @@ function UpdateTab(CurrentFile){
 function CreateTab(CurrentFile){
     if(CurrentFile == null || CurrentFile == undefined || path.extname(CurrentFile.toString()) ==".tmp"){
         CurrentFile = "Untitled";
-    }  
-       var newSideBarText = document.createTextNode(path.basename(CurrentFile.toString()));
-       var newSideBarItem = document.createElement("a");
-       newSideBarItem.setAttribute("class","item");
-       newSideBarItem.setAttribute("name",CurrentFile.toString()); 
-       newSideBarItem.setAttribute("title",CurrentFile.toString());
-       //Placing them in order
-       newSideBarItem.appendChild(newSideBarIcon);
-       newSideBarItem.appendChild(newSideBarText);
-       SideBar.appendChild(newSideBarItem);
+    } 
+
+    //Check if there is a tab with the same name 
+    
+    //Create li 
+    var newTabItemListItem = document.createElement("li");
+    //Create a 
+    var newTabItemLink = document.createElement("a");
+    //Set attribute for link 
+    newTabItemListItem.setAttribute("name",CurrentFile.toString()); 
+    newTabItemListItem.setAttribute("title",CurrentFile.toString()); 
+    newTabItemLink.setAttribute("name",CurrentFile.toString()); 
+    newTabItemLink.setAttribute("title",CurrentFile.toString()); 
+    //Create text 
+    var newTabItemTextNode =document.createTextNode(path.basename(CurrentFile.toString()));
+    //Append text to the a
+    newTabItemLink.appendChild(newTabItemTextNode);
+    //Append a to li 
+    newTabItemListItem.appendChild(newTabItemLink);
+    //Append to tab container
+    tabContainer.appendChild(newTabItemListItem);
+
+    //Check if they have the same name 
+    tabContainer.appendChild(newTabItemListItem);
 }
 
 
@@ -187,6 +196,8 @@ module.exports = {
     CreateTab,
     PreferencesToggle,
     UpdateTab,
+    TitleBarFileName,
     RunJava,
-    CreateTabMenu
+    
+    
 }

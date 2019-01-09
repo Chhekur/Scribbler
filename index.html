@@ -8,7 +8,7 @@
     <script src="node_modules\uikit\dist\js\uikit-icons.min.js"></script>
     <!--Semantic UI -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="node_modules/semantic-ui-css/semantic.min.css" type="text/css"/>
+    <link rel="stylesheet" href="node_modules/semantic-ui-css/semantic.css" type="text/css"/>
     <!--Notification service -->
     <link rel="stylesheet" href="node_modules/izitoast/dist/css/iziToast.min.css"/>
     <script src="node_modules\izitoast\dist\js\iziToast.min.js"></script>
@@ -28,6 +28,7 @@
     </head>
 
     <body>
+     
         <!--Tool belt-->
         <div  id="tool-belt" class="ui very thin left  fixed  vertical menu sidebar visible  ">
            <div class="tool-wrapper flex columns  --space-between align-center">
@@ -45,6 +46,9 @@
 
             </div>
             <div class="pusher">
+                    <ul uk-tab id="tab-container">
+                            
+                          </ul>
             <textarea id="codeWindow"></textarea>
             <div id="terminal"></div>
         </div>

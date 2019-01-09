@@ -24,8 +24,9 @@ function OpenFile(){
                     EditorManager.editableCodeMirror.setValue(data);
                     //Add to sidebar
                     InterfaceManager.ExplorerManagement(CurrentFile); 
-                    InterfaceManager.RunJava(CurrentFile);           
-                
+                    InterfaceManager.RunJava(CurrentFile);        
+                    //Make the last child active
+                                    
                 }
             })
         }

@@ -5,7 +5,7 @@ const fs = require("fs");
 const ipcRenderer = require("electron").ipcRenderer;
 const {Menu,MenuItem} = require("electron").remote;
 const {remote,shell,clipboard} = require("electron");
-const exec = require('child_process').exec;
+const cp = require('child_process');
 const FileManager = require("./FileManager");
 const $ = require("jquery");
 //Side-bar
@@ -14,6 +14,7 @@ const sideBarToggle = document.getElementById("sidebar-toggle");
 const  preferencesToggle  = document.getElementById("preferences-toggle");
 const runCodeBtn = document.getElementById("run-code");
 
+var instance;
 
 //Menu
 var TabMenu;
@@ -73,8 +74,10 @@ function ExplorerManagement(CurrentFile){
                 OpenTabInEditor(CurrentFile,e); 
                });
                tabContainer.childNodes[i].addEventListener("contextmenu",function(e){
-                   e.preventDefault();
                    TabMenu.popup(remote.getCurrentWindow());
+                   instance = e.target.name;
+                   return instance;
+                  
                    
                });
             }
@@ -83,8 +86,6 @@ function ExplorerManagement(CurrentFile){
         
     }
 }
-
-
 
 
 function OpenTabInEditor(CurrentFile,e){
@@ -102,6 +103,7 @@ function OpenTabInEditor(CurrentFile,e){
 function CloseTab(){
     console.log("Closing tabs...");
 }
+
 function GetAbsoluteTabPath(){
     for(var i =0 ; i<SideBar.childNodes.length; i++){
         var tab = SideBar.childNodes[i];
@@ -111,9 +113,10 @@ function GetAbsoluteTabPath(){
     }
 
 }
+
 function GetRelativeTabPath(){
-    for(var i =0 ; i<SideBar.childNodes.length; i++){
-        var tab = SideBar.childNodes[i];
+    for(var i =0 ; i<tabContainer.childNodes.length; i++){
+        var tab = tabContainer.childNodes[i];
         if(tab.nodeName == "A"){
        
         }
@@ -124,15 +127,9 @@ function CloseOtherTabs(){
 }
 
 function RevealFileInExplorer(){
-    //Loop again 
-    for(var i =0 ; i<SideBar.childNodes.length; i++){
-        var tab = SideBar.childNodes[i];
-        if(tab.nodeName == "A"){
-        shell.showItemInFolder(tab.name);
-        }
-    }
-
+    shell.showItemInFolder(instance);
 }
+
 function UpdateTab(CurrentFile){
     //Get the current tab name 
    console.log(CurrentFile); 
@@ -144,7 +141,6 @@ function CreateTab(CurrentFile){
     } 
 
     //Check if there is a tab with the same name 
-    
     //Create li 
     var newTabItemListItem = document.createElement("li");
     //Create a 
@@ -173,15 +169,14 @@ function RunJava(CurrentFile){
     if(CurrentFile != null || CurrentFile != undefined || CurrentFile != " "){
      runCodeBtn.addEventListener("click",function(){
          //Save the file beforehand
-        exec("javac "+path.basename(CurrentFile.toString()),{cwd: path.dirname(CurrentFile.toString())});
-        exec("java "+path.basename(CurrentFile.toString(),path.extname(CurrentFile.toString())),{cwd: path.dirname(CurrentFile.toString())},function(err,out,stderr){
+        cp.execFile("javac "+path.basename(CurrentFile.toString()),{cwd:CurrentFile.toString()},function(err,stdout,stderr){
             if(err){
                 console.log(err);
             }
             if(stderr){
                 console.log(stderr);
             }
-            console.log(out)
+         
         });
      });
     }else{

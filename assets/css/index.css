@@ -5,6 +5,19 @@ body{
     padding: 0;
     
 }
+/*ERROR NODES */
+.error-node{
+    background: rgba(252, 46, 46, 0.445);
+    color:white;
+    width: 100vh;
+
+}
+/*FEEDBACK WINDOW */
+#feedback-window{
+    background: #efefef;
+    height: 100px;
+    text-align: center;
+}
 /* TITLE BAR */
 .uk-tab{
 

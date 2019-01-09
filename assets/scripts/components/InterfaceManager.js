@@ -15,7 +15,8 @@ const  preferencesToggle  = document.getElementById("preferences-toggle");
 const runCodeBtn = document.getElementById("run-code");
 
 var instance;
-
+//Feddback window 
+var feebackInterface = document.getElementById("feedback-text");
 //Menu
 var TabMenu;
 CreateTabMenu();
@@ -105,22 +106,13 @@ function CloseTab(){
 }
 
 function GetAbsoluteTabPath(){
-    for(var i =0 ; i<SideBar.childNodes.length; i++){
-        var tab = SideBar.childNodes[i];
-        if(tab.nodeName == "A"){
-            clipboard.writeText(tab.name);
-        }
-    }
+   clipboard.writeText(instance);
+   NotificationManager.displayNotification("info","Absolute path copied!","bottomCenter",2000,"fa fa-info-circle",false,"light",12);
 
 }
 
 function GetRelativeTabPath(){
-    for(var i =0 ; i<tabContainer.childNodes.length; i++){
-        var tab = tabContainer.childNodes[i];
-        if(tab.nodeName == "A"){
-       
-        }
-    }
+
 }
 function CloseOtherTabs(){
 
@@ -169,18 +161,25 @@ function RunJava(CurrentFile){
     if(CurrentFile != null || CurrentFile != undefined || CurrentFile != " "){
      runCodeBtn.addEventListener("click",function(){
          //Save the file beforehand
-        cp.execFile("javac "+path.basename(CurrentFile.toString()),{cwd:CurrentFile.toString()},function(err,stdout,stderr){
+        var command = "node "+path.basename(CurrentFile.toString());
+        cp.exec(command, {cwd:path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
             if(err){
+                feebackInterface.innerHTML = err;
                 console.log(err);
             }
             if(stderr){
+                feebackInterface.innerHTML = stderr;
                 console.log(stderr);
             }
-         
+           feebackInterface.innerHTML = stdout;
+
+           EditorManager.editableCodeMirror.addLineWidget(EditorManager.editableCodeMirror.getCursor().line,NotificationManager.createErrorNode("fa fa-exclamation-circle","Error") );
+           console.log(stdout);
         });
      });
     }else{
         NotificationManager.displayNotification("danger","Error when running java on "+path.basename(CurrentFile.toString()),"bottomCenter",1000,"fa fa-check-circle","false","light",12);
+        
     }
 }
 

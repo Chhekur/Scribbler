@@ -116,7 +116,21 @@ function displayProgressNotification(title,message,icon){
     
 }
 
+function createErrorNode(icon,message){
+    var htmlNode =document.createElement("div");
+    var iconNode = document.createElement("i");
+    iconNode.setAttribute("class",icon);
+    iconNode.style.marginRight = "5px";
+    iconNode.style.marginLeft = "5px";
+    var text =  document.createTextNode(message);
+    htmlNode.classList.add("error-node");
+    htmlNode.appendChild(iconNode);
+    htmlNode.appendChild(text);
+    return htmlNode;
+}
+
 module.exports = {
+    createErrorNode,
     displayNotification,
     displayProgressNotification,
     prefsContainer,

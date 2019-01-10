@@ -156,7 +156,7 @@ function CreateTab(CurrentFile){
 }
 
 
-function RunJava(CurrentFile){
+function BuildMethods(CurrentFile){
     //Grab the current file
     if(CurrentFile != null || CurrentFile != undefined || CurrentFile != " "){
      runCodeBtn.addEventListener("click",function(){
@@ -164,17 +164,16 @@ function RunJava(CurrentFile){
         var command = "node "+path.basename(CurrentFile.toString());
         cp.exec(command, {cwd:path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
             if(err){
-                feebackInterface.innerHTML = err;
-                console.log(err);
-            }
-            if(stderr){
-                feebackInterface.innerHTML = stderr;
-                console.log(stderr);
-            }
-           feebackInterface.innerHTML = stdout;
+                DisplayError(CurrentFile,err);
+            }else if(stderr){
+                DisplayError(CurrentFile,stderr);
 
-           EditorManager.editableCodeMirror.addLineWidget(EditorManager.editableCodeMirror.getCursor().line,NotificationManager.createErrorNode("fa fa-exclamation-circle","Error") );
+            }else{
+           NotificationManager.displayNotification("success","Compilation successful see feedback window for results","bottomCenter",3000,"fa fa-info-circle","light",12);
            console.log(stdout);
+        }
+
+         
         });
      });
     }else{
@@ -183,7 +182,18 @@ function RunJava(CurrentFile){
     }
 }
 
+function getDisplayLine(errormessage){
+    var myString = errormessage.toString();
+    var myRegexp = /\d+/g;
+    var match = myString.match(myRegexp);
+    return match[1];
+}
+function DisplayError(CurrentFile,errormessage){
+    console.log(getDisplayLine(errormessage) -1);
+    EditorManager.editableCodeMirror.addLineWidget(getDisplayLine(errormessage) -1 ,NotificationManager.createErrorNode("fa fa-exclamation-circle",errormessage.toString()) );
+    NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
 
+}
 module.exports = {
     SideBarToggle,
     ExplorerManagement,
@@ -191,7 +201,7 @@ module.exports = {
     PreferencesToggle,
     UpdateTab,
     TitleBarFileName,
-    RunJava,
+    BuildMethods,
     
     
 }

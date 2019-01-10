@@ -7,9 +7,10 @@ body{
 }
 /*ERROR NODES */
 .error-node{
-    background: rgba(252, 46, 46, 0.445);
-    color:white;
-    width: 100vh;
+    background: rgb(250, 223, 223);
+    color:red;
+    min-width: 100vh;
+    font-weight: 300;
 
 }
 /*FEEDBACK WINDOW */
@@ -18,9 +19,8 @@ body{
     height: 100px;
     text-align: center;
 }
-/* TITLE BAR */
+/* TITLE BAR */ 
 .uk-tab{
-
     border: none;
     padding: 0;
     margin-left: 30px;

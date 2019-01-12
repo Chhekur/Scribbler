@@ -14,7 +14,7 @@ function initApp(){
     win.loadURL(`${__dirname}/index.html`);
     win.webContents.openDevTools();
     //Terminal output window 
-    consoleWindow = new BrowserWindow({width:300,height:300,x:0,y:0,show:false,resizable:true});
+    consoleWindow = new BrowserWindow({width:win.width,height:win.height,x:CaclWindowPosX(),y:CalcWindowPosY(),show:false,resizable:true});
     consoleWindow.loadFile("Templates/TerminalOutput.html");
     consoleWindow.setMenuBarVisibility(false);
     consoleWindow.openDevTools();
@@ -98,3 +98,15 @@ app.on('activate', () => {
      initApp();
     }
   })
+
+function CaclWindowPosX(){
+    var newPosX = win.x + win.width;
+    return newPosX;
+}   
+function CalcWindowPosY(){
+    var newPosY = win.y + win.height;
+    return newPosY;
+}
+function CalcWindowWidthAndHeight(){
+
+}

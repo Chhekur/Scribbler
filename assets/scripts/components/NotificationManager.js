@@ -124,6 +124,7 @@ function createErrorNode(icon,visible_message,lineNumber,message){
     iconNode.style.marginRight = "5px";
     iconNode.style.marginLeft = "5px";
 
+    
     var text =  document.createTextNode(visible_message+ " "+lineNumber + ",hover for more information");
     htmlNode.setAttribute("id","err")
     htmlNode.classList.add("error-node");

@@ -21,6 +21,7 @@ var feebackInterface = document.getElementById("feedback-text");
 //Menu
 var TabMenu;
 var errorNodes = [];
+var errorLines = [];
 //Run commands 
 CreateTabMenu();
 
@@ -164,17 +165,45 @@ function RemoveErrorNodes(){
     }
     }
 }
-
+/**
+ * For every match made an error node is created 
+ * @param {*} errormessage 
+ */
+var multilineError = false;
 function GetDisplayLine(errormessage){
+    
     var errorMsg = errormessage.toString();
     var searchExp = /\d+/g;
-    var match = errorMsg.match(searchExp);
-    return match[0];
+    var  match = errorMsg.match(searchExp);
+    errorLines.push(match);
+    if(match.length >  -1 ){
+        //return the final number which will be the number of errors 
+        multilineError = true;
+        return match[match.length - 1];
+        
+    }else{
+        console.log(match[0]);
+        return match[0];
+    }
+   
 }
+/**
+  Check if there is more than one error
+  If there is more than one error 
+  Display at the bottom of codemirror with different message
+ * @param {*} CurrentFile 
+ * @param {*} errormessage 
+ */
 function DisplayErrorInCode(CurrentFile,errormessage){
+    if(multilineError == true){
+        errorNodes.push(EditorManager.editableCodeMirror.addLineWidget(EditorManager.editableCodeMirror.lastLine() ,NotificationManager.createErrorNode("fa fa-exclamation-circle","Number of errors found:",GetDisplayLine(errormessage),errormessage.toString()) ));
+        NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
 
-   errorNodes.push(EditorManager.editableCodeMirror.addLineWidget(GetDisplayLine(errormessage) -1 ,NotificationManager.createErrorNode("fa fa-exclamation-circle","Error on line",GetDisplayLine(errormessage),errormessage.toString()) ));
-   NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
+    }else{
+        errorNodes.push(EditorManager.editableCodeMirror.addLineWidget(GetDisplayLine(errormessage) -1 ,NotificationManager.createErrorNode("fa fa-exclamation-circle","Error on line",GetDisplayLine(errormessage),errormessage.toString()) ));
+        NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
+    }
+   
 
 }
 function Save(CurrentFile){
@@ -221,15 +250,16 @@ function BuildCommands(CurrentFile){
 }
 
 function CheckErrorNodes(){
-    EditorManager.editableCodeMirror.operation(function(){
+    EditorManager.editableCodeMirror.on("change",function(){
+        setTimeout(function(){
         if(errorNodes.length > 0 ){
             for(var i = 0 ; i< errorNodes.length; i ++){
                 EditorManager.editableCodeMirror.removeLineWidget(errorNodes[i]);
-     
             }
-            
         }
+    },3000)
     });  
+    
 }
 /**
  * Send the output

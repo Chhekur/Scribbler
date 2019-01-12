@@ -10,7 +10,6 @@
     <script src="node_modules\uikit\dist\js\uikit.min.js"></script>
     <script src="node_modules\uikit\dist\js\uikit-icons.min.js"></script>
     <!--Semantic UI -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="node_modules/semantic-ui-css/semantic.css" type="text/css"/>
     <!--Notification service -->
     <link rel="stylesheet" href="node_modules/izitoast/dist/css/iziToast.min.css"/>
@@ -28,13 +27,20 @@
     <script src="node_modules/codemirror/mode/clike/clike.js" ></script>
     <script src="node_modules/codemirror/mode/css/css.js" ></script>
     <script src="node_modules/codemirror/mode/scribble/scribble.js"></script>
-    </head>
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.0.2/js/jquery.terminal.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/2.0.2/css/jquery.terminal.min.css" rel="stylesheet"/>
+</head>
 
     <body>
      
+
         <!--Tool belt-->
         <div  id="tool-belt" class="ui very thin left  fixed  vertical menu sidebar visible  ">
-           <div class="tool-wrapper flex columns  --space-between align-center">
+           <div class="tool-wrapper flex columns --space-evenly align-center">
             <a href="#" class="uk-icon-link sidebar-tool" title="Toggle Sidebar" id="sidebar-toggle" uk-icon="icon: folder; ratio: 1.2""></a>
             <a href="#" class="uk-icon-link sidebar-tool" title="Git Management" uk-icon="icon:github-alt; ratio:1.2"></a>
             <a href="#" class="uk-icon-link sidebar-tool" title="View preferences"id="preferences-toggle" uk-icon="icon:settings; ratio:1.2"></a>
@@ -57,12 +63,15 @@
         </div>
         </div>
          <div id="feedback-window">
-             <p id="feedback-text"></p>
+            
          </div>
+        
+
         <!--Scripts-->
         <script>require("./assets/scripts/EditorManager.js")</script>
         <script>require("./assets/scripts/components/MainMenu.js")</script>
         <script>require("./assets/scripts/components/InterfaceManager.js")</script>
         <script src="./assets/scripts/components/RoutingManager.js"></script>
+        
     </body>
 </html>

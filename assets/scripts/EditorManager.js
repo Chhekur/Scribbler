@@ -58,6 +58,8 @@ window.onload = function(){
     InterfaceManager.PreferencesToggle();
    
 
+   
+
 }
 
 //Setting fontSize

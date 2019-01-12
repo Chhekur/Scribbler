@@ -117,16 +117,22 @@ function displayProgressNotification(title,message,icon){
 }
 
 function createErrorNode(icon,message){
+
     var htmlNode =document.createElement("div");
     var iconNode = document.createElement("i");
     iconNode.setAttribute("class",icon);
     iconNode.style.marginRight = "5px";
     iconNode.style.marginLeft = "5px";
+
     var text =  document.createTextNode(message);
+    htmlNode.setAttribute("id","err")
     htmlNode.classList.add("error-node");
     htmlNode.appendChild(iconNode);
-    htmlNode.appendChild(text);
+    htmlNode.appendChild(text);    
+
+    //Check if the node is present 
     return htmlNode;
+   
 }
 
 module.exports = {

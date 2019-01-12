@@ -1,0 +1,27 @@
+<html>
+    <head>
+    <!--Font awesome-->
+    <link rel="stylesheet" href="./../Assets/plugins/fontawesome-free-5.6.3-web/css/all.min.css"/>
+    <!--Notification service -->
+     <link rel="stylesheet" href="./../node_modules/izitoast/dist/css/iziToast.min.css"/>
+    <script src="./../node_modules\izitoast\dist\js\iziToast.min.js"></script>
+        <!-- UIkit CSS -->
+    <link rel="stylesheet" href="../node_modules/uikit/dist/css/uikit.css" />
+    <link rel="stylesheet" href="./../Assets/Css/index.css"/>
+    <!--Semantic UI -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="./../node_modules/semantic-ui-css/semantic.min.css" type="text/css"/>
+    <!-- UIkit JS -->
+    <script src="../node_modules/uikit/dist/js/uikit.min.js"></script>
+    <script src="../node_modules/uikit/dist/js/uikit-icons.min.js"></script>
+    </head>
+
+    <body>
+        <div class="flex flex--center align-center columns">
+        <div id="terminal-output-window">
+            <p id="output-text"></p>
+        </div>
+    </div>
+        <script>require("./../Assets/Scripts/Components/TerminalWindowManager.js");</script>
+    </body>
+</html>

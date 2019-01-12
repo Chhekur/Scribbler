@@ -3,22 +3,25 @@ const EditorManager = require("./../EditorManager");
 const path = require("path");
 const fs = require("fs");
 const ipcRenderer = require("electron").ipcRenderer;
-const {Menu,MenuItem} = require("electron").remote;
-const {remote,shell,clipboard} = require("electron");
-const cp = require('child_process');
+const {Menu,MenuItem,BrowserWindow} = require("electron").remote;
+const {remote,clipboard} = require("electron");
 const FileManager = require("./FileManager");
 const $ = require("jquery");
+//Terminal Manager
+const command = require('child_process').exec;
 //Side-bar
 const tabContainer = document.getElementById("tab-container");
 const sideBarToggle = document.getElementById("sidebar-toggle");
 const  preferencesToggle  = document.getElementById("preferences-toggle");
-const runCodeBtn = document.getElementById("run-code");
-
+const BuildCommandsBtn = document.getElementById("run-code");
+const pathExtra = require("path-extra");
 var instance;
 //Feddback window 
 var feebackInterface = document.getElementById("feedback-text");
 //Menu
 var TabMenu;
+
+//Run commands 
 CreateTabMenu();
 
 //Titlebar filename 
@@ -78,8 +81,6 @@ function ExplorerManagement(CurrentFile){
                    TabMenu.popup(remote.getCurrentWindow());
                    instance = e.target.name;
                    return instance;
-                  
-                   
                });
             }
         }
@@ -131,9 +132,7 @@ function CreateTab(CurrentFile){
     if(CurrentFile == null || CurrentFile == undefined || path.extname(CurrentFile.toString()) ==".tmp"){
         CurrentFile = "Untitled";
     } 
-
     //Check if there is a tab with the same name 
-    //Create li 
     var newTabItemListItem = document.createElement("li");
     //Create a 
     var newTabItemLink = document.createElement("a");
@@ -156,43 +155,78 @@ function CreateTab(CurrentFile){
 }
 
 
-function BuildMethods(CurrentFile){
-    //Grab the current file
-    if(CurrentFile != null || CurrentFile != undefined || CurrentFile != " "){
-     runCodeBtn.addEventListener("click",function(){
-         //Save the file beforehand
-        var command = "node "+path.basename(CurrentFile.toString());
-        cp.exec(command, {cwd:path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
-            if(err){
-                DisplayError(CurrentFile,err);
-            }else if(stderr){
-                DisplayError(CurrentFile,stderr);
-
-            }else{
-           NotificationManager.displayNotification("success","Compilation successful see feedback window for results","bottomCenter",3000,"fa fa-info-circle","light",12);
-           console.log(stdout);
+function RemoveErrorNodes(){
+    if(document.getElementById("err")){
+    for(var i = 0; i<document.getElementById("err").length; i++){
+    if(document.getElementById("err")[i]){
+        document.removeChild(doucment.getElementById("err")[i]);
         }
-
-         
-        });
-     });
-    }else{
-        NotificationManager.displayNotification("danger","Error when running java on "+path.basename(CurrentFile.toString()),"bottomCenter",1000,"fa fa-check-circle","false","light",12);
-        
+    }
     }
 }
 
-function getDisplayLine(errormessage){
-    var myString = errormessage.toString();
-    var myRegexp = /\d+/g;
-    var match = myString.match(myRegexp);
+function GetDisplayLine(errormessage){
+    var errorMsg = errormessage.toString();
+    var searchExp = /\d+/g;
+    var match = errorMsg.match(searchExp);
     return match[1];
 }
 function DisplayError(CurrentFile,errormessage){
-    console.log(getDisplayLine(errormessage) -1);
-    EditorManager.editableCodeMirror.addLineWidget(getDisplayLine(errormessage) -1 ,NotificationManager.createErrorNode("fa fa-exclamation-circle",errormessage.toString()) );
+    
+    EditorManager.editableCodeMirror.addLineWidget(GetDisplayLine(errormessage) -1 ,NotificationManager.createErrorNode("fa fa-exclamation-circle",errormessage.toString()) );
     NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
 
+}
+function Save(CurrentFile){
+    //Check for a current file name
+        fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
+            if(err){
+               NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa fa-ban",true,"light",12);
+            }else{
+                NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
+            }
+        });
+    }
+
+
+function BuildCommands(CurrentFile){
+    BuildCommandsBtn.addEventListener("click",function(){
+    Save(CurrentFile);
+    command("javac "+path.basename(CurrentFile.toString()),{cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
+       if(err){
+           console.log(err);
+       }else if(stderr){
+           console.log(stderr);
+       }else{
+       command("java "+pathExtra.base(CurrentFile.toString(), false), {cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
+            if(err){
+                console.log(err);
+                NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
+
+            }
+             if(stderr){
+                console.log(stderr);
+                NotificationManager.displayNotification("er","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
+                //Display errors on widgets 
+                //Display 
+            }
+               SendTerminalOutput(stdout);
+
+            
+       });
+    }
+       
+   });
+});
+
+}
+
+/**
+ * Send the output
+ * @param {*} output 
+ */
+function SendTerminalOutput(output){
+    ipcRenderer.send("console-output",output);
 }
 module.exports = {
     SideBarToggle,
@@ -201,7 +235,5 @@ module.exports = {
     PreferencesToggle,
     UpdateTab,
     TitleBarFileName,
-    BuildMethods,
-    
-    
+    BuildCommands
 }

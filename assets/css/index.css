@@ -1,9 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
 
 body{
-    margin: 0;
     padding: 0;
-    
+}
+
+a{
+    color: #000;
+}
+
+.menubar-menu-items-holder{
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.16) ;
+}
+#titlebar{
+    z-index: 9999;
 }
 /*ERROR NODES */
 .error-node{
@@ -15,9 +24,8 @@ body{
 }
 /*FEEDBACK WINDOW */
 #feedback-window{
-    background: #efefef;
-    height: 100px;
-    text-align: center;
+    background: black;
+    
 }
 /* TITLE BAR */ 
 .uk-tab{
@@ -68,7 +76,9 @@ body{
 .sidebar-tool{
     margin-top: 10px;
 }
-
+#sidebar-toggle{
+    margin-top: 40px;
+}
 #tool-belt{
  background: #333;
  border: none;   
@@ -220,4 +230,13 @@ LANGUAGE MODE DIALOG
 #languageModeDialog li:hover{
     cursor: pointer;
     background: #ccc;
+}
+
+/* TERMINAL OUTPUT WINDOW */
+#terminal-output-window{
+    padding: 20px;
+    border-radius: 10px;
+    background: #efefef;
+    width: 90%;
+    height: 90%;
 }

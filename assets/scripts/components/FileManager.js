@@ -24,16 +24,20 @@ function OpenFile(){
                     EditorManager.editableCodeMirror.setValue(data);
                     //Add to sidebar
                     InterfaceManager.ExplorerManagement(CurrentFile); 
-                    InterfaceManager.BuildMethods(CurrentFile);        
                     //Make the last child active
-                                    
+                   SetCurrentFile(CurrentFile);     
+                   InterfaceManager.BuildCommands(CurrentFile);                          
                 }
             })
         }
     }) 
-    
+}
 
-    
+function SetCurrentFile(file){
+   CurrentFile = file; 
+}
+function GetCurrentFile(){
+    return CurrentFile;
 }
 //Auto-Save File
 function AutoSave(){
@@ -51,9 +55,8 @@ function AutoSave(){
     //Check if auto-save feature is enabled (future feature)
 }
 
-//Normal save 
-function Save(){
-    //Check for a current file name
+function OtherSave(CurrentFile){
+  //Check for a current file name
     if(CurrentFile == undefined || CurrentFile == null){
         CreateNewFile();
         NotificationManager.displayNotification("warning","No file detected, new file created","bottomCenter",2000,"fa fa-exclamation-triangle",false,"light",12);
@@ -63,6 +66,26 @@ function Save(){
         isTempFile = false;
     }else{
         fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
+            if(err){
+               NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa fa-ban",true,"light",12);
+            }else{
+                NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
+            }
+        });
+    }
+}
+//Normal save 
+function Save(){
+    //Check for a current file name
+    if(GetCurrentFile() == undefined || GetCurrentFile() == null){
+        CreateNewFile();
+        NotificationManager.displayNotification("warning","No file detected, new file created","bottomCenter",2000,"fa fa-exclamation-triangle",false,"light",12);
+    }
+    if(isTempFile == true){
+        SaveAs();
+        isTempFile = false;
+    }else{
+        fs.writeFile(GetCurrentFile()[0],EditorManager.editableCodeMirror.getValue(),function(err){
             if(err){
                NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa fa-ban",true,"light",12);
             }else{
@@ -82,8 +105,6 @@ function SaveAs(){
                 if(err){
                     console.log(err);
                 }else{
-                    console.log("New Save complete");
-
                     //Set InstanceFile
                     isAlreadySaved = true;
                     InstanceFile = CurrentFile;
@@ -91,7 +112,7 @@ function SaveAs(){
                     //Display notification
                     NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
                     //Set time out on closing notification 
-                                
+                    SetCurrentFile(InstanceFile);
 
                 }
             });
@@ -146,7 +167,7 @@ function CreateNewFile(){
         //Create new tab 
         InterfaceManager.CreateTab(CurrentFile);
         isTempFile = true;
-        console.log(CurrentFile.toString());
+       
         
     })
   
@@ -165,6 +186,8 @@ module.exports = {
     Save,
     AutoSave,
     CurrentFile,
-    CreateNewFile
+    CreateNewFile,
+    GetCurrentFile,
+    OtherSave
     
 }

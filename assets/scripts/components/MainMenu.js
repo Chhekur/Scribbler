@@ -1,22 +1,25 @@
 const {Menu,MenuItem,BrowserWindow} = require("electron").remote;
 const ipcRenderer = require("electron").ipcRenderer;
 const FileManager = require("./FileManager");
-const CustomElectronTitlebar = require("custom-electron-titlebar");
+const winColor = require('windows-titlebar-color')
 const base = require("../EditorManager");
 const path = require("path");
 const InterfaceManager = require("./InterfaceManager");
+
+
 
 //Preferences
 let prefOptions;
 
 //Create main menu
 function CreateMainMenu() {
+    console.log(winColor.titlebarColor)
     const MainMenu = new Menu();
     //View menu
     var viewMenuItem = new MenuItem({
         label: "View",
         submenu:[
-            {label:"Toggle Sidebar",click:InterfaceManager.SideBarToggle, accelerator: "Ctrl+Shift+}"}
+            {label:"Toggle Sidebar",click:InterfaceManager.SideBarToggle, accelerator: "Ctrl+Shift+K}"}
         ]
     })
     //File menu
@@ -54,7 +57,6 @@ function CreateMainMenu() {
     MainMenu.append(fileMenuItem);
     MainMenu.append(viewMenuItem);
     MainMenu.append(terminalMenuItem);
-    
     Menu.setApplicationMenu(MainMenu);
 }
 

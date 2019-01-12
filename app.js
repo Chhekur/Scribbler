@@ -6,13 +6,19 @@ const path = require("path");
 require("electron-reload")(__dirname);
 
 //Init Window
-let win,prefsWindow;
+let win,prefsWindow,consoleWindow;
 function initApp(){
     //Displaying the loading window before hand 
     win = new BrowserWindow({width: 700,height:600,x:0,y:0,frame:true});
     win.setTitle("Scribbler");
     win.loadURL(`${__dirname}/index.html`);
     win.webContents.openDevTools();
+    //Terminal output window 
+    consoleWindow = new BrowserWindow({width:300,height:300,x:0,y:0,show:false,resizable:true});
+    consoleWindow.loadFile("Templates/TerminalOutput.html");
+    consoleWindow.setMenuBarVisibility(false);
+    consoleWindow.openDevTools();
+    consoleWindow.setTitle("Console Window Output");
 
     //Preferences Window
     prefsWindow = new BrowserWindow({width:700,height:600,x:0,y:0,show:false,resizable:true});
@@ -24,12 +30,21 @@ function initApp(){
 
     //Check if preference window is showing
     ipcMain.on("show-prefs",function(){
+        
         if(!prefsWindow.isVisible()){ 
             prefsWindow.show();
         }else{
             prefsWindow.hide();
         }
 
+    });
+
+    //Check if console window is showing
+    ipcMain.on("console-output",function(event,payload){
+        consoleWindow.webContents.send("console-output",payload);
+        if(!consoleWindow.isVisible()){
+            consoleWindow.show();
+        }
     });
 
     ipcMain.on("show-editor",function(){
@@ -53,9 +68,19 @@ function initApp(){
     prefsWindow.on("closed",function(){
         prefsWindow = null;
     });
+
+    consoleWindow.on("close",function(event){
+        consoleWindow.hide();
+        event.preventDefault();
+    });
+    consoleWindow.on("closed",function(){
+        consoleWindow = null;
+    });
+
     win.on("closed",function(){
         prefsWindow = null;
         win = null;
+        consoleWindow = null;
     })
 }
 

@@ -3,10 +3,8 @@ const EditorManager = require("./../EditorManager");
 const path = require("path");
 const fs = require("fs");
 const ipcRenderer = require("electron").ipcRenderer;
-const {Menu,MenuItem,BrowserWindow} = require("electron").remote;
+const {Menu,MenuItem} = require("electron").remote;
 const {remote,clipboard} = require("electron");
-const FileManager = require("./FileManager");
-const $ = require("jquery");
 //Terminal Manager
 const command = require('child_process').exec;
 //Side-bar
@@ -20,14 +18,16 @@ var instance;
 var feebackInterface = document.getElementById("feedback-text");
 //Menu
 var TabMenu;
+//Error nodes array
 var errorNodes = [];
 var errorLines = [];
-//Run commands 
+//Create the menu
 CreateTabMenu();
-
 //Titlebar filename 
 var TitleBarFileName =  document.getElementById("title-bar-filename");
-
+/**
+ * Create the tab menu
+ */
 function CreateTabMenu(){
     TabMenu = new Menu();
     var CloseTabMenuItem = new MenuItem({label: "Close Tab",click:CloseTab})
@@ -90,7 +90,11 @@ function ExplorerManagement(CurrentFile){
     }
 }
 
-
+/**
+ * 
+ * @param {*} CurrentFile 
+ * @param {*} e 
+ */
 function OpenTabInEditor(CurrentFile,e){
     //Read the name of the tab and filename and adding it into the code mirror editor 
     CurrentFile = e.target.name;
@@ -120,16 +124,25 @@ function GetRelativeTabPath(){
 function CloseOtherTabs(){
 
 }
-
+/**
+ * Reveal item in a folder 
+ */
 function RevealFileInExplorer(){
     shell.showItemInFolder(instance);
 }
-
+/**
+ * 
+ * @param {*} CurrentFile 
+ */
 function UpdateTab(CurrentFile){
     //Get the current tab name 
    console.log(CurrentFile); 
 }
 
+/**
+ * 
+ * @param {*} CurrentFile 
+ */
 function CreateTab(CurrentFile){
     if(CurrentFile == null || CurrentFile == undefined || path.extname(CurrentFile.toString()) ==".tmp"){
         CurrentFile = "Untitled";
@@ -189,9 +202,6 @@ function GetDisplayLine(errormessage){
    
 }
 /**
-  Check if there is more than one error
-  If there is more than one error 
-  Display at the bottom of codemirror with different message
  * @param {*} CurrentFile 
  * @param {*} errormessage 
  */
@@ -207,6 +217,10 @@ function DisplayErrorInCode(CurrentFile,errormessage){
    
 
 }
+/**
+ * 
+ * @param {*} CurrentFile 
+ */
 function Save(CurrentFile){
     //Check for a current file name
         fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
@@ -273,6 +287,9 @@ function CheckErrorNodes(){
 function SendTerminalOutput(output){
     ipcRenderer.send("console-output",output);
 }
+
+
+
 module.exports = {
     SideBarToggle,
     ExplorerManagement,

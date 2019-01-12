@@ -99,6 +99,7 @@ function OpenTabInEditor(CurrentFile,e){
             console.log(err);
         }else{
         EditorManager.editableCodeMirror.setValue(data);
+        console.log(CurrentFile);
         }
     });
 }
@@ -217,7 +218,11 @@ function Save(CurrentFile){
         });
     }
 
-
+/**
+ * Check for any error nodes and remove them
+ * Build Commads 
+ * @param {*} CurrentFile 
+ */
 function BuildCommands(CurrentFile){
     CheckErrorNodes();
     BuildCommandsBtn.addEventListener("click",function(){

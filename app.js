@@ -81,6 +81,7 @@ function initApp(){
         prefsWindow = null;
         win = null;
         consoleWindow = null;
+        app.quit();
     })
 }
 
@@ -106,7 +107,4 @@ function CaclWindowPosX(){
 function CalcWindowPosY(){
     var newPosY = win.y + win.height;
     return newPosY;
-}
-function CalcWindowWidthAndHeight(){
-
 }

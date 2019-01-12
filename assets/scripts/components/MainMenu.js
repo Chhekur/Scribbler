@@ -1,7 +1,6 @@
 const {Menu,MenuItem,BrowserWindow} = require("electron").remote;
 const ipcRenderer = require("electron").ipcRenderer;
 const FileManager = require("./FileManager");
-const winColor = require('windows-titlebar-color')
 const base = require("../EditorManager");
 const path = require("path");
 const InterfaceManager = require("./InterfaceManager");
@@ -13,7 +12,6 @@ let prefOptions;
 
 //Create main menu
 function CreateMainMenu() {
-    console.log(winColor.titlebarColor)
     const MainMenu = new Menu();
     //View menu
     var viewMenuItem = new MenuItem({

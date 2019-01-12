@@ -20,7 +20,7 @@ var instance;
 var feebackInterface = document.getElementById("feedback-text");
 //Menu
 var TabMenu;
-
+var errorNodes = [];
 //Run commands 
 CreateTabMenu();
 
@@ -169,12 +169,12 @@ function GetDisplayLine(errormessage){
     var errorMsg = errormessage.toString();
     var searchExp = /\d+/g;
     var match = errorMsg.match(searchExp);
-    return match[1];
+    return match[0];
 }
-function DisplayError(CurrentFile,errormessage){
-    
-    EditorManager.editableCodeMirror.addLineWidget(GetDisplayLine(errormessage) -1 ,NotificationManager.createErrorNode("fa fa-exclamation-circle",errormessage.toString()) );
-    NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
+function DisplayErrorInCode(CurrentFile,errormessage){
+
+   errorNodes.push(EditorManager.editableCodeMirror.addLineWidget(GetDisplayLine(errormessage) -1 ,NotificationManager.createErrorNode("fa fa-exclamation-circle","Error on line",GetDisplayLine(errormessage),errormessage.toString()) ));
+   NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
 
 }
 function Save(CurrentFile){
@@ -183,36 +183,35 @@ function Save(CurrentFile){
             if(err){
                NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa fa-ban",true,"light",12);
             }else{
-                NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
+                //NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
             }
         });
     }
 
 
 function BuildCommands(CurrentFile){
+    CheckErrorNodes();
     BuildCommandsBtn.addEventListener("click",function(){
     Save(CurrentFile);
     command("javac "+path.basename(CurrentFile.toString()),{cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
        if(err){
-           console.log(err);
+           DisplayErrorInCode(CurrentFile,err);
+           console.log(errorNodes);
        }else if(stderr){
            console.log(stderr);
        }else{
        command("java "+pathExtra.base(CurrentFile.toString(), false), {cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
             if(err){
                 console.log(err);
-                NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
-
             }
              if(stderr){
                 console.log(stderr);
-                NotificationManager.displayNotification("er","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
-                //Display errors on widgets 
-                //Display 
+                DisplayErrorInCode(CurrentFile,err);
             }
-               SendTerminalOutput(stdout);
-
-            
+            //Display notification 
+            NotificationManager.displayNotification("success","Compilation success! View the terminal window to display results","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
+            //Send output to the terminal output window
+            SendTerminalOutput(stdout);
        });
     }
        
@@ -221,6 +220,17 @@ function BuildCommands(CurrentFile){
 
 }
 
+function CheckErrorNodes(){
+    EditorManager.editableCodeMirror.operation(function(){
+        if(errorNodes.length > 0 ){
+            for(var i = 0 ; i< errorNodes.length; i ++){
+                EditorManager.editableCodeMirror.removeLineWidget(errorNodes[i]);
+     
+            }
+            
+        }
+    });  
+}
 /**
  * Send the output
  * @param {*} output 

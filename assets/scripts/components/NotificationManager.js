@@ -116,7 +116,7 @@ function displayProgressNotification(title,message,icon){
     
 }
 
-function createErrorNode(icon,message){
+function createErrorNode(icon,visible_message,lineNumber,message){
 
     var htmlNode =document.createElement("div");
     var iconNode = document.createElement("i");
@@ -124,9 +124,10 @@ function createErrorNode(icon,message){
     iconNode.style.marginRight = "5px";
     iconNode.style.marginLeft = "5px";
 
-    var text =  document.createTextNode(message);
+    var text =  document.createTextNode(visible_message+ " "+lineNumber + ",hover for more information");
     htmlNode.setAttribute("id","err")
     htmlNode.classList.add("error-node");
+    htmlNode.title = message;
     htmlNode.appendChild(iconNode);
     htmlNode.appendChild(text);    
 

@@ -1,0 +1,8 @@
+public class main{
+	public static void main(String[] args){
+	HelloWorld();
+    }
+  private static void HelloWorld(){
+   System.out.println("This now wg the widgets");
+  }
+}

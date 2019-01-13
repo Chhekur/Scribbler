@@ -9,6 +9,8 @@ var CurrentFile;
 var EditorManager = require("../EditorManager");
 const tmp = require("tmp");
 var isTempFile = false;
+
+
 //Open File
 function OpenFile(){
     dialog.showOpenDialog(function(InstanceFile){

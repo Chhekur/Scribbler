@@ -3,8 +3,9 @@ const EditorManager = require("./../EditorManager");
 const path = require("path");
 const fs = require("fs");
 const ipcRenderer = require("electron").ipcRenderer;
-const {Menu,MenuItem} = require("electron").remote;
+const {Menu,MenuItem,shell} = require("electron").remote;
 const {remote,clipboard} = require("electron");
+const $ = require("jquery");
 //Terminal Manager
 const command = require('child_process').exec;
 //Side-bar
@@ -14,8 +15,7 @@ const  preferencesToggle  = document.getElementById("preferences-toggle");
 const BuildCommandsBtn = document.getElementById("run-code");
 const pathExtra = require("path-extra");
 var instance;
-//Feddback window 
-var feebackInterface = document.getElementById("feedback-text");
+
 //Menu
 var TabMenu;
 //Error nodes array
@@ -37,7 +37,9 @@ function CreateTabMenu(){
     var CloseTabsToTheRight = new MenuItem({label: "Close To The Right",click:RevealFileInExplorer});
     var CloseTabsToTheLeft = new MenuItem({label: "Close To The Left",click:RevealFileInExplorer});
     var CloseOtherTabs = new MenuItem({label: "Close All Others",click:RevealFileInExplorer});
+
     var TabMenuSeparator = new MenuItem({type:"separator"});
+
     TabMenu.append(CloseTabMenuItem);
     TabMenu.append(CloseTabsToTheLeft);
     TabMenu.append(CloseTabsToTheRight);
@@ -71,7 +73,9 @@ function PreferencesToggle(){
 var count = 0;
 function ExplorerManagement(CurrentFile){
     if(CurrentFile != null || CurrentFile != undefined || CurrentFile == " "){
-       CreateTab(CurrentFile);
+    //Check if the node exists
+        CreateTab(CurrentFile);
+    
         for(var i=0; i<tabContainer.childNodes.length;i++){
             if(tabContainer.childNodes[i].nodeName == "LI"){
                 tabContainer.childNodes[i].addEventListener("click",function(e){
@@ -90,6 +94,8 @@ function ExplorerManagement(CurrentFile){
     }
 }
 
+
+
 /**
  * 
  * @param {*} CurrentFile 
@@ -97,13 +103,13 @@ function ExplorerManagement(CurrentFile){
  */
 function OpenTabInEditor(CurrentFile,e){
     //Read the name of the tab and filename and adding it into the code mirror editor 
-    CurrentFile = e.target.name;
-    fs.readFile(CurrentFile,"utf-8",function(err,data){
+    CurrentFile[0] = e.target.name;
+    fs.readFile(CurrentFile[0],"utf-8",function(err,data){
         if(err){
             console.log(err);
         }else{
         EditorManager.editableCodeMirror.setValue(data);
-        console.log(CurrentFile);
+       console.log(CurrentFile[0].toString());
         }
     });
 }
@@ -154,6 +160,9 @@ function CreateTab(CurrentFile){
     //Set attribute for link 
     newTabItemListItem.setAttribute("name",CurrentFile.toString()); 
     newTabItemListItem.setAttribute("title",CurrentFile.toString()); 
+    newTabItemListItem.classList.add("newTab");
+    
+    //Loop and remove from other children JQUERY
     newTabItemLink.setAttribute("name",CurrentFile.toString()); 
     newTabItemLink.setAttribute("title",CurrentFile.toString()); 
     //Create text 
@@ -164,9 +173,16 @@ function CreateTab(CurrentFile){
     newTabItemListItem.appendChild(newTabItemLink);
     //Append to tab container
     tabContainer.appendChild(newTabItemListItem);
-
     //Check if they have the same name 
     tabContainer.appendChild(newTabItemListItem);
+    //Check changing classes
+    $(".newTab").siblings().each(function(){
+        if($(this).siblings().hasClass("uk-active")){
+            $(this).siblings().removeClass("uk-active");
+            newTabItemListItem.classList.add("uk-active");
+        }
+    });
+
 }
 
 

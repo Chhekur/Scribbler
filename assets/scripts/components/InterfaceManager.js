@@ -175,16 +175,24 @@ function CreateTab(CurrentFile){
     tabContainer.appendChild(newTabItemListItem);
     //Check if they have the same name 
     tabContainer.appendChild(newTabItemListItem);
-    //Check changing classes
+    //Check changing classes and names
+    TabChecking();
+    
+
+}
+
+function TabChecking(){
     $(".newTab").siblings().each(function(){
+        if($(this).siblings().text() == $(this).text()){
+            $(this).remove();
+        }
+        
         if($(this).siblings().hasClass("uk-active")){
             $(this).siblings().removeClass("uk-active");
             newTabItemListItem.classList.add("uk-active");
         }
     });
-
 }
-
 
 function RemoveErrorNodes(){
     if(document.getElementById("err")){

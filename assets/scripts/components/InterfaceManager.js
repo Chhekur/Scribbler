@@ -14,13 +14,20 @@ const sideBarToggle = document.getElementById("sidebar-toggle");
 const  preferencesToggle  = document.getElementById("preferences-toggle");
 const BuildCommandsBtn = document.getElementById("run-code");
 const pathExtra = require("path-extra");
-var instance;
 
+
+//Target Tab item being clicked 
+var varTargetTab;
+
+
+//Tab vars
+var newTabItemListItem;
 //Menu
 var TabMenu;
 //Error nodes array
 var errorNodes = [];
 var errorLines = [];
+var multilineError = false;
 //Create the menu
 CreateTabMenu();
 //Titlebar filename 
@@ -30,17 +37,17 @@ var TitleBarFileName =  document.getElementById("title-bar-filename");
  */
 function CreateTabMenu(){
     TabMenu = new Menu();
-    var CloseTabMenuItem = new MenuItem({label: "Close Tab",click:CloseTab})
+
     var RevealInExplorerMenuItem = new MenuItem({label: "Reveal In Explorer",click:RevealFileInExplorer});
     var CopyRelativePath = new MenuItem({label: "Copy Relative Path",click:GetRelativeTabPath});
     var CopyAbsolutePath = new MenuItem({label: "Copy Absolute Path",click:GetAbsoluteTabPath});
     var CloseTabsToTheRight = new MenuItem({label: "Close To The Right",click:RevealFileInExplorer});
     var CloseTabsToTheLeft = new MenuItem({label: "Close To The Left",click:RevealFileInExplorer});
     var CloseOtherTabs = new MenuItem({label: "Close All Others",click:RevealFileInExplorer});
-
+    var CloseCurrentTab = new MenuItem({label:"Close Current Tab",click:RemoveCurrentTab});
     var TabMenuSeparator = new MenuItem({type:"separator"});
 
-    TabMenu.append(CloseTabMenuItem);
+    TabMenu.append(CloseCurrentTab);
     TabMenu.append(CloseTabsToTheLeft);
     TabMenu.append(CloseTabsToTheRight);
     TabMenu.append(TabMenuSeparator);
@@ -84,8 +91,8 @@ function ExplorerManagement(CurrentFile){
                });
                tabContainer.childNodes[i].addEventListener("contextmenu",function(e){
                    TabMenu.popup(remote.getCurrentWindow());
-                   instance = e.target.name;
-                   return instance;
+                   varTargetTab = e.target;
+                   
                });
             }
         }
@@ -109,7 +116,6 @@ function OpenTabInEditor(CurrentFile,e){
             console.log(err);
         }else{
         EditorManager.editableCodeMirror.setValue(data);
-       console.log(CurrentFile[0].toString());
         }
     });
 }
@@ -154,7 +160,7 @@ function CreateTab(CurrentFile){
         CurrentFile = "Untitled";
     } 
     //Check if there is a tab with the same name 
-    var newTabItemListItem = document.createElement("li");
+     newTabItemListItem = document.createElement("li");
     //Create a 
     var newTabItemLink = document.createElement("a");
     //Set attribute for link 
@@ -207,9 +213,8 @@ function RemoveErrorNodes(){
  * For every match made an error node is created 
  * @param {*} errormessage 
  */
-var multilineError = false;
+
 function GetDisplayLine(errormessage){
-    
     var errorMsg = errormessage.toString();
     var searchExp = /\d+/g;
     var  match = errorMsg.match(searchExp);
@@ -262,17 +267,32 @@ function Save(CurrentFile){
  * @param {*} CurrentFile 
  */
 function BuildCommands(CurrentFile){
+    //Declare the commands 
+    var compileJavaCommand = "javac "+path.basename(CurrentFile.toString());
+    var runJavaCommand ="java "+pathExtra.base(CurrentFile.toString(), false);
+    console.log("First command "+compileJavaCommand);
+    console.log("Second command "+runJavaCommand);
+    //Checks for error nodes and removes them 
     CheckErrorNodes();
+
     BuildCommandsBtn.addEventListener("click",function(){
+    //Saves the current file 
     Save(CurrentFile);
-    command("javac "+path.basename(CurrentFile.toString()),{cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
+    //Check if java file or not 
+    var extname = path.extname(CurrentFile.toString());
+    var requiredName = ".java";
+    if(requiredName.trim() != extname.trim()){
+        NotificationManager.displayNotification("info","Cannot run compiler on non java files","bottomCenter",2000,"fa fa-info-circle",false,"light",12);
+        return;
+    }else{
+    command(compileJavaCommand,{cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
        if(err){
            DisplayErrorInCode(CurrentFile,err);
            console.log(errorNodes);
        }else if(stderr){
            console.log(stderr);
        }else{
-       command("java "+pathExtra.base(CurrentFile.toString(), false), {cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
+       command(runJavaCommand, {cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
             if(err){
                 console.log(err);
             }
@@ -288,10 +308,54 @@ function BuildCommands(CurrentFile){
     }
        
    });
+}
 });
+    
 
 }
 
+/**
+ * 
+ * @param {*} CurrentFile 
+ */
+function ReadInFile(CurrentFile){
+    fs.readFile(CurrentFile[0],'utf-8',function(err,data){
+        if(err){
+            console.log(err);
+        }else{
+            EditorManager.editableCodeMirror.setValue(data);
+        }
+    });
+}
+
+
+function RemoveCurrentTab(){
+    //Remove the node first 
+    if(varTargetTab.nodeName == "A"){
+        if($(varTargetTab).parent().prev().length > 0){
+            CurrentFile = $(varTargetTab).parent().prev().attr("name");
+            //Re-reads in the previous file 
+            ReadInFile(CurrentFile);
+            $(varTargetTab).parent().remove();
+
+        }
+        
+    }
+
+    if(varTargetTab.nodeName == "LI"){
+        if($(varTargetTab).prev().length > 0){
+            CurrentFile = $(varTargetTab).prev().attr("name");
+            //Re-reads in the previous file 
+            ReadInFile(CurrentFile);
+            //Remove the node 
+            $(varTargetTab).remove();
+
+        }
+        CurrentFile = $(varTargetTab).prev().attr("name");
+        console.log(CurrentFile);
+    }
+    
+}
 function CheckErrorNodes(){
     EditorManager.editableCodeMirror.on("change",function(){
         setTimeout(function(){

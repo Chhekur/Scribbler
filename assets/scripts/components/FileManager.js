@@ -150,6 +150,7 @@ function CreateNewWindow(){
     console.log("Creating new window");
 }
 
+
 function CreateNewFile(){
     //Clear current window 
     if(EditorManager.editableCodeMirror.getValue() != null || EditorManager.editableCodeMirror.getValue() != " "){
@@ -190,6 +191,8 @@ module.exports = {
     CurrentFile,
     CreateNewFile,
     GetCurrentFile,
-    OtherSave
+    OtherSave,
+    
+    
     
 }

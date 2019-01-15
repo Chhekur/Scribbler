@@ -62,6 +62,7 @@ window.onload = function(){
 
 }
 
+
 //Setting fontSize
 //Setting Stylesheet
 function setStylesheet(theme){
@@ -102,7 +103,6 @@ function setMode(){
   
 }
 */
-
 
         
    

@@ -14,12 +14,8 @@ const sideBarToggle = document.getElementById("sidebar-toggle");
 const  preferencesToggle  = document.getElementById("preferences-toggle");
 const BuildCommandsBtn = document.getElementById("run-code");
 const pathExtra = require("path-extra");
-
-
 //Target Tab item being clicked 
 var varTargetTab;
-
-
 //Tab vars
 var newTabItemListItem;
 //Menu
@@ -41,14 +37,11 @@ function CreateTabMenu(){
     var RevealInExplorerMenuItem = new MenuItem({label: "Reveal In Explorer",click:RevealFileInExplorer});
     var CopyRelativePath = new MenuItem({label: "Copy Relative Path",click:GetRelativeTabPath});
     var CopyAbsolutePath = new MenuItem({label: "Copy Absolute Path",click:GetAbsoluteTabPath});
-    var CloseTabsToTheRight = new MenuItem({label: "Close To The Right",click:RevealFileInExplorer});
-    var CloseTabsToTheLeft = new MenuItem({label: "Close To The Left",click:RevealFileInExplorer});
+    var CloseTabsToTheRight = new MenuItem({label: "Close To The Right",click:RemoveTabsToTheRight});
     var CloseOtherTabs = new MenuItem({label: "Close All Others",click:RevealFileInExplorer});
-    var CloseCurrentTab = new MenuItem({label:"Close Current Tab",click:RemoveCurrentTab});
+    var CloseCurrentTab = new MenuItem({label:"Close Current Tab",click:RemoveCurrentTab,accelerator:"Ctrl+"});
     var TabMenuSeparator = new MenuItem({type:"separator"});
-
     TabMenu.append(CloseCurrentTab);
-    TabMenu.append(CloseTabsToTheLeft);
     TabMenu.append(CloseTabsToTheRight);
     TabMenu.append(TabMenuSeparator);
     TabMenu.append(CopyRelativePath);
@@ -82,7 +75,6 @@ function ExplorerManagement(CurrentFile){
     if(CurrentFile != null || CurrentFile != undefined || CurrentFile == " "){
     //Check if the node exists
         CreateTab(CurrentFile);
-    
         for(var i=0; i<tabContainer.childNodes.length;i++){
             if(tabContainer.childNodes[i].nodeName == "LI"){
                 tabContainer.childNodes[i].addEventListener("click",function(e){
@@ -101,8 +93,6 @@ function ExplorerManagement(CurrentFile){
     }
 }
 
-
-
 /**
  * 
  * @param {*} CurrentFile 
@@ -118,10 +108,6 @@ function OpenTabInEditor(CurrentFile,e){
         EditorManager.editableCodeMirror.setValue(data);
         }
     });
-}
-
-function CloseTab(){
-    console.log("Closing tabs...");
 }
 
 function GetAbsoluteTabPath(){
@@ -192,7 +178,6 @@ function TabChecking(){
         if($(this).siblings().text() == $(this).text()){
             $(this).remove();
         }
-        
         if($(this).siblings().hasClass("uk-active")){
             $(this).siblings().removeClass("uk-active");
             newTabItemListItem.classList.add("uk-active");
@@ -200,20 +185,10 @@ function TabChecking(){
     });
 }
 
-function RemoveErrorNodes(){
-    if(document.getElementById("err")){
-    for(var i = 0; i<document.getElementById("err").length; i++){
-    if(document.getElementById("err")[i]){
-        document.removeChild(doucment.getElementById("err")[i]);
-        }
-    }
-    }
-}
 /**
  * For every match made an error node is created 
  * @param {*} errormessage 
  */
-
 function GetDisplayLine(errormessage){
     var errorMsg = errormessage.toString();
     var searchExp = /\d+/g;
@@ -230,6 +205,7 @@ function GetDisplayLine(errormessage){
     }
    
 }
+
 /**
  * @param {*} CurrentFile 
  * @param {*} errormessage 
@@ -243,20 +219,17 @@ function DisplayErrorInCode(CurrentFile,errormessage){
         errorNodes.push(EditorManager.editableCodeMirror.addLineWidget(GetDisplayLine(errormessage) -1 ,NotificationManager.createErrorNode("fa fa-exclamation-circle","Error on line",GetDisplayLine(errormessage),errormessage.toString()) ));
         NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
     }
-   
-
 }
+
 /**
  * 
  * @param {*} CurrentFile 
  */
 function Save(CurrentFile){
-    //Check for a current file name
         fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
             if(err){
                NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa fa-ban",true,"light",12);
             }else{
-                //NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
             }
         });
     }
@@ -274,11 +247,8 @@ function BuildCommands(CurrentFile){
     console.log("Second command "+runJavaCommand);
     //Checks for error nodes and removes them 
     CheckErrorNodes();
-
     BuildCommandsBtn.addEventListener("click",function(){
-    //Saves the current file 
     Save(CurrentFile);
-    //Check if java file or not 
     var extname = path.extname(CurrentFile.toString());
     var requiredName = ".java";
     if(requiredName.trim() != extname.trim()){
@@ -310,8 +280,6 @@ function BuildCommands(CurrentFile){
    });
 }
 });
-    
-
 }
 
 /**
@@ -328,31 +296,42 @@ function ReadInFile(CurrentFile){
     });
 }
 
+function RemoveTabsToTheRight(){
+    //Delete the sibling next
+    console.log("Remove from the left");
+}
 
 function RemoveCurrentTab(){
     //Remove the node first 
+    var parentTab  = $(varTargetTab).parent();
+    var tab = $(varTargetTab);
     if(varTargetTab.nodeName == "A"){
-        if($(varTargetTab).parent().prev().length > 0){
-            CurrentFile = $(varTargetTab).parent().prev().attr("name");
+        if(parentTab.prev().length > 0){
+            CurrentFile = parentTab.prev().attr("name");
             //Re-reads in the previous file 
             ReadInFile(CurrentFile);
-            $(varTargetTab).parent().remove();
+            parentTab.remove();
+        }else{
+            parentTab.remove();
+            EditorManager.editableCodeMirror.setValue("");
 
         }
         
     }
-
     if(varTargetTab.nodeName == "LI"){
-        if($(varTargetTab).prev().length > 0){
-            CurrentFile = $(varTargetTab).prev().attr("name");
+        if(tab.prev().length > 0){
+            CurrentFile = tab.prev().attr("name");
             //Re-reads in the previous file 
             ReadInFile(CurrentFile);
             //Remove the node 
-            $(varTargetTab).remove();
+            tab.remove();
+        }else{
+            tab.remove();
+            EditorManager.editableCodeMirror.setValue("");
+            console.log(CurrentFile);
 
         }
         CurrentFile = $(varTargetTab).prev().attr("name");
-        console.log(CurrentFile);
     }
     
 }

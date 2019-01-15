@@ -1,18 +1,27 @@
 //import modules
 const {app,BrowserWindow,ipcMain} = require("electron");
+const electron  = require("electron")
 const path = require("path");
 
 //Electron Reload
 require("electron-reload")(__dirname);
 
 //Init Window
-let win,prefsWindow,consoleWindow;
+let win,prefsWindow,consoleWindow,introWindow;
+
 function initApp(){
+    //Intro window loading 
+    introWindow = new BrowserWindow({width: 500,height:500,x:CalcMiddleX(),y:CalcMiddleY(),frame:false});
+    introWindow.loadFile("Templates/LoadingWindow.html");
+    introWindow.setTitle("Scribbler Intro");
+    introWindow.webContents.openDevTools();
+
     //Displaying the loading window before hand 
-    win = new BrowserWindow({width: 700,height:600,x:0,y:0,frame:true});
+    win = new BrowserWindow({width: 700,height:600,x:0,y:0,show:false,frame:true});
     win.setTitle("Scribbler");
     win.loadURL(`${__dirname}/index.html`);
     win.webContents.openDevTools();
+
     //Terminal output window 
     consoleWindow = new BrowserWindow({width:win.width,height:win.height,x:CaclWindowPosX(),y:CalcWindowPosY(),show:false,resizable:true});
     consoleWindow.loadFile("Templates/TerminalOutput.html");
@@ -27,7 +36,20 @@ function initApp(){
     prefsWindow.loadFile("Templates/Preferences.html");
     prefsWindow.openDevTools();
 
+    introWindow.on("ready-to-show",function(){
+        introWindow.show()
+    })
+    win.on("ready-to-show",function(){
+        //Swap the windows 
+        win.show();
+        introWindow.hide();
+    });
 
+    if(!introWindow.isVisible()){
+        introWindow.close();
+        introWindow = null;
+    }
+    
     //Check if preference window is showing
     ipcMain.on("show-prefs",function(){
         
@@ -107,4 +129,13 @@ function CaclWindowPosX(){
 function CalcWindowPosY(){
     var newPosY = win.y + win.height;
     return newPosY;
+}
+
+function CalcMiddleX(){
+    var bounds_x = electron.screen.getPrimaryDisplay.width / 2;
+    return bounds_x;
+}
+function CalcMiddleY(){
+    var bounds_y = electron.screen.getPrimaryDisplay.height / 2;
+    return bounds_y;
 }

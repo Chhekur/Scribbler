@@ -10,11 +10,11 @@ require("electron-reload")(__dirname);
 let win,prefsWindow,consoleWindow,introWindow;
 
 function initApp(){
+  
     //Intro window loading 
     introWindow = new BrowserWindow({width: 500,height:500,x:CalcMiddleX(),y:CalcMiddleY(),frame:false});
     introWindow.loadFile("Templates/LoadingWindow.html");
     introWindow.setTitle("Scribbler Intro");
-    introWindow.webContents.openDevTools();
 
     //Displaying the loading window before hand 
     win = new BrowserWindow({width: 700,height:600,x:0,y:0,show:false,frame:true});

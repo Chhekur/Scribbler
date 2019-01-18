@@ -1,19 +1,57 @@
 //Vars
 const fs = require("fs");
 const path = require("path");
-const {remote,dialog} = require("electron").remote;
+const {remote,dialog,app} = require("electron").remote;
 const InterfaceManager = require("./InterfaceManager");
 const NotificationManager = require("./NotificationManager");
-var tabList = document.getElementById("tab-group");
 var CurrentFile;
 var EditorManager = require("../EditorManager");
-const tmp = require("tmp");
+const tempfile = require('tempfile');
 var isTempFile = false;
+var defaultDocumentsPath = app.getPath("documents");
+var ScribblerProjectToCreate = defaultDocumentsPath+"/Scribbler_Projects";
+var DefaultSavePath = ScribblerProjectToCreate+"/";
+
+//Watching directory -- Create updates
 
 
+const OpenDialogOptions = {
+    title: "Open File",
+    filters: [
+      { name: "Java", extensions: ["java"] },
+      { name: "Scribble", extensions: ["src"] }
+    
+    ],
+
+  };
+const SaveDialogOptions = {
+    title: "Save File",
+    filters: [
+      { name: "Java", extensions: ["java"] },
+      { name: "Scribble", extensions: ["src"] }
+    ],
+  }
+
+function CreateDefaultDir(){
+    //Create the directory scribbler projects 
+    fs.exists(ScribblerProjectToCreate,function(exists){
+        if(exists){
+            console.log("Exists");
+        }else{
+            fs.mkdir(ScribblerProjectToCreate,function(err){
+                if(err){
+                    console.log(err);
+                }else{
+                    //Watch for changes 
+                  
+                }
+            })
+        }
+    });
+}
 //Open File
 function OpenFile(){
-    dialog.showOpenDialog(function(InstanceFile){
+    dialog.showOpenDialog(OpenDialogOptions,function(InstanceFile){
         if(InstanceFile == undefined){
             return;
         }else{
@@ -26,9 +64,7 @@ function OpenFile(){
                     EditorManager.editableCodeMirror.setValue(data);
                     //Add to sidebar
                     InterfaceManager.ExplorerManagement(CurrentFile); 
-                    //Make the last child active
-                   SetCurrentFile(CurrentFile);     
-                   InterfaceManager.BuildCommands(CurrentFile);                          
+                                          
                 }
             })
         }
@@ -41,31 +77,17 @@ function SetCurrentFile(file){
 function GetCurrentFile(){
     return CurrentFile;
 }
-//Auto-Save File
-function AutoSave(){
-    //Set interval for saving every 7 seconds 
-        setInterval(function(){
-            fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
-                if(err){
-                   NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",1000,"fa fa-ban",true,"light",12);
-                }else{
-                    NotificationManager.displayNotification("success","Save successful","bottomCenter",800,"fa fa-check-circle",false,"light",12);
-                }
-            });
-        },1000);
-    
-    //Check if auto-save feature is enabled (future feature)
-}
 
-function OtherSave(CurrentFile){
-  //Check for a current file name
+
+//Normal save 
+function Save(){
+    //Check for a current file name
     if(CurrentFile == undefined || CurrentFile == null){
         CreateNewFile();
         NotificationManager.displayNotification("warning","No file detected, new file created","bottomCenter",2000,"fa fa-exclamation-triangle",false,"light",12);
-    }
-    if(isTempFile == true){
-        SaveAs();
-        isTempFile = false;
+    }if(isNewFile == true){
+        InterfaceManager.RenameFile(CurrentFile);
+        isNewFile = false;
     }else{
         fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
             if(err){
@@ -76,52 +98,68 @@ function OtherSave(CurrentFile){
         });
     }
 }
-//Normal save 
-function Save(){
-    //Check for a current file name
-    if(GetCurrentFile() == undefined || GetCurrentFile() == null){
-        CreateNewFile();
-        NotificationManager.displayNotification("warning","No file detected, new file created","bottomCenter",2000,"fa fa-exclamation-triangle",false,"light",12);
-    }
-    if(isTempFile == true){
-        SaveAs();
-        isTempFile = false;
-    }else{
-        fs.writeFile(GetCurrentFile()[0],EditorManager.editableCodeMirror.getValue(),function(err){
-            if(err){
-               NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa fa-ban",true,"light",12);
+
+function SaveAs(){
+        dialog.showSaveDialog(function(filename){
+            if(filename != undefined){
+                //Move the file to whereever the path is 
+                fs.writeFile(filename[0],"New File","utf-8",function(err){
+                    if(err){
+                        console.log(err);
+                    }else{
+                    console.log("Successful save as ");
+                    CurrentFile = filename;
+                    }
+                })
             }else{
+                console.log("File is undefined, please try again");
+            }
+        })
+     
+    
+
+    
+    /*
+   dialog.showSaveDialog(function(FileToBeSaved){
+    if(FileToBeSaved == undefined){
+        console.log("File is undefined please try again later");
+    }else{
+        fs.writeFile(FileToBeSaved[0],EditorManager.editableCodeMirror.getValue().toString(),function(err){
+            if(err){
+                console.log(err);
+            }else{
+                console.log("File successfully saved");
                 NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
             }
-        });
+        })
     }
+   });
+   */
 }
-
+/*
 //Save File As
 function SaveAs(){
-    dialog.showSaveDialog(function(InstanceFile){
+    dialog.showSaveDialog(SaveDialogOptions,function(InstanceFile){
         if(InstanceFile == undefined){
             console.log("Error the file is undefined, please try again");
-        }else{
-            fs.writeFile(InstanceFile,EditorManager.editableCodeMirror.getValue().toString(),function(err){
+        }else{            
+            fs.writeFile(InstanceFile[0],"EditorManager.editableCodeMirror.getValue().toString()",function(err){
                 if(err){
                     console.log(err);
                 }else{
-                    //Set InstanceFile
-                    isAlreadySaved = true;
-                    InstanceFile = CurrentFile;
-                    InterfaceManager.UpdateTab(CurrentFile);
-                    //Display notification
-                    NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
-                    //Set time out on closing notification 
-                    SetCurrentFile(InstanceFile);
-
+                isAlreadySaved = true;
+                //CurrentFile = InstanceFile;
+                console.log(CurrentFile);
+                NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
+                //Update the current tab for new file name
+                InterfaceManager.UpdateTab();  
                 }
             });
+            
         }
     })
 }
-
+*/
 
 //Open Folder
 function OpenFolder() {
@@ -150,49 +188,57 @@ function CreateNewWindow(){
     console.log("Creating new window");
 }
 
-
+var isNewFile = false;
 function CreateNewFile(){
+    isNewFile = true;
+    var newFile = DefaultSavePath+CreateRandomFileName();
     //Clear current window 
     if(EditorManager.editableCodeMirror.getValue() != null || EditorManager.editableCodeMirror.getValue() != " "){
         EditorManager.editableCodeMirror.setValue("");
     }
-    //Create a temp file 
-    tmp.file(function CreateTempFile(err,temppath,fd,callback){
+    //Create the tmp file 
+    fs.writeFile(newFile," ",function(err){
         if(err){
             console.log(err);
         }
-        
-        CurrentFile = temppath;
-      
-
-        //Removes the file after
-        callback();
-        //Create new tab 
-        InterfaceManager.CreateTab(CurrentFile);
-        isTempFile = true;
-       
-        
     })
-  
-
+    fs.readFile(newFile[0],'utf-8',function(err,data){
+        if(err){
+            console.log(err);
+        }else{
+             CurrentFile = newFile;
+            //Writing the data to the window
+            EditorManager.editableCodeMirror.setValue(data);
+            //Add to sidebar
+            InterfaceManager.ExplorerManagement(CurrentFile); 
+            InterfaceManager.BuildCommands(CurrentFile);    
+            //Display notification
+            NotificationManager.displayNotification("info","New file created, press Ctrl+S to save/rename","bottomCenter",3000,"fas fa-icon-circle",false,"light",12);             
+        }
+    })
 }
 
-
+//Create Random File Name
+function CreateRandomFileName() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  
+    for (var i = 0; i < 5; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  
+    return text+".java";
+  }
 
 //Exports
 module.exports = {
-    
     CreateNewWindow,
     OpenFolder,
     OpenFile,
     SaveAs,
     Save,
-    AutoSave,
     CurrentFile,
     CreateNewFile,
     GetCurrentFile,
-    OtherSave,
-    
-    
-    
+    SetCurrentFile,
+    CreateDefaultDir
 }

@@ -1,14 +1,17 @@
 <html>
     <head>
-    <link rel="stylesheet" href="assets/css/index.css">
-    <!---Font awesome icons-->
-    <link rel="stylesheet" href="./Assets/plugins/fontawesome-free-5.6.3-web/css/all.min.css" />
 
+    <link rel="stylesheet" href="assets/css/index.css">
+     <!---Font awesome icons-->
+    <link rel="stylesheet" href="./Assets/plugins/fontawesome-free-5.6.3-web/css/all.min.css" />
     <!---UIKit  icons-->
     <link rel="stylesheet" href="node_modules/uikit/dist/css/uikit.css" />
     <script src="node_modules\uikit\dist\js\uikit.min.js"></script>
     <script src="node_modules\uikit\dist\js\uikit-icons.min.js"></script>
     <!--Semantic UI -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/semantic-ui-css/semantic.min.js"></script>
     <link rel="stylesheet" href="node_modules/semantic-ui-css/semantic.css" type="text/css"/>
     <!--Notification service -->
     <link rel="stylesheet" href="node_modules/izitoast/dist/css/iziToast.min.css"/>
@@ -23,14 +26,8 @@
     <script src="node_modules/codemirror/mode/clike/clike.js" ></script>
     <script src="node_modules/codemirror/mode/css/css.js" ></script>
     <script src="node_modules/codemirror/mode/scribble/scribble.js"></script>
-   
-
-   
 </head>
-
     <body>
-     
-
         <!--Tool belt-->
         <div  id="tool-belt" class="ui very thin left  fixed  vertical menu sidebar visible  ">
            <div class="tool-wrapper flex columns --space-evenly align-center">
@@ -45,23 +42,30 @@
          <div class="pusher">
             <div id="explorer-side-bar" class="ui thin left fixed vertical menu sidebar visible  ">
                 <p id="explorer-menu-item" class="SideBar-MenuTitle item">EXPLORER</p>
-
             </div>
+
             <div class="pusher">
-                    <ul uk-tab id="tab-container">
-                            
-                          </ul>
+                    <ul uk-tab id="tab-container"></ul>
             <textarea id="codeWindow"></textarea>
-           
+                
+      
+                <div class="ui modal">
+                    <i class="close icon"></i>
+                    <div class="header">Modal Title</div>
+                    <div class="image content">
+                        <div class="image">An image can appear on left or an icon</div>
+                        <div class="description">A description can appear on the right</div>
+                    </div>
+                    <div class="actions">
+                    <div class="ui button">Cancel</div>
+                    <div class="ui button">OK</div>
+                    </div>
+                </div>
         </div>
         </div>
-
-
         <!--Scripts-->
         <script>require("./assets/scripts/EditorManager.js")</script>
         <script>require("./assets/scripts/components/MainMenu.js")</script>
         <script>require("./assets/scripts/components/InterfaceManager.js")</script>
-        <script src="./assets/scripts/components/RoutingManager.js"></script>
-        
     </body>
 </html>

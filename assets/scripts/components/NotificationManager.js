@@ -1,6 +1,5 @@
 var isProgressShowing = false;
 var prefsContainer = document.getElementsByClassName("uk-container")[0];
-
 //Declaration
 var progressWrapper = document.createElement("div");
 var progressContent = document.createElement("div");
@@ -9,6 +8,12 @@ var progressHeader = document.createElement("div");
 var progressContentText; 
 var progressContentHeaderText;
 
+function InitModal(Message){
+    bootbox.prompt(Message, function(result){ 
+        return result;
+     });
+
+}
 /**
  * 
  * @param {*} state 
@@ -142,5 +147,6 @@ module.exports = {
     displayNotification,
     displayProgressNotification,
     prefsContainer,
-    progressWrapper
+    progressWrapper,
+    InitModal
 }

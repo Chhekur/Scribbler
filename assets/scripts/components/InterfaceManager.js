@@ -1,11 +1,13 @@
 const NotificationManager =require("./NotificationManager");
 const EditorManager = require("./../EditorManager");
+const FileManager = require("./FileManager");
 const path = require("path");
 const fs = require("fs");
 const ipcRenderer = require("electron").ipcRenderer;
 const {Menu,MenuItem,shell} = require("electron").remote;
 const {remote,clipboard} = require("electron");
 const $ = require("jquery");
+const UIKit = require("uikit");
 //Terminal Manager
 const command = require('child_process').exec;
 //Side-bar
@@ -25,7 +27,6 @@ var errorNodes = [];
 var errorLines = [];
 var multilineError = false;
 //Create the menu
-CreateTabMenu();
 //Titlebar filename 
 var TitleBarFileName =  document.getElementById("title-bar-filename");
 /**
@@ -33,10 +34,8 @@ var TitleBarFileName =  document.getElementById("title-bar-filename");
  */
 function CreateTabMenu(){
     TabMenu = new Menu();
-
     var RevealInExplorerMenuItem = new MenuItem({label: "Reveal In Explorer",click:RevealFileInExplorer});
-    var CopyRelativePath = new MenuItem({label: "Copy Relative Path",click:GetRelativeTabPath});
-    var CopyAbsolutePath = new MenuItem({label: "Copy Absolute Path",click:GetAbsoluteTabPath});
+    var CopyAbsolutePath = new MenuItem({label: "Copy Path",click:GetAbsoluteTabPath});
     var CloseTabsToTheRight = new MenuItem({label: "Close To The Right",click:RemoveTabsToTheRight});
     var CloseOtherTabs = new MenuItem({label: "Close All Others",click:RevealFileInExplorer});
     var CloseCurrentTab = new MenuItem({label:"Close Current Tab",click:RemoveCurrentTab,accelerator:"Ctrl+"});
@@ -44,12 +43,9 @@ function CreateTabMenu(){
     TabMenu.append(CloseCurrentTab);
     TabMenu.append(CloseTabsToTheRight);
     TabMenu.append(TabMenuSeparator);
-    TabMenu.append(CopyRelativePath);
     TabMenu.append(CopyAbsolutePath);
     TabMenu.append(RevealInExplorerMenuItem);
-
 }
-
 //Toggling the sidebar view 
 function SideBarToggle(){
     sideBarToggle.addEventListener("click",function(){
@@ -67,16 +63,13 @@ function PreferencesToggle(){
     });
 }
 /**
- * 
  * @param {*} CurrentFile 
  */
 var count = 0;
 function ExplorerManagement(CurrentFile){
     if(CurrentFile != null || CurrentFile != undefined || CurrentFile == " "){
-    //Check if the node exists
         CreateTab(CurrentFile);
         for(var i=0; i<tabContainer.childNodes.length;i++){
-            if(tabContainer.childNodes[i].nodeName == "LI"){
                 tabContainer.childNodes[i].addEventListener("click",function(e){
                 //Open the tab in the editor
                 OpenTabInEditor(CurrentFile,e); 
@@ -84,23 +77,20 @@ function ExplorerManagement(CurrentFile){
                tabContainer.childNodes[i].addEventListener("contextmenu",function(e){
                    TabMenu.popup(remote.getCurrentWindow());
                    varTargetTab = e.target;
-                   
                });
-            }
         }
-        
-        
     }
 }
-
 /**
- * 
  * @param {*} CurrentFile 
  * @param {*} e 
  */
 function OpenTabInEditor(CurrentFile,e){
     //Read the name of the tab and filename and adding it into the code mirror editor 
     CurrentFile[0] = e.target.name;
+    //Run build commands
+    BuildCommands(CurrentFile); 
+    //Read file into the editor area
     fs.readFile(CurrentFile[0],"utf-8",function(err,data){
         if(err){
             console.log(err);
@@ -109,51 +99,40 @@ function OpenTabInEditor(CurrentFile,e){
         }
     });
 }
-
 function GetAbsoluteTabPath(){
-   clipboard.writeText(instance);
+    //Copies the absolute path of the highlighted file
+   clipboard.writeText(varTargetTab.name);
    NotificationManager.displayNotification("info","Absolute path copied!","bottomCenter",2000,"fa fa-info-circle",false,"light",12);
-
 }
-
-function GetRelativeTabPath(){
-
-}
-function CloseOtherTabs(){
-
-}
-/**
- * Reveal item in a folder 
- */
 function RevealFileInExplorer(){
-    shell.showItemInFolder(instance);
+    shell.showItemInFolder(varTargetTab.name);
 }
 /**
  * 
  * @param {*} CurrentFile 
  */
-function UpdateTab(CurrentFile){
-    //Get the current tab name 
-   console.log(CurrentFile); 
+function UpdateTab(FileNameUpdate){
+    //Get the tab that has the name of the current file 
+    $('.newTab').each(function(e){
+     console.log(e);
+    })
+    
 }
-
 /**
- * 
  * @param {*} CurrentFile 
  */
 function CreateTab(CurrentFile){
-    if(CurrentFile == null || CurrentFile == undefined || path.extname(CurrentFile.toString()) ==".tmp"){
+    if(CurrentFile == null || CurrentFile == undefined || path.extname(CurrentFile.toString()) ==".txt"){
         CurrentFile = "Untitled";
     } 
     //Check if there is a tab with the same name 
      newTabItemListItem = document.createElement("li");
-    //Create a 
+    //Create link
     var newTabItemLink = document.createElement("a");
     //Set attribute for link 
     newTabItemListItem.setAttribute("name",CurrentFile.toString()); 
     newTabItemListItem.setAttribute("title",CurrentFile.toString()); 
     newTabItemListItem.classList.add("newTab");
-    
     //Loop and remove from other children JQUERY
     newTabItemLink.setAttribute("name",CurrentFile.toString()); 
     newTabItemLink.setAttribute("title",CurrentFile.toString()); 
@@ -169,10 +148,7 @@ function CreateTab(CurrentFile){
     tabContainer.appendChild(newTabItemListItem);
     //Check changing classes and names
     TabChecking();
-    
-
 }
-
 function TabChecking(){
     $(".newTab").siblings().each(function(){
         if($(this).siblings().text() == $(this).text()){
@@ -198,7 +174,6 @@ function GetDisplayLine(errormessage){
         //return the final number which will be the number of errors 
         multilineError = true;
         return match[match.length - 1];
-        
     }else{
         console.log(match[0]);
         return match[0];
@@ -222,7 +197,6 @@ function DisplayErrorInCode(CurrentFile,errormessage){
 }
 
 /**
- * 
  * @param {*} CurrentFile 
  */
 function Save(CurrentFile){
@@ -233,6 +207,7 @@ function Save(CurrentFile){
             }
         });
     }
+
 
 /**
  * Check for any error nodes and remove them
@@ -248,42 +223,49 @@ function BuildCommands(CurrentFile){
     //Checks for error nodes and removes them 
     CheckErrorNodes();
     BuildCommandsBtn.addEventListener("click",function(){
-    Save(CurrentFile);
+        console.log("Butotn clicked");
+    //Save(CurrentFile);
     var extname = path.extname(CurrentFile.toString());
     var requiredName = ".java";
     if(requiredName.trim() != extname.trim()){
         NotificationManager.displayNotification("info","Cannot run compiler on non java files","bottomCenter",2000,"fa fa-info-circle",false,"light",12);
         return;
-    }else{
-    command(compileJavaCommand,{cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
-       if(err){
-           DisplayErrorInCode(CurrentFile,err);
-           console.log(errorNodes);
-       }else if(stderr){
-           console.log(stderr);
-       }else{
-       command(runJavaCommand, {cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
-            if(err){
-                console.log(err);
-            }
-             if(stderr){
-                console.log(stderr);
-                DisplayErrorInCode(CurrentFile,err);
-            }
-            //Display notification 
-            NotificationManager.displayNotification("success","Compilation success! View the terminal window to display results","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
-            //Send output to the terminal output window
-            SendTerminalOutput(stdout);
-       });
+   }else{
+    BuildJava(runJavaCommand,compileJavaCommand,CurrentFile);
     }
-       
-   });
-}
 });
 }
 
 /**
- * 
+ * @param {*} runJavaCommand 
+ * @param {*} compileJavaCommand 
+ * @param {*} CurrentFile 
+ */
+function BuildJava(runJavaCommand,compileJavaCommand,CurrentFile){
+    command(compileJavaCommand,{cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
+        if(err){
+            DisplayErrorInCode(CurrentFile,err);
+            console.log(errorNodes);
+        }else if(stderr){
+            console.log(stderr);
+        }else{
+        command(runJavaCommand, {cwd: path.dirname(CurrentFile.toString())},function(err,stdout,stderr){
+             if(err){
+                 console.log(err);
+             }
+              if(stderr){
+                 console.log(stderr);
+                 DisplayErrorInCode(CurrentFile,err);
+             }
+             //Display notification 
+             NotificationManager.displayNotification("success","Compilation success! View the terminal window to display results","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
+             //Send output to the terminal output window
+             SendTerminalOutput(stdout);
+        });
+     }
+    });
+}
+/**
  * @param {*} CurrentFile 
  */
 function ReadInFile(CurrentFile){
@@ -295,17 +277,22 @@ function ReadInFile(CurrentFile){
         }
     });
 }
-
 function RemoveTabsToTheRight(){
     //Delete the sibling next
     console.log("Remove from the left");
 }
-
+function ReloadEditor(){
+    //Update tabs 
+    UpdateTab();
+    //Reload the editor 
+    EditorManager.editableCodeMirror.refresh();
+}
 function RemoveCurrentTab(){
-    //Remove the node first 
+    //Remove the current selected tab
     var parentTab  = $(varTargetTab).parent();
     var tab = $(varTargetTab);
     if(varTargetTab.nodeName == "A"){
+        //Check if there is any other tabs 
         if(parentTab.prev().length > 0){
             CurrentFile = parentTab.prev().attr("name");
             //Re-reads in the previous file 
@@ -329,13 +316,12 @@ function RemoveCurrentTab(){
             tab.remove();
             EditorManager.editableCodeMirror.setValue("");
             console.log(CurrentFile);
-
         }
         CurrentFile = $(varTargetTab).prev().attr("name");
-    }
-    
+    }   
 }
 function CheckErrorNodes(){
+    //Removes the error nodes after a certain amount of time
     EditorManager.editableCodeMirror.on("change",function(){
         setTimeout(function(){
         if(errorNodes.length > 0 ){
@@ -345,24 +331,42 @@ function CheckErrorNodes(){
         }
     },3000)
     });  
-    
 }
 /**
  * Send the output
  * @param {*} output 
  */
 function SendTerminalOutput(output){
+    //Sends the terminal output to the second window
     ipcRenderer.send("console-output",output);
 }
-
-
-
+/**
+ * 
+ * @param {*} CurrentFile 
+ */
+function RenameFile(CurrentFile){
+     UIkit.modal.prompt('Enter a new name for the file:', '').then(function (name) {
+        //Re-name with the new file
+        var currentDir = path.dirname(CurrentFile.toString()); 
+        var newRenamedFile = currentDir+"/"+name;
+        fs.rename(CurrentFile,newRenamedFile+".java",function(err){
+            if(err){
+                console.log(err);
+            }else{
+                CurrentFile = newRenamedFile;
+                UpdateTab(CurrentFile);
+            }
+        });
+    });
+  
+}
 module.exports = {
     SideBarToggle,
     ExplorerManagement,
-    CreateTab,
     PreferencesToggle,
     UpdateTab,
     TitleBarFileName,
-    BuildCommands
+    BuildCommands,
+    RenameFile,
+    CreateTabMenu
 }

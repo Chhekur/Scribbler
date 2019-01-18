@@ -38,15 +38,38 @@ function CreateTabMenu(){
     var CopyAbsolutePath = new MenuItem({label: "Copy Path",click:GetAbsoluteTabPath});
     var CloseTabsToTheRight = new MenuItem({label: "Close To The Right",click:RemoveTabsToTheRight});
     var CloseOtherTabs = new MenuItem({label: "Close All Others",click:RevealFileInExplorer});
-    var CloseCurrentTab = new MenuItem({label:"Close Current Tab",click:RemoveCurrentTab,accelerator:"Ctrl+"});
+    var CloseCurrentTab = new MenuItem({label:"Close Current Tab",click:RemoveCurrentTab});
+    var DeleteCurrentFile = new MenuItem({label:"Delete File",click:DeleteFileFromEditor});
     var TabMenuSeparator = new MenuItem({type:"separator"});
     TabMenu.append(CloseCurrentTab);
     TabMenu.append(CloseTabsToTheRight);
     TabMenu.append(TabMenuSeparator);
     TabMenu.append(CopyAbsolutePath);
     TabMenu.append(RevealInExplorerMenuItem);
+    TabMenu.append(TabMenuSeparator);
+    TabMenu.append(DeleteCurrentFile);
+
 }
-//Toggling the sidebar view 
+/**
+ * Finds the target tab 
+ * Get the name and remove the file 
+ */
+function DeleteFileFromEditor(){
+    fs.unlink(varTargetTab.name,function(err){
+        if(err){
+            console.log(err);
+        }else{
+            //Remove the tab 
+            RemoveCurrentTab();
+            //Notify the user 
+            NotificationManager.displayNotification("success",path.basename(varTargetTab.name.toString())+" deleted","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
+        }
+    });
+}
+
+/**
+ * Toggle the view of the sidebar 
+ */
 function SideBarToggle(){
     sideBarToggle.addEventListener("click",function(){
         if(SideBar.classList.contains("visible") == true){
@@ -57,6 +80,9 @@ function SideBarToggle(){
     });
     
 }
+/**
+ * Display the preferences 
+ */
 function PreferencesToggle(){
     preferencesToggle.addEventListener("click",function(){
         ipcRenderer.send("show-prefs");
@@ -112,10 +138,11 @@ function RevealFileInExplorer(){
  * @param {*} CurrentFile 
  */
 function UpdateTab(FileNameUpdate){
-    //Get the tab that has the name of the current file 
-    $('.newTab').each(function(e){
-     console.log(e);
-    })
+    //Get the name of each tab 
+    for(var i=0; i<document.getElementsByClassName("newTab");i++){
+        var iNode = document.getElementsByClassName("newTab")[i];
+        console.log(iNode.name);
+    }
     
 }
 /**
@@ -149,6 +176,9 @@ function CreateTab(CurrentFile){
     //Check changing classes and names
     TabChecking();
 }
+/**
+ * Checks for duplicates
+ */
 function TabChecking(){
     $(".newTab").siblings().each(function(){
         if($(this).siblings().text() == $(this).text()){
@@ -157,6 +187,7 @@ function TabChecking(){
         if($(this).siblings().hasClass("uk-active")){
             $(this).siblings().removeClass("uk-active");
             newTabItemListItem.classList.add("uk-active");
+            //Reload the editor 
         }
     });
 }
@@ -283,7 +314,6 @@ function RemoveTabsToTheRight(){
 }
 function ReloadEditor(){
     //Update tabs 
-    UpdateTab();
     //Reload the editor 
     EditorManager.editableCodeMirror.refresh();
 }
@@ -364,7 +394,6 @@ module.exports = {
     SideBarToggle,
     ExplorerManagement,
     PreferencesToggle,
-    UpdateTab,
     TitleBarFileName,
     BuildCommands,
     RenameFile,

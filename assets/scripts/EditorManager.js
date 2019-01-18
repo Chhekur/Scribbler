@@ -3,7 +3,6 @@ const MainMenu = require("./components/MainMenu");
 const FileManager = require("./components/FileManager");
 const InterfaceManager = require("./components/InterfaceManager");
 var ipcRenderer = require('electron').ipcRenderer;
-const NotificationManager = require("./Components/NotificationManager");
 //Main UI
 exports.codeWindow = document.getElementById("codeWindow");
 exports.feedbackWindow = document.getElementById("feedback-window");
@@ -19,7 +18,6 @@ function InitEditor(){
         mode: "text/x-java"
         
     });
-
     Router();
 }  
 /**
@@ -47,7 +45,9 @@ function SetStylesheet(theme){
 function Router(){
     PreferencesReciever();
 }
-
+/**
+ * Recieve preferences, and make editor changes accordingly 
+ */
 function PreferencesReciever(){
  //Setting preferences
  ipcRenderer.on("selected-theme",function(event,payload){
@@ -60,7 +60,10 @@ function PreferencesReciever(){
       codeMirroElem.style.fontSize = payload;
   })
 }
-
+/**
+ * When a theme changes, 
+ *  Tab colour, Sidebar colour, Explorer background, Icon colour
+ */
 function ColourIntelligence(){
-
+    //UI Vars
 }

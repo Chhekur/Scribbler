@@ -1,8 +1,12 @@
+//Preferences 
+const PreferencesStorage = require("electron-store");
+const PreferencesSettings = new PreferencesStorage();
 //Imports
 const MainMenu = require("./components/MainMenu");
 const InterfaceManager = require("./components/InterfaceManager");
 const FileManager = require("./Components/FileManager");
-var ipcRenderer = require('electron').ipcRenderer;
+const ipcRenderer = require('electron').ipcRenderer;
+const remote = require("electron").remote;
 //Main UI
 exports.codeWindow = document.getElementById("codeWindow");
 exports.feedbackWindow = document.getElementById("feedback-window");
@@ -10,6 +14,7 @@ exports.currentFilename = document.getElementById("currentFilename");
 var codeMirroElem = document.getElementsByTagName("html")[0];
 var ToolBelt = document.getElementsByClassName("sidebar")[0];
 var ExplorerSideBar = document.getElementsByClassName("sidebar")[1];
+
 //HTML Stylesheet
 var currentStyleSheet = document.getElementById("codeMirrorThemeCss");
 //Init Editor 
@@ -47,12 +52,17 @@ function SetStylesheet(theme){
     currentStyleSheet.href="node_modules/codemirror/theme/"+theme+".css";
 }
 function Router(){
-    PreferencesReciever();
+    PreferencesReciever(PreferencesSettings);
 }
 /**
  * Recieve preferences, and make editor changes accordingly 
  */
-function PreferencesReciever(){
+function PreferencesReciever(settings){
+    ipcRenderer.on("settings-changed",function(event,payload){
+        remote.getCurrentWindow().reload();
+    });
+    SetBoxShadow(settings);
+    SetSideBarBackground(settings);
     //Setting preferences
     ipcRenderer.on("selected-theme",function(event,payload){
         SetStylesheet(payload);
@@ -63,15 +73,7 @@ function PreferencesReciever(){
         var newFontSize = payload;
         codeMirroElem.style.fontSize = payload;
     })
-    ipcRenderer.on("selected-box-shadow",function(event,payload){
-        if(payload == "No"){
-           //Get the current box-shadaow 
-           var CurrentToolBeltShadow,CurrentExplorerSideBarBoxShadow;
-           //Set the shadow 
-           ToolBelt.style.boxShadow = "0px 1px 2px 0 rgba(34, 36, 38, 0.15)";
-           ExplorerSideBar.style.boxShadow = "0px 1px 2px 0 rgba(34, 36, 38, 0.15)";
-        } 
-    });
+ 
 
 }
 
@@ -82,4 +84,15 @@ function PreferencesReciever(){
  */
 function ColourIntelligence(){
     //UI Vars
+}
+
+function SetBoxShadow(setting){
+    var boxShadowSettings = setting.get("settings.box-shadow-settings");
+    ToolBelt.style.boxShadow = boxShadowSettings;
+}
+
+function SetSideBarBackground(setting){
+    var sideBarBackground = setting.get("settings.sideBarBackground");
+    ToolBelt.style.background = sideBarBackground;
+
 }

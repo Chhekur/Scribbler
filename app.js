@@ -81,7 +81,9 @@ function initApp(){
     ipcMain.on("selected-font-size",function(event,payload){
         win.webContents.send("selected-font-size",payload);
     });
-
+    ipcMain.on("settings-changed",function(event,payload){
+        win.webContents.send("settings-changed",payload);
+    });
 
     //Event Listeners
     prefsWindow.on("close",function(event){

@@ -393,6 +393,7 @@ function RenameFile(CurrentFile){
         //Re-name with the new file
         var currentDir = path.dirname(CurrentFile.toString()); 
         var newRenamedFile = currentDir+"/"+name;
+        if(name!= undefined || name!=" " || name !=null || name !=""){
         fs.rename(CurrentFile,newRenamedFile+".java",function(err){
             if(err){
                 console.log(err);
@@ -404,6 +405,9 @@ function RenameFile(CurrentFile){
               
             }
         });
+    }else{
+        console.log("Undefined");
+    }
     });
   
 }

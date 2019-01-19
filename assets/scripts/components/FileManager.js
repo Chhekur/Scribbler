@@ -217,7 +217,7 @@ function CreateNewFile(){
             InterfaceManager.ExplorerManagement(CurrentFile); 
             InterfaceManager.BuildCommands(CurrentFile);    
             //Display notification
-            NotificationManager.displayNotification("info","New file created, press Ctrl+S to save/rename","bottomCenter",3000,"fas fa-icon-circle",false,"light",12);             
+            NotificationManager.displayNotification("info","New file created, press Ctrl+S to save/rename","bottomCenter",3000,"fa fa-info-circle",false,"light",12);             
         }
     })
 }

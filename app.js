@@ -82,6 +82,7 @@ function initApp(){
         win.webContents.send("selected-font-size",payload);
     });
 
+
     //Event Listeners
     prefsWindow.on("close",function(event){
         prefsWindow.hide();

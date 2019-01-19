@@ -20,6 +20,7 @@ const pathExtra = require("path-extra");
 var varTargetTab;
 //Tab vars
 var newTabItemListItem;
+
 //Menu
 var TabMenu;
 //Error nodes array
@@ -91,7 +92,6 @@ function PreferencesToggle(){
 /**
  * @param {*} CurrentFile 
  */
-var count = 0;
 function ExplorerManagement(CurrentFile){
     if(CurrentFile != null || CurrentFile != undefined || CurrentFile == " "){
         CreateTab(CurrentFile);
@@ -137,12 +137,25 @@ function RevealFileInExplorer(){
  * 
  * @param {*} CurrentFile 
  */
-function UpdateTab(FileNameUpdate){
+function UpdateTab(OldFilePath,NewFilePath){
     //Get the name of each tab 
-    for(var i=0; i<document.getElementsByClassName("newTab");i++){
-        var iNode = document.getElementsByClassName("newTab")[i];
-        console.log(iNode.name);
-    }
+    $('.newTab').each(function(){
+        if($(this).attr("name") == OldFilePath || $(this).siblings().attr("name") == OldFilePath){
+            $(this).attr("title", NewFilePath);
+            $(this).children().attr("title", NewFilePath);
+
+            $(this).attr("name", NewFilePath);
+            $(this).children().attr("name", NewFilePath);
+
+           // $(this).text(path.basename(NewFilePath.toString()));
+            $(this).children().text(path.basename(NewFilePath+".java".toString()));
+            CurrentFile = NewFilePath;
+            
+
+        }else{
+            console.log(false);
+        }
+    })
     
 }
 /**
@@ -374,6 +387,7 @@ function SendTerminalOutput(output){
  * 
  * @param {*} CurrentFile 
  */
+var updatePath;
 function RenameFile(CurrentFile){
      UIkit.modal.prompt('Enter a new name for the file:', '').then(function (name) {
         //Re-name with the new file
@@ -383,8 +397,11 @@ function RenameFile(CurrentFile){
             if(err){
                 console.log(err);
             }else{
+                UpdateTab(CurrentFile,newRenamedFile);
                 CurrentFile = newRenamedFile;
-                UpdateTab(CurrentFile);
+                //Setting it so that the particular tab can change 
+                updatePath = CurrentFile;
+              
             }
         });
     });

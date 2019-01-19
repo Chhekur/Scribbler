@@ -1,10 +1,13 @@
-//Imports
-var remote = require("electron").remote;
+//Libs & Components
+const PreferencesStorage = require("electron-store");
+const  remote = require("electron").remote;
 const ipcRenderer = require("electron").ipcRenderer;
+const NotificationManager = require("../Components/NotificationManager");
+//Main UI
 var prefTheme = document.getElementById("selectTheme");
 var prefFontSize = document.getElementById("selectFontSize");
-var applyPrefs = document.getElementById("applyPreferences");
-const NotificationManager = require("../Components/NotificationManager");
+var prefBoxShadow = document.getElementById("selectBoxShadow");
+
 //Preferences 
 var prefs = {};
 
@@ -23,11 +26,13 @@ function setFontSize(){
   var selectedFontSize = prefFontSize.options[prefFontSize.selectedIndex].textContent;
   ipcRenderer.send("selected-font-size",selectedFontSize);
 }
-//Change info-bar color
-//Change View
-//Change font-family
-function setFontFamily(){
-  
+/**
+ * 
+ */
+function SetBoxShadow(){
+  prefBoxShadow.addEventListener("change",function(){
+
+  })
 }
 
 setTheme();

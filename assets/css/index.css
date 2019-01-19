@@ -91,10 +91,11 @@ a{
 
 /*SIDE BAR STYLING*/
 #tool-belt{
- background: #fff;
- border: none;   
- padding-top: 10px;
- padding-bottom: 10px;
+    background: #fff;
+    border: none;   
+    padding-top: 10px;
+    padding-bottom: 10px;
+
 }
 #tool-belt a{
     color: #999;

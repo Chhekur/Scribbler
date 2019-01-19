@@ -89,6 +89,7 @@ function Save(){
         InterfaceManager.RenameFile(CurrentFile);
         isNewFile = false;
     }else{
+        console.log(CurrentFile[0]);
         fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
             if(err){
                NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa fa-ban",true,"light",12);
@@ -189,6 +190,9 @@ function CreateNewWindow(){
 }
 
 var isNewFile = false;
+/**
+ *  Create a new file and re-read that new file 
+ */
 function CreateNewFile(){
     isNewFile = true;
     var newFile = DefaultSavePath+CreateRandomFileName();
@@ -197,7 +201,7 @@ function CreateNewFile(){
         EditorManager.editableCodeMirror.setValue("");
     }
     //Create the tmp file 
-    fs.writeFile(newFile," ",function(err){
+    fs.writeFile(newFile,"",function(err){
         if(err){
             console.log(err);
         }

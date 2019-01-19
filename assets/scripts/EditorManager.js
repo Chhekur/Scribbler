@@ -7,6 +7,7 @@ const InterfaceManager = require("./components/InterfaceManager");
 const FileManager = require("./Components/FileManager");
 const ipcRenderer = require('electron').ipcRenderer;
 const remote = require("electron").remote;
+const NotificationManager = require("./Components/NotificationManager");
 //Main UI
 exports.codeWindow = document.getElementById("codeWindow");
 exports.feedbackWindow = document.getElementById("feedback-window");
@@ -60,7 +61,9 @@ function Router(){
  */
 function PreferencesReciever(settings){
     ipcRenderer.on("settings-changed",function(event,payload){
-        remote.getCurrentWindow().reload();
+        //Display modal detecting changed settings
+        DisplayResetModal('Preferences change detected, press ok to reset the editor');
+        
     });
     //Settings to load
     SetBoxShadow(settings);
@@ -103,4 +106,16 @@ function SetSideBarBackground(setting){
     var sideBarBackground = setting.get("settings.sideBarBackground");
     ToolBelt.style.background = sideBarBackground;
 
+}
+/**
+ * Display reset modal that will require a message
+ * @param {*} message 
+ */
+function DisplayResetModal(message){
+    UIkit.modal.confirm(message).then(function() {
+        remote.getCurrentWindow().reload();
+        console.log('Confirmed.')
+    }, function () {
+        NotificationManager.displayNotification("info","Changes will appear when the editor is re-opened","bottomCenter",4000,"fa fa-info-circle",false,"light",12);
+    });
 }

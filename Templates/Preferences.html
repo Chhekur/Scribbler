@@ -12,7 +12,7 @@
            <div id="preferences-container" class="uk-container">
               <div class="ui blue message">
                   <div class="header">Settings </div>
-                  <p>Here you can personalise your settings and see them live in the editor.</p>
+                  <p>Here you can personalise your settings and see them live in the editor. Press enter when you have changed a value so the editor can reload</p>
                 </div>
                   <p> <select  class="uk-select" aria-placeholder="Theme" name="theme" id="selectTheme">
                           <option>default</option>
@@ -71,9 +71,7 @@
                           <option>yeti</option>
                           <option>zenburn</option>
                       </select></p>
-                      <p> <label for="background"></label> <span>
-                          <input class="uk-input" type="text" placeholder="Background-Color"></span> 
-                      </p>
+                     
                       <p>
                           <select onchange="setFontSize()" placeholder="Font Size" id="selectFontSize" class="uk-select" >
                               <option>10</option>
@@ -84,9 +82,7 @@
                               <option>16</option>
                           </select>
                       </p>
-                      <p> <label for="text-color"></label> <span>
-                          <input class="uk-input" type="text" placeholder="Font-Family"></span> 
-                      </p>
+                   
                       <p> <label for="sidebar-color"></label> <span>
                           <input class="uk-input" id="selectSidebarBackground" uk-tooltip="title: Sidebar Background Colour | rgba(r,g,b,a) | hex#; delay:500"type="text" placeholder="Sidebar-Background"></span> 
                       </p>

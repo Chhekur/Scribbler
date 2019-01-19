@@ -40,8 +40,6 @@ window.onload = function(){
     InterfaceManager.PreferencesToggle();
     //File Manager create dir 
     FileManager.CreateDefaultDir();
-    //Load Prefs
-
 }
 
 /**
@@ -51,6 +49,9 @@ window.onload = function(){
 function SetStylesheet(theme){
     currentStyleSheet.href="node_modules/codemirror/theme/"+theme+".css";
 }
+/**
+ * Load preferences on load
+ */
 function Router(){
     PreferencesReciever(PreferencesSettings);
 }
@@ -61,9 +62,10 @@ function PreferencesReciever(settings){
     ipcRenderer.on("settings-changed",function(event,payload){
         remote.getCurrentWindow().reload();
     });
+    //Settings to load
     SetBoxShadow(settings);
     SetSideBarBackground(settings);
-    //Setting preferences
+
     ipcRenderer.on("selected-theme",function(event,payload){
         SetStylesheet(payload);
         exports.editableCodeMirror.setOption("theme",payload);
@@ -78,19 +80,25 @@ function PreferencesReciever(settings){
 }
 
 
-/**
- * When a theme changes, 
+/** 
  *  Tab colour, Sidebar colour, Explorer background, Icon colour
  */
 function ColourIntelligence(){
     //UI Vars
 }
 
+/**
+ * Change the shadow on the box value
+ * @param {*} setting 
+ */
 function SetBoxShadow(setting){
     var boxShadowSettings = setting.get("settings.box-shadow-settings");
     ToolBelt.style.boxShadow = boxShadowSettings;
 }
-
+/**
+ * Change the sidebar background color
+ * @param {*} setting 
+ */
 function SetSideBarBackground(setting){
     var sideBarBackground = setting.get("settings.sideBarBackground");
     ToolBelt.style.background = sideBarBackground;

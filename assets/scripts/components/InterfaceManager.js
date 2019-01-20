@@ -93,8 +93,9 @@ function PreferencesToggle(){
  * @param {*} CurrentFile 
  */
 function ExplorerManagement(CurrentFile){
-    if(CurrentFile != null || CurrentFile != undefined || CurrentFile == " "){
+    if(CurrentFile != null || CurrentFile != undefined || CurrentFile != " "){
         CreateTab(CurrentFile);
+    
         for(var i=0; i<tabContainer.childNodes.length;i++){
                 tabContainer.childNodes[i].addEventListener("click",function(e){
                 //Open the tab in the editor
@@ -107,17 +108,18 @@ function ExplorerManagement(CurrentFile){
         }
     }
 }
+
 /**
  * @param {*} CurrentFile 
  * @param {*} e 
  */
 function OpenTabInEditor(CurrentFile,e){
     //Read the name of the tab and filename and adding it into the code mirror editor 
-    CurrentFile[0] = e.target.name;
-    //Run build commands
-    BuildCommands(CurrentFile); 
+    CurrentFile = e.target.name;
+    BuildCommands(CurrentFile);
+
     //Read file into the editor area
-    fs.readFile(CurrentFile[0],"utf-8",function(err,data){
+    fs.readFile(CurrentFile.toString(),"utf-8",function(err,data){
         if(err){
             console.log(err);
         }else{
@@ -148,9 +150,10 @@ function UpdateTab(OldFilePath,NewFilePath){
             $(this).children().attr("name", NewFilePath);
 
            // $(this).text(path.basename(NewFilePath.toString()));
-            $(this).children().text(path.basename(NewFilePath+".java".toString()));
+            $(this).children().text(path.basename(NewFilePath.toString()));
             CurrentFile = NewFilePath;
-            
+            //ExplorerManagement(CurrentFile);
+       
 
         }else{
             console.log(false);
@@ -214,6 +217,7 @@ function GetDisplayLine(errormessage){
     var searchExp = /\d+/g;
     var  match = errorMsg.match(searchExp);
     errorLines.push(match);
+    if(match != null){
     if(match.length >  -1 ){
         //return the final number which will be the number of errors 
         multilineError = true;
@@ -222,7 +226,7 @@ function GetDisplayLine(errormessage){
         console.log(match[0]);
         return match[0];
     }
-   
+}
 }
 
 /**
@@ -262,12 +266,13 @@ function BuildCommands(CurrentFile){
     //Declare the commands 
     var compileJavaCommand = "javac "+path.basename(CurrentFile.toString());
     var runJavaCommand ="java "+pathExtra.base(CurrentFile.toString(), false);
-    console.log("First command "+compileJavaCommand);
-    console.log("Second command "+runJavaCommand);
+    console.log("File path to run: "+compileJavaCommand);
     //Checks for error nodes and removes them 
     CheckErrorNodes();
     BuildCommandsBtn.addEventListener("click",function(){
-        console.log("Butotn clicked");
+    if(CurrentFile == undefined || CurrentFile == null || CurrentFile == " "|| CurrentFile == ""){
+        NotificationManager.displayNotification("info","No file detected, please select a tab that you need to build","bottomCenter",2000,"fa fa-info-circle",true,"light",12);
+    }
     //Save(CurrentFile);
     var extname = path.extname(CurrentFile.toString());
     var requiredName = ".java";
@@ -278,6 +283,13 @@ function BuildCommands(CurrentFile){
     BuildJava(runJavaCommand,compileJavaCommand,CurrentFile);
     }
 });
+}
+/**
+ * Get all the tabs and list them in a dialog 
+ * Once clicked try and run java
+ */
+function DisplayFileToRunDialog(){
+    
 }
 
 /**
@@ -325,11 +337,7 @@ function RemoveTabsToTheRight(){
     //Delete the sibling next
     console.log("Remove from the left");
 }
-function ReloadEditor(){
-    //Update tabs 
-    //Reload the editor 
-    EditorManager.editableCodeMirror.refresh();
-}
+
 function RemoveCurrentTab(){
     //Remove the current selected tab
     var parentTab  = $(varTargetTab).parent();
@@ -392,17 +400,15 @@ function RenameFile(CurrentFile){
      UIkit.modal.prompt('Enter a new name for the file:', '').then(function (name) {
         //Re-name with the new file
         var currentDir = path.dirname(CurrentFile.toString()); 
-        var newRenamedFile = currentDir+"/"+name;
+        var newRenamedFile = currentDir+"/"+name+".java";
         if(name!= undefined || name!=" " || name !=null || name !=""){
-        fs.rename(CurrentFile,newRenamedFile+".java",function(err){
+        fs.rename(CurrentFile,newRenamedFile,function(err){
             if(err){
                 console.log(err);
             }else{
                 UpdateTab(CurrentFile,newRenamedFile);
                 CurrentFile = newRenamedFile;
-                //Setting it so that the particular tab can change 
-                updatePath = CurrentFile;
-              
+                console.log("Re-named file: "+CurrentFile.toString());
             }
         });
     }else{

@@ -53,6 +53,8 @@ function initApp(){
     //Check if preference window is showing
     ipcMain.on("show-prefs",function(){
         
+       
+        
         if(!prefsWindow.isVisible()){ 
             prefsWindow.show();
         }else{
@@ -60,6 +62,7 @@ function initApp(){
         }
 
     });
+   
 
     //Check if console window is showing
     ipcMain.on("console-output",function(event,payload){

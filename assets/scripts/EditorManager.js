@@ -1,3 +1,4 @@
+
 //Preferences 
 const PreferencesStorage = require("electron-store");
 const PreferencesSettings = new PreferencesStorage();
@@ -23,7 +24,18 @@ function InitEditor(){
     exports.editableCodeMirror = CodeMirror.fromTextArea(codeWindow, {
         lineNumbers: true,
         matchBrackets:true,
-        mode: "text/x-java"
+        mode: "text/x-java",
+        styleActiveLine: true,
+		lineWrapping: true,
+		foldGutter: true,
+		autoCloseBrackets: true,
+        autoCloseTags: true,
+        
+       // panel:true
+        showTrailingSpace: true,
+            //extraKeys: {"Ctrl-Space": "autocomplete","Ctrl-Q": function(cm){ editableCodeMirror.foldCode(editableCodeMirror.getCursor()); }},
+
+        
         
     });
     Router();

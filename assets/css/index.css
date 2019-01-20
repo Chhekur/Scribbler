@@ -101,12 +101,10 @@ a{
     color: #999;
     transition: .56s ease all;
 }
-#tool-belt a:hover{
+#tool-belt a:hover, #tool-belt a:active, #tool-belt a:focus{
     color:#2293f2;;
 }
-#tool-belt a:active{
-    color:white;
-}
+
 .tool-wrapper{
     height: 50%;
 }
@@ -195,6 +193,7 @@ PREFERENCES
 .prefContainer input:focus {
     outline: none;
 }
+
 /*
 LANGUAGE MODE DIALOG
 */

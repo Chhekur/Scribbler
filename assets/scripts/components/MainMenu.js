@@ -1,16 +1,9 @@
-const {Menu,MenuItem,BrowserWindow} = require("electron").remote;
+const {Menu,MenuItem} = require("electron").remote;
+const remote = require("electron").remote;
 const ipcRenderer = require("electron").ipcRenderer;
 const FileManager = require("./FileManager");
-
 const base = require("../EditorManager");
-const path = require("path");
 const InterfaceManager = require("./InterfaceManager");
-
-
-
-//Preferences
-let prefOptions;
-
 //Create main menu
 function CreateMainMenu() {
     const MainMenu = new Menu();
@@ -33,6 +26,7 @@ function CreateMainMenu() {
             {type:"separator"},
             {label: "Save",click: FileManager.Save,accelerator:"Ctrl+S"},
             {label: "Save As",click: FileManager.SaveAs,accelerator:"Ctrl+Shift+S"},
+            {label: "Reload Editor",click:ReloadEditor ,accelerator:"Ctrl+Shift+R"},
 
         ]
     });
@@ -58,7 +52,10 @@ function CreateMainMenu() {
     MainMenu.append(terminalMenuItem);
     Menu.setApplicationMenu(MainMenu);
 }
-
+function ReloadEditor(){
+    //Create checks before-hand 
+    remote.getCurrentWindow().reload();
+}
 module.exports = {
     CreateMainMenu
 }

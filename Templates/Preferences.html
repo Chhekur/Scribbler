@@ -1,5 +1,8 @@
 <head>
         <!-- UIkit CSS -->
+        <link rel="stylesheet" href="./../Assets/plugins/fontawesome-free-5.6.3-web/css/all.min.css" />
+        <link rel="stylesheet" href="./../Assets/Css/index.css"/>
+
         <link rel="stylesheet" href="../node_modules/uikit/dist/css/uikit.css" />
          <!--Semantic UI -->
          <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -9,12 +12,12 @@
         <script src="../node_modules/uikit/dist/js/uikit-icons.min.js"></script>
       </head>
       <body>
-           <div id="preferences-container" class="uk-container">
+           <div style="padding:20px;"id="preferences-container" class="uk-container">
               <div class="ui blue message">
                   <div class="header">Settings </div>
                   <p>Here you can personalise your settings and see them live in the editor. Press enter when you have changed a value so the editor can reload</p>
                 </div>
-                  <p> <select  class="uk-select" aria-placeholder="Theme" name="theme" id="selectTheme">
+                  <p> <select uk-tooltip="title: Text editor colour scheme" class="uk-select" aria-placeholder="Theme" name="theme" id="selectTheme">
                           <option>default</option>
                           <option>3024-day</option>
                           <option>3024-night</option>
@@ -84,7 +87,7 @@
                       </p>
                    
                       <p> <label for="sidebar-color"></label> <span>
-                          <input class="uk-input" id="selectSidebarBackground" uk-tooltip="title: Sidebar Background Colour | rgba(r,g,b,a) | hex#; delay:500"type="text" placeholder="Sidebar-Background"></span> 
+                          <input class="uk-input" id="selectSidebarBackground" uk-tooltip=" title: Sidebar Background Colour | rgba(r,g,b,a) | hex#; delay:500"type="text" placeholder="Sidebar-Background"></span> 
                       </p>
                       <p>
                      <p> <label for="Box-Shadow"></label> <span>

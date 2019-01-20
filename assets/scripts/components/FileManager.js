@@ -88,13 +88,13 @@ function Save(){
     }if(isNewFile == true){
         InterfaceManager.RenameFile(CurrentFile);
         isNewFile = false;
-    }else{
-        console.log(CurrentFile[0]);
-        fs.writeFile(CurrentFile[0],EditorManager.editableCodeMirror.getValue(),function(err){
+    }else{;
+        fs.writeFile(CurrentFile.toString(),EditorManager.editableCodeMirror.getValue(),function(err){
             if(err){
                NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa fa-ban",true,"light",12);
             }else{
                 NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
+                console.log(CurrentFile.toString());
             }
         });
     }
@@ -204,22 +204,25 @@ function CreateNewFile(){
     fs.writeFile(newFile,"",function(err){
         if(err){
             console.log(err);
-        }
-    })
-    fs.readFile(newFile[0],'utf-8',function(err,data){
-        if(err){
-            console.log(err);
         }else{
-             CurrentFile = newFile;
-            //Writing the data to the window
-            EditorManager.editableCodeMirror.setValue(data);
-            //Add to sidebar
-            InterfaceManager.ExplorerManagement(CurrentFile); 
-            InterfaceManager.BuildCommands(CurrentFile);    
-            //Display notification
-            NotificationManager.displayNotification("info","New file created, press Ctrl+S to save/rename","bottomCenter",3000,"fa fa-info-circle",false,"light",12);             
+            fs.readFile(newFile,'utf-8',function(err,data){
+                if(err){
+                    console.log(err);
+                }else{
+                     CurrentFile = newFile;
+                    //Writing the data to the window
+                    EditorManager.editableCodeMirror.setValue(data);
+                    //Add to sidebar
+                    InterfaceManager.ExplorerManagement(CurrentFile); 
+                    //Display notification
+                    NotificationManager.displayNotification("info","New file created, press Ctrl+S to save/rename","bottomCenter",3000,"fa fa-info-circle",false,"light",12);             
+                }
+            })
         }
     })
+    /*
+  
+    */
 }
 
 //Create Random File Name

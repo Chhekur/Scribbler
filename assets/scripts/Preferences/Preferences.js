@@ -19,6 +19,7 @@ var FontSizeSetting = "settings.font-size";
 var boxShadowNull = "0px 1px 2px 0 rgba(34, 36, 38, 0.15)";
 var boxShadowDefault = "0px 0px 20px rgba(34, 36, 38, 0.15)";
 var SideBarBackgroundDefault = "#fff";
+
 /**
  * 
  */
@@ -78,6 +79,7 @@ function DetectChange(){
     })
   })
 }
+
 DetectChange();
 setTheme();
 SetBoxShadow();

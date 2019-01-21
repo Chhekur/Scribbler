@@ -1,4 +1,5 @@
-
+var getCodeMirrorSetting;
+var editableCodeMirror;
 //Preferences 
 const PreferencesStorage = require("electron-store");
 const PreferencesSettings = new PreferencesStorage();
@@ -19,18 +20,21 @@ var ExplorerSideBar = document.getElementsByClassName("sidebar")[1];
 
 //HTML Stylesheet
 var currentStyleSheet = document.getElementById("codeMirrorThemeCss");
+currentStyleSheet.href="node_modules/codemirror/theme/"+PreferencesSettings.get("settings.color-theme-settings")+".css";
 //Init Editor 
+
 function InitEditor(){
     exports.editableCodeMirror = CodeMirror.fromTextArea(codeWindow, {
+        
         lineNumbers: true,
-        matchBrackets:true,
+        matchBrackets:MatchBracketSetting(),
         mode: "text/x-java",
         styleActiveLine: true,
 		lineWrapping: true,
 		foldGutter: true,
-		autoCloseBrackets: true,
+		autoCloseBrackets: AutoCloseBrackets(),
         autoCloseTags: true,
-        
+    
        // panel:true
         showTrailingSpace: true,
             //extraKeys: {"Ctrl-Space": "autocomplete","Ctrl-Q": function(cm){ editableCodeMirror.foldCode(editableCodeMirror.getCursor()); }},
@@ -39,6 +43,7 @@ function InitEditor(){
         
     });
     Router();
+    exports.editableCodeMirror.setOption("theme",PreferencesSettings.get("settings.color-theme-settings"));
 }  
 /**
  * On-load window 
@@ -62,6 +67,22 @@ window.onload = function(){
 function SetStylesheet(theme){
     currentStyleSheet.href="node_modules/codemirror/theme/"+theme+".css";
 }
+
+function MatchBracketSetting(){
+    if(PreferencesSettings.get("settings.bracket-highlighting") == "true"){
+        return true;
+    }else{
+        return false;
+    }
+   
+}
+function AutoCloseBrackets(){
+    if(PreferencesSettings.get( "settings.auto-pairing") == "true"){
+        return true;
+    }else{
+        return false;
+    }
+}
 /**
  * Load preferences on load
  */
@@ -74,8 +95,7 @@ function Router(){
 function PreferencesReciever(settings){
     ipcRenderer.on("settings-changed",function(event,payload){
         //Display modal detecting changed settings
-        DisplayResetModal('Preferences change detected, press ok to reset the editor');
-        
+       // DisplayResetModal('Preferences change detected, press ok to reset the editor');
     });
     //Settings to load
     SetBoxShadow(settings);
@@ -130,4 +150,8 @@ function DisplayResetModal(message){
     }, function () {
         NotificationManager.displayNotification("info","Changes will appear when the editor is re-opened","bottomCenter",4000,"fa fa-info-circle",false,"light",12);
     });
+}
+module.exports = {
+    editableCodeMirror,
+    getCodeMirrorSetting
 }

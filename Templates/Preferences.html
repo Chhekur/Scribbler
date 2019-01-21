@@ -3,7 +3,7 @@
         <link rel="stylesheet" href="./../Assets/plugins/fontawesome-free-5.6.3-web/css/all.min.css" />
         <link rel="stylesheet" href="./../Assets/Css/index.css"/>
 
-        <link rel="stylesheet" href="../node_modules/uikit/dist/css/uikit.css" />
+        <link rel="stylesheet" href="./../node_modules/uikit/dist/css/uikit.css" />
          <!--Semantic UI -->
          <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
          <link rel="stylesheet" href="./../node_modules/semantic-ui-css/semantic.min.css" type="text/css"/>
@@ -12,11 +12,13 @@
         <script src="../node_modules/uikit/dist/js/uikit-icons.min.js"></script>
       </head>
       <body>
-           <div style="padding:20px;"id="preferences-container" class="uk-container">
-              <div class="ui blue message">
-                  <div class="header">Settings </div>
-                  <p>Here you can personalise your settings and see them live in the editor. Press enter when you have changed a value so the editor can reload</p>
-                </div>
+           <div style="padding:10px 20px 10px 20px;"id="preferences-container" class="uk-container">
+                <div class="flex columns" style="margin-bottom:20px;margin-top:30px;">    
+                        <span class="uk-text-large">Appearance</span>  
+                            <span class="uk-text-meta">Here you can personalise the appearance of your editor.</span>
+                        </div>
+          
+               
                   <p> <select uk-tooltip="title: Text editor colour scheme" class="uk-select" aria-placeholder="Theme" name="theme" id="selectTheme">
                           <option>default</option>
                           <option>3024-day</option>
@@ -96,6 +98,21 @@
                       
       
               <!---Change Theme-->
+              <div class="flex columns" style="margin-bottom:20px;margin-top:50px;">    
+                    <span class="uk-text-large">Code Functionality</span>  
+                        <span class="uk-text-meta">Here you can personalise some of the functionality of your code, for example, bracket highlighting</span>
+                    </div>
+                    <p> <label for="Box-Shadow"></label> <span>
+                            <span class="uk-text-meta">Bracket Highlighting</span>
+
+                            <input class="uk-input"uk-tooltip="title:true or false" id="selectBracketHighlighting" type="text" placeholder="Bracket Highlighting: Yes or No"></span> 
+                            </p>                        </p>
+                            <p> <label for="Box-Shadow"></label> <span>
+                                    <span class="uk-text-meta">Auto-close pairs</span>
+
+                                    <input class="uk-input"uk-tooltip="true or false" id="selectAutoPairing" type="text" placeholder="Auto-pairing: Yes or No"></span> 
+                                    </p>                        </p>
+                      
               </div>
           </div>   
               <script>require("./../Assets/Scripts/Preferences/Preferences.js")</script>

@@ -12,30 +12,37 @@ var prefAutoPairing = document.getElementById("selectAutoPairing");
 var prefBracketHighlighting  = document.getElementById("selectBracketHighlighting");
 //Preferences 
 const PreferencesSettings = new PreferencesStorage();
-//Setting vars
-var boxShadowSetting = "settings.box-shadow-settings";
-var SideBarBackgroundSetting = "settings.sideBarBackground";
-var ColorThemeSetting = "settings.color-theme-settings"
-var FontSizeSetting = "settings.font-size";
+
+//Appearance Settings
+var boxShadowSetting = "appearance.box-shadow-settings";
+var SideBarBackgroundSetting = "appearance.sideBarBackground";
+var ColorThemeSetting = "appearance.color-theme-settings"
+var FontSizeSetting = "appearance.font-size";
+
+//Code func Settings
 var AutoPairingSetting = "settings.auto-pairing";
 var BracketHighlightingSetting  = "settings.bracket-highlighting";
+
 //Default Settings
 var boxShadowNull = "0px 1px 2px 0 rgba(34, 36, 38, 0.15)";
 var boxShadowDefault = "0px 0px 20px rgba(34, 36, 38, 0.15)";
 var SideBarBackgroundDefault = "#fff";
 var AutoPairingDefault = true;
 var BracketHighlightingDefault = true;
+var ColorThemeSettingDefault = "seti"
 /**
- * 
+ * Set the theme 
  */
-function setTheme(){
+function SetTheme(){
+  if(prefTheme.value == null || prefTheme == undefined){
+    PreferencesSettings.set(ColorThemeSetting,ColorThemeSettingDefault);
+  }
   prefTheme.value = PreferencesSettings.get(ColorThemeSetting);
   prefTheme.addEventListener("change",function(){
     var selectedTheme = prefTheme.options[prefTheme.selectedIndex].textContent;
     PreferencesSettings.set(ColorThemeSetting,selectedTheme);
-  ipcRenderer.send('selected-theme',selectedTheme);
-  NotificationManager.displayProgressNotification("Just one second...","Changing the settings, please wait...","notched circle loading icon");
-  NotificationManager.progressWrapper.style.visibility =" hidden";
+    ipcRenderer.send('selected-theme',selectedTheme);
+
   });  
 }
 /**
@@ -80,11 +87,16 @@ function SetSideBarBackgroundColor(){
  */
 function SetAutoPairing(){
   //Set the value to whatever the editor is 
+  if(prefAutoPairing.value == null || prefAutoPairing.value == undefined){
+  
+  }
   prefAutoPairing.value = PreferencesSettings.get(AutoPairingSetting);
   prefAutoPairing.onkeypress = function(e){
     var keycode = e.keyCode || e.which;
     if(keycode == "13"){
+      ipcRenderer.send("selected-auto-pairing",prefAutoPairing.value);
       PreferencesSettings.set(AutoPairingSetting,prefAutoPairing.value);
+
     }
   }
 
@@ -115,7 +127,7 @@ function DetectChange(){
 }
 
 DetectChange();
-setTheme();
+SetTheme();
 SetBoxShadow();
 SetSideBarBackgroundColor();
 SetAutoPairing();

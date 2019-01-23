@@ -17,10 +17,8 @@ exports.currentFilename = document.getElementById("currentFilename");
 var codeMirroElem = document.getElementsByTagName("html")[0];
 var ToolBelt = document.getElementsByClassName("sidebar")[0];
 var ExplorerSideBar = document.getElementsByClassName("sidebar")[1];
-
 //HTML Stylesheet
 var currentStyleSheet = document.getElementById("codeMirrorThemeCss");
-currentStyleSheet.href="node_modules/codemirror/theme/"+PreferencesSettings.get("settings.color-theme-settings")+".css";
 //Init Editor 
 
 function InitEditor(){
@@ -43,7 +41,9 @@ function InitEditor(){
         
     });
     Router();
-    exports.editableCodeMirror.setOption("theme",PreferencesSettings.get("settings.color-theme-settings"));
+    exports.editableCodeMirror.setOption("theme",ThemeSetting());
+    currentStyleSheet.href =" node_modules/codemirror/theme/"+ThemeSetting()+".css";
+
 }  
 /**
  * On-load window 
@@ -60,14 +60,10 @@ window.onload = function(){
     FileManager.CreateDefaultDir();
 }
 
-/**
- * 
- * @param {*} theme 
- */
-function SetStylesheet(theme){
-    currentStyleSheet.href="node_modules/codemirror/theme/"+theme+".css";
-}
 
+/**
+ * Get the setting and return a value depending on the output
+ */
 function MatchBracketSetting(){
     if(PreferencesSettings.get("settings.bracket-highlighting") == "true"){
         return true;
@@ -77,6 +73,7 @@ function MatchBracketSetting(){
    
 }
 function AutoCloseBrackets(){
+    
     if(PreferencesSettings.get( "settings.auto-pairing") == "true"){
         return true;
     }else{
@@ -95,17 +92,13 @@ function Router(){
 function PreferencesReciever(settings){
     ipcRenderer.on("settings-changed",function(event,payload){
         //Display modal detecting changed settings
-       // DisplayResetModal('Preferences change detected, press ok to reset the editor');
+       DisplayResetModal('Preferences change detected, press ok to reset the editor');
     });
     //Settings to load
     SetBoxShadow(settings);
     SetSideBarBackground(settings);
-
-    ipcRenderer.on("selected-theme",function(event,payload){
-        SetStylesheet(payload);
-        exports.editableCodeMirror.setOption("theme",payload);
-        ColourIntelligence();
-    });
+    SetTheme();
+    
     ipcRenderer.on("selected-font-size",function(event,payload){
         var newFontSize = payload;
         codeMirroElem.style.fontSize = payload;
@@ -113,8 +106,21 @@ function PreferencesReciever(settings){
  
 
 }
-
-
+/**
+ * 
+ */
+function SetTheme(){
+    ipcRenderer.on("selected-theme",function(event,payload){
+        currentStyleSheet.href =" node_modules/codemirror/theme/"+payload+".css";
+        exports.editableCodeMirror.setOption("theme",payload);
+        PreferencesSettings.set("appearance.color-theme-settings",payload);
+        return payload;
+    });
+}
+function ThemeSetting(){
+    var getTheme = PreferencesSettings.get("appearance.color-theme-settings");
+    return getTheme;
+}
 /** 
  *  Tab colour, Sidebar colour, Explorer background, Icon colour
  */
@@ -127,7 +133,7 @@ function ColourIntelligence(){
  * @param {*} setting 
  */
 function SetBoxShadow(setting){
-    var boxShadowSettings = setting.get("settings.box-shadow-settings");
+    var boxShadowSettings = setting.get("appearance.box-shadow-settings");
     ToolBelt.style.boxShadow = boxShadowSettings;
 }
 /**
@@ -135,7 +141,7 @@ function SetBoxShadow(setting){
  * @param {*} setting 
  */
 function SetSideBarBackground(setting){
-    var sideBarBackground = setting.get("settings.sideBarBackground");
+    var sideBarBackground = setting.get("appearance.sideBarBackground");
     ToolBelt.style.background = sideBarBackground;
 
 }

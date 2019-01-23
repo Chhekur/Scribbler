@@ -87,7 +87,9 @@ function initApp(){
     ipcMain.on("settings-changed",function(event,payload){
         win.webContents.send("settings-changed",payload);
     });
-
+    ipcMain.on("selected-auto-pairing",function(event,payload){
+        win.webContents.send("selected-auto-pairing",payload);
+    });
     //Event Listeners
     prefsWindow.on("close",function(event){
         prefsWindow.hide();

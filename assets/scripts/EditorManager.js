@@ -137,6 +137,9 @@ function ColourIntelligence(){
  * @param {*} setting 
  */
 function SetBoxShadow(setting){
+    ipcRenderer.on("box-shadow-settings",function(event,payload){
+        ToolBelt.style.boxShadow = payload;
+    });
     var boxShadowSettings = setting.get("appearance.box-shadow-settings");
     ToolBelt.style.boxShadow = boxShadowSettings;
 }

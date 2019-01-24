@@ -35,7 +35,7 @@ function CreateDefaultDir(){
     //Create the directory scribbler projects 
     fs.exists(ScribblerProjectToCreate,function(exists){
         if(exists){
-            console.log("Exists");
+
         }else{
             fs.mkdir(ScribblerProjectToCreate,function(err){
                 if(err){
@@ -223,8 +223,10 @@ function CreateNewFile(){
     */
 }
 
+var isRandFile = false;
 //Create Random File Name
 function CreateRandomFileName() {
+    isRandFile = true;
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   
@@ -245,5 +247,6 @@ module.exports = {
     CreateNewFile,
     GetCurrentFile,
     SetCurrentFile,
-    CreateDefaultDir
+    CreateDefaultDir,
+    isRandFile
 }

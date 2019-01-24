@@ -16,10 +16,11 @@
            <div style="padding:10px 20px 10px 20px;"id="preferences-container" class="uk-container">
                 <div class="flex columns" style="margin-bottom:20px;margin-top:30px;">    
                         <span class="uk-text-large">Appearance</span>  
-                            <span class="uk-text-meta">Here you can personalise the appearance of your editor.</span>
+                            <span class="uk-text-meta">Here you can personalise the appearance of your editor. These changes can be seen live in the editor.</span>
                         </div>
           
-               
+                        <span class="uk-text-meta">Colour Scheme</span>
+
                   <p> <select uk-tooltip="title: Text editor colour scheme" class="uk-select" aria-placeholder="Theme" name="theme" id="selectTheme">
                           <option>default</option>
                           <option>3024-day</option>
@@ -79,6 +80,8 @@
                       </select></p>
                      
                       <p>
+                            <span class="uk-text-meta">Font Size</span>
+
                           <select onchange="setFontSize()" placeholder="Font Size" id="selectFontSize" class="uk-select" >
                               <option>10</option>
                               <option>12</option>
@@ -90,10 +93,14 @@
                       </p>
                    
                       <p> <label for="sidebar-color"></label> <span>
+                            <span class="uk-text-meta">Sidebar Background Colour</span>
+
                           <input class="uk-input" id="selectSidebarBackground" uk-tooltip=" title: Sidebar Background Colour | rgba(r,g,b,a) | hex#; delay:500"type="text" placeholder="Sidebar-Background"></span> 
                       </p>
                       <p>
                      <p> <label for="Box-Shadow"></label> <span>
+                            <span class="uk-text-meta">Sidebar Box-Shadow</span>
+
                         <input class="uk-input"uk-tooltip="title:Shadow Properties: |none|h-offset v-offset blur spread color; delay: 500" id="selectBoxShadow" type="text" placeholder="Box-Shadow:      Example-0px 1px 2px 0 rgba(34, 36, 38, 0.15)"></span> 
                         </p>                        </p>
                       

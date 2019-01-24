@@ -163,11 +163,21 @@ function UpdateTab(OldFilePath,NewFilePath){
     
 }
 /**
+ * 
+ * @param {*} CurrentFile 
+ */
+function WorkSpaceManager(CurrentFile){
+
+}
+/**
  * @param {*} CurrentFile 
  */
 function CreateTab(CurrentFile){
-    if(CurrentFile == null || CurrentFile == undefined || path.extname(CurrentFile.toString()) ==".txt"){
+    if(FileManager.isRandFile == true){
         CurrentFile = "Untitled";
+    }
+    if(CurrentFile == null || CurrentFile == undefined || path.extname(CurrentFile.toString()) ==".txt"){
+       return;
     } 
     //Check if there is a tab with the same name 
      newTabItemListItem = document.createElement("li");
@@ -285,13 +295,7 @@ function BuildCommands(CurrentFile){
     }
 });
 }
-/**
- * Get all the tabs and list them in a dialog 
- * Once clicked try and run java
- */
-function DisplayFileToRunDialog(){
-    
-}
+
 
 /**
  * @param {*} runJavaCommand 
@@ -410,6 +414,7 @@ function RenameFile(CurrentFile){
                 UpdateTab(CurrentFile,newRenamedFile);
                 CurrentFile = newRenamedFile;
                 console.log("Re-named file: "+CurrentFile.toString());
+                FileManager.isRandFile = false;
             }
         });
     }else{

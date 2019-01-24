@@ -63,6 +63,7 @@ function SetBoxShadow(){
     var keycode = e.keyCode || e.which;
     if(keycode == "13"){
       CheckBoxShadowInput(prefBoxShadow.value);
+      ipcRenderer.send("box-shadow-settings",prefBoxShadow.value);
       PreferencesSettings.set(boxShadowSetting,prefBoxShadow.value);
     }
   }

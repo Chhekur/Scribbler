@@ -102,7 +102,7 @@ a{
     transition: .56s ease all;
 }
 #tool-belt a:hover, #tool-belt a:active, #tool-belt a:focus{
-    color:#2293f2;;
+    color:#F34D2F;
 }
 
 .tool-wrapper{

@@ -17,21 +17,21 @@ function initApp(){
     introWindow.setTitle("Scribbler Intro");
 
     //Displaying the loading window before hand 
-    win = new BrowserWindow({width: 700,height:600,x:0,y:0,show:false,frame:true});
+    win = new BrowserWindow({width: 700,height:600,x:0,y:0,show:false,frame:true, icon: path.join(__dirname, 'Assets/Icons/png/128x128.png')});
     win.setTitle("Scribbler");
     win.loadFile("Templates/Welcome.html");
     //win.loadURL(`${__dirname}/index.html`);
     win.webContents.openDevTools();
 
     //Terminal output window 
-    consoleWindow = new BrowserWindow({width:win.width,height:win.height,x:CaclWindowPosX(),y:CalcWindowPosY(),show:false,resizable:true});
+    consoleWindow = new BrowserWindow({width:win.width,height:win.height,x:CaclWindowPosX(),y:CalcWindowPosY(),show:false,resizable:true,icon: path.join(__dirname, 'Assets/Icons/png/128x128.png')});
     consoleWindow.loadFile("Templates/TerminalOutput.html");
     consoleWindow.setMenuBarVisibility(false);
     consoleWindow.openDevTools();
     consoleWindow.setTitle("Console Window Output");
 
     //Preferences Window
-    prefsWindow = new BrowserWindow({width:700,height:600,x:0,y:0,show:false,resizable:true});
+    prefsWindow = new BrowserWindow({width:760,height:650,x:0,y:0,show:false,resizable:true,icon: path.join(__dirname, 'Assets/Icons/png/128x128.png')});
     prefsWindow.setTitle("Preferences");
     prefsWindow.setMenuBarVisibility(false);
     prefsWindow.loadFile("Templates/Preferences.html");

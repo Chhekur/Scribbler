@@ -6,18 +6,21 @@
     <script src="./../node_modules\uikit\dist\js\uikit-icons.min.js"></script>
      <link rel="stylesheet", href="./../Assets/Css/index.css"/>
      <link rel="stylesheet" href="./../Assets/plugins/fontawesome-free-5.6.3-web/css/all.min.css" />
-
     </head>
     <body class="welcome-window">
+        <div class="img-wrapper flex flex--center ">
+            
+        </div>
         <div class="welcome-wrapper flex flex--center align-center columns">
-        <h3 >Welcome to Scribbler  </h3> 
+                <img src="./../Assets/Icons/png/64x64.png">
+            <h3 >Welcome to Scribbler  </h3> 
         <a class="project-links" href="./../index.html"><i class="fa fa-box-open"></i>Start a blank Project</a>
-        <a class="project-links" href="./../index.html" id="openPrefs"><i class="fa fa-cog"></i>Choose a Theme</a>
-    
-    
+        <a class="project-links" href="./../index.html" id="openPrefs"><i class="fa fa-cog"></i>View Preferences</a>
     </div>
 <div class="welcome-window-footer uk-position-bottom-center">
-   <p>View project development on github <a href="https://github.com/yomiAdenaike01/Scribbler"><i class="fab fa-github-alt"></i></a></p>
+   <p style="padding-bottom:0px; margin-bottom:0px;">View project development on github <a href="https://github.com/yomiAdenaike01/Scribbler"><i class="ico fab fa-github-alt"></i></a></p>
+   <p style="padding-top: 2px;margin-top: 4px;" >View project development on trello <a href="https://trello.com/b/k7DJLPVP/scribbler-plan"><i class="ico fab fa-trello"></i></a></p>
+
 </div>
     <script>
     const ipcRenderer = require("electron").ipcRenderer;

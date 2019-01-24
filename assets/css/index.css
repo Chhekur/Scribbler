@@ -245,14 +245,17 @@ LANGUAGE MODE DIALOG
 .welcome-wrapper{
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 .welcome-window h3{
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 300;
     margin-bottom: 30px;
 }
 .welcome-window-footer p{
     font-size: 13px;
+    
 }
 .welcome-window .project-links{
     font-size: 14px;
@@ -266,11 +269,17 @@ LANGUAGE MODE DIALOG
     transition: .56s ease all;
     margin-bottom: 10px;
 }
-
+.welcome-window img{
+    margin-top: -200px;
+    margin-bottom: 50px;
+    
+}
 .welcome-window .fa {
     margin-right: 20px;
 }
-
+.welcome-window .ico{
+    margin-left: 3px;
+}
 .welcome-window a:hover{
     background: #e1e1e1;
 }

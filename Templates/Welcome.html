@@ -1,15 +1,24 @@
 <html>
     <head>       
-         <link rel="stylesheet", href="./../Assets/Css/index.css"/>
-         <link rel="stylesheet" href="./../Assets/plugins/fontawesome-free-5.6.3-web/css/all.min.css" />
+    <!---UIKit-->
+    <link rel="stylesheet" href="./../node_modules/uikit/dist/css/uikit.css" />
+    <script src="./../node_modules\uikit\dist\js\uikit.min.js"></script>
+    <script src="./../node_modules\uikit\dist\js\uikit-icons.min.js"></script>
+     <link rel="stylesheet", href="./../Assets/Css/index.css"/>
+     <link rel="stylesheet" href="./../Assets/plugins/fontawesome-free-5.6.3-web/css/all.min.css" />
 
     </head>
     <body class="welcome-window">
         <div class="welcome-wrapper flex flex--center align-center columns">
         <h3 >Welcome to Scribbler  </h3> 
-        <a href="./../index.html"><i class="fa fa-box-open"></i>Start a blank Project</a>
-        <a href="./../index.html" id="openPrefs"><i class="fa fa-cog"></i>Choose a Theme</a>
+        <a class="project-links" href="./../index.html"><i class="fa fa-box-open"></i>Start a blank Project</a>
+        <a class="project-links" href="./../index.html" id="openPrefs"><i class="fa fa-cog"></i>Choose a Theme</a>
+    
+    
     </div>
+<div class="welcome-window-footer uk-position-bottom-center">
+   <p>View project development on github <a href="https://github.com/yomiAdenaike01/Scribbler"><i class="fab fa-github-alt"></i></a></p>
+</div>
     <script>
     const ipcRenderer = require("electron").ipcRenderer;
     document.getElementById("openPrefs").addEventListener("click",function(){

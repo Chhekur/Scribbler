@@ -97,9 +97,12 @@ function SetAutoPairing(){
   prefAutoPairing.onkeypress = function(e){
     var keycode = e.keyCode || e.which;
     if(keycode == "13"){
-      ipcRenderer.send("selected-auto-pairing",prefAutoPairing.value);
-      PreferencesSettings.set(AutoPairingSetting,prefAutoPairing.value);
-
+      //Check the input 
+      if(ValidatePreference(prefAutoPairing) == true){
+        ipcRenderer.send("selected-auto-pairing",prefAutoPairing.value);
+        PreferencesSettings.set(AutoPairingSetting,prefAutoPairing.value);  
+      }
+     
     }
   }
 
@@ -111,20 +114,23 @@ function SetAutoPairing(){
 function SetBracketHighlighting(){
   //Set the value to whatever the editor is 
   prefBracketHighlighting.value = PreferencesSettings.get(BracketHighlightingSetting);
+  //To complete the entry press enter 
   prefBracketHighlighting.onkeypress = function(e){
     var keycode = e.keyCode || e.which;
     if(keycode == "13"){
-      if(CheckBracketHighlightInput(prefBracketHighlighting.value) == true){
+      //Check the input only change if the input is true or false
+      if(ValidatePreference(prefBracketHighlighting) == true){
         PreferencesSettings.set(BracketHighlightingSetting,prefBracketHighlighting.value);
       }
     }
   }
 } 
 /**
- * Detect changes and reload the window
+ * 
  */
 function DetectChange(){
   document.addEventListener('DOMContentLoaded', () => {
+    //If a change in the code-functionality settings reload the window
     PreferencesSettings.onDidChange('settings', (newValue, oldValue) => {
       ipcRenderer.send("settings-changed","reload");
     })
@@ -142,27 +148,28 @@ function CheckBoxShadowInput(input){
  * If not equal to true then display notification
  * @param {} input 
  */
-function CheckBracketHighlightInput(input){
-  if(input == "true" || input == "false"){
+function ValidatePreference(input){
+  if(input.value == "true" || input.value == "false"){
     //Add success class for correct input 
-    prefBracketHighlighting.classList.add("uk-form-success")
+    input.classList.add("uk-form-success")
    //Check if they have the danger class 
-   if(prefBracketHighlighting.classList.contains("uk-form-danger")){
-     prefBracketHighlighting.classList.remove("uk-form-danger");
+   if(input.classList.contains("uk-form-danger")){
+    input.classList.remove("uk-form-danger");
    }
    //If they have the class remove it after a period of time
-   if(prefBracketHighlighting.classList.contains("uk-form-success")){
+   if(input.classList.contains("uk-form-success")){
      setTimeout(function(){
-      prefBracketHighlighting.classList.remove("uk-form-success");
+      input.classList.remove("uk-form-success");
      },3000)
    }
     return true;
   }else{
     //Toggle the danger class
-    prefBracketHighlighting.classList.toggle("uk-form-danger");
+    input.classList.toggle("uk-form-danger");
     return false;
   }
 }
+
  
 DetectChange();
 SetTheme();

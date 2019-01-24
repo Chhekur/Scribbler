@@ -158,7 +158,7 @@ function GenerateWindows(){
        consoleWindow.setTitle("Console Window Output");
    
        //Preferences Window
-       prefsWindow = new BrowserWindow({width:760,height:650,x:0,y:0,show:false,resizable:true,icon: path.join(__dirname, 'Assets/Icons/png/128x128.png')});
+       prefsWindow = new BrowserWindow({width:760,height:700,x:0,y:0,show:false,resizable:true,icon: path.join(__dirname, 'Assets/Icons/png/128x128.png')});
        prefsWindow.setTitle("Preferences");
        prefsWindow.setMenuBarVisibility(false);
        prefsWindow.loadFile("Templates/Preferences.html");

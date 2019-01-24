@@ -20,7 +20,8 @@ const pathExtra = require("path-extra");
 var varTargetTab;
 //Tab vars
 var newTabItemListItem;
-
+//Explorer Sidebar
+var ExplorerSideBar = document.getElementById("explorer-side-bar");
 //Menu
 var TabMenu;
 //Error nodes array
@@ -96,6 +97,7 @@ function PreferencesToggle(){
 function ExplorerManagement(CurrentFile){
     if(CurrentFile != null || CurrentFile != undefined || CurrentFile != " "){
         CreateTab(CurrentFile);
+        
     
         for(var i=0; i<tabContainer.childNodes.length;i++){
                 tabContainer.childNodes[i].addEventListener("click",function(e){
@@ -118,7 +120,6 @@ function OpenTabInEditor(CurrentFile,e){
     //Read the name of the tab and filename and adding it into the code mirror editor 
     CurrentFile = e.target.name;
     BuildCommands(CurrentFile);
-
     //Read file into the editor area
     fs.readFile(CurrentFile.toString(),"utf-8",function(err,data){
         if(err){
@@ -146,16 +147,12 @@ function UpdateTab(OldFilePath,NewFilePath){
         if($(this).attr("name") == OldFilePath || $(this).siblings().attr("name") == OldFilePath){
             $(this).attr("title", NewFilePath);
             $(this).children().attr("title", NewFilePath);
-
             $(this).attr("name", NewFilePath);
             $(this).children().attr("name", NewFilePath);
-
            // $(this).text(path.basename(NewFilePath.toString()));
             $(this).children().text(path.basename(NewFilePath.toString()));
             CurrentFile = NewFilePath;
             //ExplorerManagement(CurrentFile);
-       
-
         }else{
             console.log(false);
         }
@@ -166,7 +163,24 @@ function UpdateTab(OldFilePath,NewFilePath){
  * 
  * @param {*} CurrentFile 
  */
-function WorkSpaceManager(CurrentFile){
+function CreateWorkSpaceTab(CurrentFile){
+    //Create element
+    var WorkSpaceManagerLink = document.createElement("a");
+    WorkSpaceManagerLink.addEventListener("click",function(e){
+        OpenTabInEditor(CurrentFile,e);
+    });
+    //Create text node
+    var WorkSpaceManagerTextContent = document.createTextNode(path.basename(CurrentFile.toString()));
+    //Append text node 
+    WorkSpaceManagerLink.appendChild(WorkSpaceManagerTextContent);
+    //Add class to link 
+    WorkSpaceManagerLink.classList.add("item");
+    //Add attributes to it 
+    WorkSpaceManagerLink.setAttribute("title",CurrentFile.toString());
+    WorkSpaceManagerLink.setAttribute("name",CurrentFile.toString());
+    //Append to sidebar
+    ExplorerSideBar.appendChild(WorkSpaceManagerLink);
+
 
 }
 /**
@@ -202,6 +216,7 @@ function CreateTab(CurrentFile){
     tabContainer.appendChild(newTabItemListItem);
     //Check changing classes and names
     TabChecking();
+    CreateWorkSpaceTab(CurrentFile);
 }
 /**
  * Checks for duplicates

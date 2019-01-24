@@ -144,19 +144,22 @@ function CheckBoxShadowInput(input){
  */
 function CheckBracketHighlightInput(input){
   if(input == "true" || input == "false"){
-    //Check if the element exists 
-    if(BracketHighlightingPreferenceWrapper.contains(document.getElementById("preference-error"))){
-      //Remove it 
-      document.getElementById("preference-error").remove();
-    }
+    //Add success class for correct input 
+    prefBracketHighlighting.classList.add("uk-form-success")
+   //Check if they have the danger class 
+   if(prefBracketHighlighting.classList.contains("uk-form-danger")){
+     prefBracketHighlighting.classList.remove("uk-form-danger");
+   }
+   //If they have the class remove it after a period of time
+   if(prefBracketHighlighting.classList.contains("uk-form-success")){
+     setTimeout(function(){
+      prefBracketHighlighting.classList.remove("uk-form-success");
+     },3000)
+   }
     return true;
   }else{
-    //Check if the element exists 
-    if(BracketHighlightingPreferenceWrapper.contains(document.getElementById("preference-error"))){
-      //Remove it 
-      document.getElementById("preference-error").remove();
-    }
-    BracketHighlightingPreferenceWrapper.appendChild(NotificationManager.CreateErrorNotification("Must Select True or False."));
+    //Toggle the danger class
+    prefBracketHighlighting.classList.toggle("uk-form-danger");
     return false;
   }
 }

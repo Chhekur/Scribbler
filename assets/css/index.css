@@ -235,6 +235,41 @@ LANGUAGE MODE DIALOG
     height: 90%;
 }
 
+/*WELCOME WINDOW */
+.welcome-window{
+    font-family: "Lato",sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.welcome-wrapper{
+    width: 100%;
+    height: 100%;
+}
+.welcome-window h3{
+    font-size: 50px;
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+.welcome-window a{
+    font-size: 18px;
+    text-decoration: none;
+    color: #999;
+    background: #efefef;
+    padding: 8px 70px 8px 70px;
+    border-radius: 9px;
+    
+    transition: .56s ease all;
+    margin-bottom: 10px;
+}
+
+.welcome-window .fa {
+    margin-right: 20px;
+}
+
+.welcome-window a:hover{
+    background: #e1e1e1;
+}
 
 
 /*LOADING WINDOW */

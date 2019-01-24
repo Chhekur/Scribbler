@@ -17,7 +17,6 @@ exports.currentFilename = document.getElementById("currentFilename");
 var codeMirroElem = document.getElementsByTagName("html")[0];
 var ToolBelt = document.getElementsByClassName("sidebar")[0];
 var ExplorerSideBar = document.getElementsByClassName("sidebar")[1];
-//HTML Stylesheet
 var currentStyleSheet = document.getElementById("codeMirrorThemeCss");
 //Init Editor 
 
@@ -32,7 +31,6 @@ function InitEditor(){
 		foldGutter: true,
 		autoCloseBrackets: AutoCloseBrackets(),
         autoCloseTags: true,
-    
        // panel:true
         showTrailingSpace: true,
             //extraKeys: {"Ctrl-Space": "autocomplete","Ctrl-Q": function(cm){ editableCodeMirror.foldCode(editableCodeMirror.getCursor()); }},
@@ -41,6 +39,7 @@ function InitEditor(){
         
     });
     Router();
+    //Presets the themes
     exports.editableCodeMirror.setOption("theme",ThemeSetting());
     currentStyleSheet.href =" node_modules/codemirror/theme/"+ThemeSetting()+".css";
 
@@ -52,12 +51,14 @@ window.onload = function(){
     InitEditor();
     //Init menus 
     MainMenu.CreateMainMenu();
-    InterfaceManager.CreateTabMenu();
     //Interface manager
     InterfaceManager.SideBarToggle();
     InterfaceManager.PreferencesToggle();
     //File Manager create dir 
     FileManager.CreateDefaultDir();
+    NotificationManager.displayNotification("info","Before you start typing create a new file Ctrl+N","bottomCenter",5000,"fa fa-info-circle",false,"light",12);
+    //Create new file 
+    //FileManager.CreateNewFile();
 }
 
 
@@ -72,6 +73,9 @@ function MatchBracketSetting(){
     }
    
 }
+/**
+ * Auto close pairs such as brackets and quotes
+ */
 function AutoCloseBrackets(){
     
     if(PreferencesSettings.get( "settings.auto-pairing") == "true"){
@@ -141,6 +145,10 @@ function SetBoxShadow(setting){
  * @param {*} setting 
  */
 function SetSideBarBackground(setting){
+    ipcRenderer.on("changed-sideBar-background",function(event,payload){
+        ToolBelt.style.background = payload;
+
+    });
     var sideBarBackground = setting.get("appearance.sideBarBackground");
     ToolBelt.style.background = sideBarBackground;
 

@@ -1,0 +1,20 @@
+<html>
+    <head>       
+         <link rel="stylesheet", href="./../Assets/Css/index.css"/>
+         <link rel="stylesheet" href="./../Assets/plugins/fontawesome-free-5.6.3-web/css/all.min.css" />
+
+    </head>
+    <body class="welcome-window">
+        <div class="welcome-wrapper flex flex--center align-center columns">
+        <h3 >Welcome to Scribbler  </h3> 
+        <a href="./../index.html"><i class="fa fa-box-open"></i>Start a blank Project</a>
+        <a href="./../index.html" id="openPrefs"><i class="fa fa-cog"></i>Choose a Theme</a>
+    </div>
+    <script>
+    const ipcRenderer = require("electron").ipcRenderer;
+    document.getElementById("openPrefs").addEventListener("click",function(){
+        ipcRenderer.send("show-prefs");
+    })
+    </script>
+    </body>
+</html>

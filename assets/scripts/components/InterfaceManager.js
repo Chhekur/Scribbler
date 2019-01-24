@@ -33,6 +33,7 @@ var TitleBarFileName =  document.getElementById("title-bar-filename");
 /**
  * Create the tab menu
  */
+CreateTabMenu();
 function CreateTabMenu(){
     TabMenu = new Menu();
     var RevealInExplorerMenuItem = new MenuItem({label: "Reveal In Explorer",click:RevealFileInExplorer});

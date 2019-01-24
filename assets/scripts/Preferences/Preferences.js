@@ -10,26 +10,24 @@ var prefBoxShadow = document.getElementById("selectBoxShadow");
 var prefSideBarBackground = document.getElementById("selectSidebarBackground");
 var prefAutoPairing = document.getElementById("selectAutoPairing");
 var prefBracketHighlighting  = document.getElementById("selectBracketHighlighting");
+var BracketHighlightingPreferenceWrapper = document.getElementById("bracketHighlightingPreferences");
 //Preferences 
 const PreferencesSettings = new PreferencesStorage();
-
 //Appearance Settings
 var boxShadowSetting = "appearance.box-shadow-settings";
 var SideBarBackgroundSetting = "appearance.sideBarBackground";
 var ColorThemeSetting = "appearance.color-theme-settings"
 var FontSizeSetting = "appearance.font-size";
-
 //Code func Settings
 var AutoPairingSetting = "settings.auto-pairing";
 var BracketHighlightingSetting  = "settings.bracket-highlighting";
-
 //Default Settings
 var boxShadowNull = "0px 1px 2px 0 rgba(34, 36, 38, 0.15)";
 var boxShadowDefault = "0px 0px 20px rgba(34, 36, 38, 0.15)";
 var SideBarBackgroundDefault = "#fff";
 var AutoPairingDefault = true;
 var BracketHighlightingDefault = true;
-var ColorThemeSettingDefault = "seti"
+var ColorThemeSettingDefault = "base16-light";
 /**
  * Set the theme 
  */
@@ -64,10 +62,14 @@ function SetBoxShadow(){
   prefBoxShadow.onkeypress = function(e){
     var keycode = e.keyCode || e.which;
     if(keycode == "13"){
+      CheckBoxShadowInput(prefBoxShadow.value);
       PreferencesSettings.set(boxShadowSetting,prefBoxShadow.value);
     }
   }
 }
+
+
+
 function SetSideBarBackgroundColor(){
   if(prefSideBarBackground.value == undefined || prefSideBarBackground == "" || PreferencesSettings.get(SideBarBackgroundSetting) == undefined){
     //Reset to default
@@ -77,13 +79,14 @@ function SetSideBarBackgroundColor(){
     prefSideBarBackground.onkeypress = function(e){
       var keycode = e.keyCode || e.which;
       if(keycode == "13"){
+        ipcRenderer.send("changed-sideBar-background",prefSideBarBackground.value);
         PreferencesSettings.set(SideBarBackgroundSetting,prefSideBarBackground.value);
       }
     }
   }
 }
 /**
- * 
+ * Auto create quotes and brackets
  */
 function SetAutoPairing(){
   //Set the value to whatever the editor is 
@@ -103,7 +106,7 @@ function SetAutoPairing(){
   
 }
 /**
- * 
+ * Sets bracket highlighting 
  */
 function SetBracketHighlighting(){
   //Set the value to whatever the editor is 
@@ -111,7 +114,9 @@ function SetBracketHighlighting(){
   prefBracketHighlighting.onkeypress = function(e){
     var keycode = e.keyCode || e.which;
     if(keycode == "13"){
-      PreferencesSettings.set(BracketHighlightingSetting,prefBracketHighlighting.value);
+      if(CheckBracketHighlightInput(prefBracketHighlighting.value) == true){
+        PreferencesSettings.set(BracketHighlightingSetting,prefBracketHighlighting.value);
+      }
     }
   }
 } 
@@ -125,7 +130,37 @@ function DetectChange(){
     })
   })
 }
+/**
+ * Check if they have entered the correct syntax
+ * @param {} input 
+ */
+function CheckBoxShadowInput(input){
 
+}
+/**
+ * Check the input of the bracket highlight
+ * If not equal to true then display notification
+ * @param {} input 
+ */
+function CheckBracketHighlightInput(input){
+  if(input == "true" || input == "false"){
+    //Check if the element exists 
+    if(BracketHighlightingPreferenceWrapper.contains(document.getElementById("preference-error"))){
+      //Remove it 
+      document.getElementById("preference-error").remove();
+    }
+    return true;
+  }else{
+    //Check if the element exists 
+    if(BracketHighlightingPreferenceWrapper.contains(document.getElementById("preference-error"))){
+      //Remove it 
+      document.getElementById("preference-error").remove();
+    }
+    BracketHighlightingPreferenceWrapper.appendChild(NotificationManager.CreateErrorNotification("Must Select True or False."));
+    return false;
+  }
+}
+ 
 DetectChange();
 SetTheme();
 SetBoxShadow();

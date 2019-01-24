@@ -19,7 +19,8 @@ function initApp(){
     //Displaying the loading window before hand 
     win = new BrowserWindow({width: 700,height:600,x:0,y:0,show:false,frame:true});
     win.setTitle("Scribbler");
-    win.loadURL(`${__dirname}/index.html`);
+    win.loadFile("Templates/Welcome.html");
+    //win.loadURL(`${__dirname}/index.html`);
     win.webContents.openDevTools();
 
     //Terminal output window 
@@ -89,6 +90,9 @@ function initApp(){
     });
     ipcMain.on("selected-auto-pairing",function(event,payload){
         win.webContents.send("selected-auto-pairing",payload);
+    });
+    ipcMain.on("changed-sideBar-background",function(event,payload){
+        win.webContents.send("changed-sideBar-background",payload);
     });
     //Event Listeners
     prefsWindow.on("close",function(event){

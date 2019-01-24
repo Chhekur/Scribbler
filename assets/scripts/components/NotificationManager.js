@@ -120,7 +120,29 @@ function displayProgressNotification(title,message,icon){
     
     
 }
-
+/**
+ * Create error to display underneath a preference when something is entered wrong
+ * @param {} message 
+ */
+function CreateErrorNotification(message){
+    //Create elements
+    var ErrorNotificationWrapper = document.createElement("div");
+    var ErrorNotificationLink = document.createElement("a");
+    var ErrorNotificationPara = document.createElement("p");
+    //Add classes and ID's
+    ErrorNotificationWrapper.id = "preference-error";
+    ErrorNotificationWrapper.classList.add("uk-alert uk-alert-danger");
+    ErrorNotificationLink.classList.add("uk-alert-close");
+    //Add attributes
+    ErrorNotificationPara.textContent = message;
+    //Append elements 
+    //ErrorNotificationWrapper.appendChild(ErrorNotificationIcon);
+    ErrorNotificationWrapper.appendChild(ErrorNotificationLink);
+    ErrorNotificationWrapper.appendChild(ErrorNotificationPara);
+    
+    //Return element
+    return ErrorNotificationWrapper;
+}
 function createErrorNode(icon,visible_message,lineNumber,message){
 
     var htmlNode =document.createElement("div");
@@ -148,5 +170,6 @@ module.exports = {
     displayProgressNotification,
     prefsContainer,
     progressWrapper,
-    InitModal
+    InitModal,
+    CreateErrorNotification
 }

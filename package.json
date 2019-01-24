@@ -27,7 +27,6 @@
     "jquery": "^3.3.1",
     "path-extra": "^4.2.1",
     "semantic-ui-css": "^2.4.1",
-    "tempfile": "^2.0.0",
     "tmp": "0.0.33",
     "uikit": "^3.0.0-rc.23"
   }

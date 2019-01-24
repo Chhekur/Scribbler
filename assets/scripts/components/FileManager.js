@@ -6,7 +6,6 @@ const InterfaceManager = require("./InterfaceManager");
 const NotificationManager = require("./NotificationManager");
 var CurrentFile;
 var EditorManager = require("../EditorManager");
-const tempfile = require('tempfile');
 var isTempFile = false;
 var defaultDocumentsPath = app.getPath("documents");
 var ScribblerProjectToCreate = defaultDocumentsPath+"/Scribbler_Projects";
@@ -94,7 +93,6 @@ function Save(){
                NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa fa-ban",true,"light",12);
             }else{
                 NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
-                console.log(CurrentFile.toString());
             }
         });
     }
@@ -209,7 +207,7 @@ function CreateNewFile(){
                 if(err){
                     console.log(err);
                 }else{
-                     CurrentFile = newFile;
+                    CurrentFile = newFile;
                     //Writing the data to the window
                     EditorManager.editableCodeMirror.setValue(data);
                     //Add to sidebar

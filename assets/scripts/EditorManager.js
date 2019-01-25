@@ -10,6 +10,7 @@ const FileManager = require("./Components/FileManager");
 const ipcRenderer = require('electron').ipcRenderer;
 const remote = require("electron").remote;
 const NotificationManager = require("./Components/NotificationManager");
+const cp = require("child_process");
 //Main UI
 exports.codeWindow = document.getElementById("codeWindow");
 exports.feedbackWindow = document.getElementById("feedback-window");
@@ -48,6 +49,7 @@ function InitEditor(){
  * On-load window 
  */
 window.onload = function(){
+    InterfaceManager.CheckForJava();
     InitEditor();
     //Init menus 
     MainMenu.CreateMainMenu();
@@ -168,6 +170,8 @@ function DisplayResetModal(message){
         NotificationManager.displayNotification("info","Changes will appear when the editor is re-opened","bottomCenter",4000,"fa fa-info-circle",false,"light",12);
     });
 }
+
+
 module.exports = {
     editableCodeMirror,
     getCodeMirrorSetting

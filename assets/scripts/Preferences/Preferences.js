@@ -22,12 +22,15 @@ var FontSizeSetting = "appearance.font-size";
 var AutoPairingSetting = "settings.auto-pairing";
 var BracketHighlightingSetting  = "settings.bracket-highlighting";
 //Default Settings
-var boxShadowNull = "0px 1px 2px 0 rgba(34, 36, 38, 0.15)";
 var boxShadowDefault = "0px 0px 20px rgba(34, 36, 38, 0.15)";
 var SideBarBackgroundDefault = "#fff";
 var AutoPairingDefault = true;
 var BracketHighlightingDefault = true;
 var ColorThemeSettingDefault = "base16-light";
+//Reset button
+var resetSettingsButton = document.getElementById("resetSettings");
+//Check the settings first 
+SettingsManagement();
 /**
  * Set the theme 
  */
@@ -170,7 +173,40 @@ function ValidatePreference(input){
     return false;
   }
 }
+function SettingsManagement(){
+  //Check if the settings are not undefined 
+  if(PreferencesSettings.get(AutoPairingSetting)== undefined){
+    //Reset the setting
+    PreferencesSettings.set(AutoPairingSetting,AutoPairingDefault);
+  }
+  if(PreferencesSettings.get(BracketHighlightingSetting)== undefined){
+    //Reset the setting
+    PreferencesSettings.set(BracketHighlightingSetting,BracketHighlightingDefault);
+  }
+  if(PreferencesSettings.get(boxShadowSetting)== undefined){
+    //Reset the setting
+    PreferencesSettings.set(boxShadowSetting,boxShadowDefault);
+  }
+  if(PreferencesSettings.get(ColorThemeSetting)== undefined){
+    //Reset the setting
+    PreferencesSettings.set(ColorThemeSetting,ColorThemeSettingDefault);
+  }
+  //Add event listener for the reset button 
+  resetSettingsButton.addEventListener("click",function(){
+    //Display modal to reset or cancel resetting the settings
+    NotificationManager.DisplayModal("Are you sure you want to reset the settings",ResetSettings());
+    
+  });
+ 
+}
 
+function ResetSettings(){
+  //Restore each item to the original setting
+    PreferencesSettings.set(ColorThemeSetting,ColorThemeSettingDefault);
+    PreferencesSettings.set(boxShadowSetting,boxShadowDefault);
+    PreferencesSettings.set(BracketHighlightingSetting,BracketHighlightingDefault);
+    PreferencesSettings.set(AutoPairingSetting,AutoPairingDefault);
+}
  
 DetectChange();
 SetTheme();

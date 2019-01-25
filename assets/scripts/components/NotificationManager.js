@@ -7,11 +7,17 @@ var progressIcon = document.createElement("i");
 var progressHeader = document.createElement("div");
 var progressContentText; 
 var progressContentHeaderText;
-
-function InitModal(Message){
-    bootbox.prompt(Message, function(result){ 
-        return result;
-     });
+/**
+ * 
+ * @param {*} Message 
+ * @param {*} ConfirmMethod 
+ */
+function DisplayModal(Message,ConfirmMethod){
+    UIkit.modal.confirm(Message).then(function() {
+        ConfirmMethod
+    }, function () {
+        return;
+    });
 
 }
 /**
@@ -170,6 +176,6 @@ module.exports = {
     displayProgressNotification,
     prefsContainer,
     progressWrapper,
-    InitModal,
-    CreateErrorNotification
+    CreateErrorNotification,
+    DisplayModal
 }

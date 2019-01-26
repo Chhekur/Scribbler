@@ -423,6 +423,13 @@ function RenameFile(CurrentFile){
                 CurrentFile = newRenamedFile;
                 console.log("Re-named file: "+CurrentFile.toString());
                 FileManager.isRandFile = false;
+                fs.writeFile(CurrentFile.toString(),EditorManager.editableCodeMirror.getValue(),function(err){
+                    if(err){
+                       NotificationManager.displayNotification("err","Failed to save, please try again later","bottomCenter",2000,"fa fa-ban",true,"light",12);
+                    }else{
+                        NotificationManager.displayNotification("success","Save successful","bottomCenter",2000,"fa fa-check-circle",false,"light",12);
+                    }
+                });
             }
         });
     }else{

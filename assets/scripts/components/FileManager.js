@@ -4,7 +4,7 @@ const path = require("path");
 const {remote,dialog,app} = require("electron").remote;
 const InterfaceManager = require("./InterfaceManager");
 const NotificationManager = require("./NotificationManager");
-var CurrentFile;
+global.CurrentFile;
 var EditorManager = require("../EditorManager");
 var isTempFile = false;
 var defaultDocumentsPath = app.getPath("documents");
@@ -243,7 +243,7 @@ module.exports = {
     OpenFile,
     SaveAs,
     Save,
-    CurrentFile,
+    // CurrentFile,
     CreateNewFile,
     GetCurrentFile,
     SetCurrentFile,

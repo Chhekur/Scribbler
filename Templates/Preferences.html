@@ -102,7 +102,7 @@
                             <span class="uk-text-meta">Sidebar Box-Shadow</span>
 
                         <input class="uk-input"uk-tooltip="title:Shadow Properties: |none|h-offset v-offset blur spread color; delay: 500" id="selectBoxShadow" type="text" placeholder="Box-Shadow:      Example-0px 1px 2px 0 rgba(34, 36, 38, 0.15)"></span> 
-                        </p>                        </p>
+                        </p>                       
                       
       
               <!---Change Theme-->
@@ -111,17 +111,17 @@
                         <span class="uk-text-meta">You can toggle some add-ons that will make your coding experience easier, for example, bracket highlighting</span>
                     </div>
                  
-                    <p id="bracketHighlightingPreferences"> <label for="Bracket Highglighting"></label> <span>
+                    <p id="bracketHighlightingPreferences"> <label for="Bracket Highglighting"></label> 
                             <span class="uk-text-meta">Bracket Highlighting</span>
                             <input class="uk-input"uk-tooltip="title:true or false" id="selectBracketHighlighting" type="text" placeholder="Bracket Highlighting: True or False"></span> 
                             </p>                        
-                        </p>
+                        
                             <p> <label for="Box-Shadow"></label> <span>
-                                    <span class="uk-text-meta">Auto-close pairs</span>
+                                <span class="uk-text-meta">Auto-close pairs</span>
+                                <input class="uk-input"uk-tooltip="true or false" id="selectAutoPairing" type="text" placeholder="Auto-pairing: Yes or No"></span> 
+                                    </p>                        
+                     <button class="uk-button uk-button-primary" id="resetSettings">Reset Settings</button>
 
-                                    <input class="uk-input"uk-tooltip="true or false" id="selectAutoPairing" type="text" placeholder="Auto-pairing: Yes or No"></span> 
-                                    </p>                        </p>
-                      
               </div>
           </div>   
               <script>require("./../Assets/Scripts/Preferences/Preferences.js")</script>

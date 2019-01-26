@@ -244,14 +244,10 @@ function GetDisplayLine(errormessage){
     var  match = errorMsg.match(searchExp);
     errorLines.push(match);
     if(match != null){
-    if(match.length >  -1 ){
-        //return the final number which will be the number of errors 
-        multilineError = true;
-        return match[match.length - 1];
-    }else{
         console.log(match[0]);
+        console.log(errormessage);
         return match[0];
-    }
+    
 }
 }
 
@@ -260,14 +256,10 @@ function GetDisplayLine(errormessage){
  * @param {*} errormessage 
  */
 function DisplayErrorInCode(CurrentFile,errormessage){
-    if(multilineError == true){
-        errorNodes.push(EditorManager.editableCodeMirror.addLineWidget(EditorManager.editableCodeMirror.lastLine() ,NotificationManager.createErrorNode("fa fa-exclamation-circle","Number of errors found:",GetDisplayLine(errormessage),errormessage.toString()) ));
-        NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
-
-    }else{
-        errorNodes.push(EditorManager.editableCodeMirror.addLineWidget(GetDisplayLine(errormessage) -1 ,NotificationManager.createErrorNode("fa fa-exclamation-circle","Error on line",GetDisplayLine(errormessage),errormessage.toString()) ));
-        NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
-    }
+    //errorNodes.push(EditorManager.editableCodeMirror.addLineWidget(GetDisplayLine(errormessage) -1 ,NotificationManager.createErrorNode("fa fa-exclamation-circle","Error on line",GetDisplayLine(errormessage),errormessage.toString()) ));
+    NotificationManager.displayNotification("err","Compilation unsuccessful view editor for more info","bottomCenter",3000,"fa fa-info-circle","light",12);
+    console.log(errormessage);
+    GetDisplayLine(errormessage);
 }
 
 /**
@@ -289,6 +281,7 @@ function Save(CurrentFile){
  * @param {*} CurrentFile 
  */
 function BuildCommands(CurrentFile){
+   
     //Declare the commands 
     var compileJavaCommand = "javac "+path.basename(CurrentFile.toString());
     var runJavaCommand ="java "+pathExtra.base(CurrentFile.toString(), false);
@@ -438,6 +431,21 @@ function RenameFile(CurrentFile){
     });
   
 }
+function CheckForJava(){
+    //Check for java version 
+    command("java -version",function(err,stdout,stderr){
+        if(stderr){
+            console.log(stderr);
+        }else if(err){
+            console.log(err);
+        }else{
+            console.log(stdout);
+            
+        }
+    })
+
+    
+}
 module.exports = {
     SideBarToggle,
     ExplorerManagement,
@@ -445,5 +453,6 @@ module.exports = {
     TitleBarFileName,
     BuildCommands,
     RenameFile,
+    CheckForJava,
     CreateTabMenu
 }
